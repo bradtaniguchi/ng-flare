@@ -18,5 +18,5 @@ export class StopLoading implements Action {
 
 export class SetLoading implements Action {
   readonly type = LoadingTypes.Set;
-  constructor(public payload: boolean) {}
+  constructor(public payload: { loading: boolean }) {}
 }

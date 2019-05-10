@@ -3,7 +3,7 @@ import { LoadingTypes, LoadingActions } from './loading.actions';
 export function LoadingReducer(_, action: LoadingActions): boolean {
   switch (action.type) {
     case LoadingTypes.Set:
-      return !!action.payload;
+      return action.payload.loading;
     case LoadingTypes.Start:
       return true;
     case LoadingTypes.Stop:
