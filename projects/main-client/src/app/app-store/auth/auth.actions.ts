@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
-import { User } from 'src/app/models/user';
+import { User } from '../../models/user';
+import { auth } from 'firebase/app';
 
 export enum AuthActionTypes {
   LOGIN = '[Auth] LOGIN',
@@ -10,6 +11,8 @@ export enum AuthActionTypes {
   LOGOUT = '[Auth] LOGOUT',
   LOGOUT_SUCCESS = '[Auth] LOGOUT_SUCCESS',
   LOGOUT_FAILED = '[Auth] LOGOUT_FAILED',
+
+  SET_CRED = '[Auth] SET_CRED',
 
   // AuthRegistration
   REGISTER = '[Auth] REGISTER',
@@ -24,6 +27,7 @@ export type AuthActions =
   | AuthLoginSuccess
   | AuthLoginFailed
   | AuthStateChange
+  | SetAuthCred
   // Logout
   | AuthLogout
   // AuthRegistration
@@ -35,21 +39,24 @@ export type AuthActions =
 // LOGIN
 export class AuthLogin implements Action {
   readonly type = AuthActionTypes.LOGIN;
-  constructor(public payload: 'popup' | 'redirect') {}
+  constructor(public payload: { type: 'popup' | 'redirect' }) {}
 }
 export class AuthLoginSuccess implements Action {
   readonly type = AuthActionTypes.LOGIN_SUCCESS;
-  constructor(public payload: User) {}
+  constructor(public payload: { user: User }) {}
 }
 export class AuthLoginFailed implements Action {
   readonly type = AuthActionTypes.LOGIN_FAILED;
-  constructor(public payload: Error) {}
+  constructor(public payload: { error: Error }) {}
 }
-
+export class SetAuthCred implements Action {
+  readonly type = AuthActionTypes.SET_CRED;
+  constructor(public payload: { cred: auth.UserCredential }) {}
+}
 // STATE CHANGE
 export class AuthStateChange implements Action {
   readonly type = AuthActionTypes.STATE_CHANGE;
-  constructor(public payload: User) {}
+  constructor(public payload: { user: User }) {}
 }
 // LOGOUT
 export class AuthLogout implements Action {
@@ -65,7 +72,7 @@ export class AuthLogoutFailed implements Action {
 // Auth Registration
 export class AuthRegister implements Action {
   readonly type = AuthActionTypes.REGISTER;
-  constructor(public payload: firebase.User) {}
+  constructor(public payload: { user: firebase.User }) {}
 }
 
 // returned if we successfully registered the user
