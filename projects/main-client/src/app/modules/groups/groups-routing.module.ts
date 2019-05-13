@@ -4,11 +4,11 @@ import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [
   {
     path: 'create',
-    loadChildren: './group-create/group-create.module#GroupCreateModule'
+    loadChildren: './groups-create/groups-create.module#GroupsCreateModule'
   },
   {
     path: '',
-    loadChildren: './group-list/group-list.module#GroupListModule'
+    loadChildren: './groups-list/groups-list.module#GroupsListModule'
   }
 ];
 
