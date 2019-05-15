@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Store } from '@ngrx/store';
 import { auth } from 'firebase/app';
-import { AppState } from '../../app-store/app-state';
-import { AuthStateChange } from '../../app-store/auth/auth.actions';
+import { AppState } from '../../../app-store/app-state';
+import { AuthStateChange } from '../../../app-store/auth/auth.actions';
 import { from, Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
