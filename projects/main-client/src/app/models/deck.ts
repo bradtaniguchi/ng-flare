@@ -1,8 +1,8 @@
 import { Document } from './document';
 
-export interface Group extends Document {
+export interface Deck extends Document {
   uid: string;
+  groupId: string;
   name: string;
   description: string;
-  public: boolean;
 }

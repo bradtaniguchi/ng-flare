@@ -32,7 +32,7 @@ export class GroupService {
         uid,
         ...group,
         createdOn: new Date()
-      } as Partial<Group>)
+      } as Group)
     );
   }
 
@@ -136,7 +136,8 @@ export class GroupService {
       this.permissionCollection.add({
         groupId: group.uid,
         type,
-        userId: user.uid
+        userId: user.uid,
+        createdOn: new Date()
       })
     );
   }
@@ -169,11 +170,15 @@ export class GroupService {
   public setPublic(params: {
     group: Group;
     public: boolean;
+    user: User;
   }): Observable<void> {
+    const { user } = params;
     const uid = params.group.uid;
     return from(
       this.groupCollection.doc(uid).update({
-        public: params.public
+        public: params.public,
+        updatedOn: new Date(),
+        updatedBy: user.uid
       } as Partial<Group>)
     );
   }
@@ -181,9 +186,11 @@ export class GroupService {
   /**
    * Makes the group public
    */
-  public makePublic(group: Group): Observable<void> {
+  public makePublic(params: { group: Group; user: User }): Observable<void> {
+    const { group, user } = params;
     return this.setPublic({
       group,
+      user,
       public: true
     });
   }
@@ -191,9 +198,11 @@ export class GroupService {
   /**
    * Makes the group private
    */
-  public makePrivate(group: Group): Observable<void> {
+  public makePrivate(params: { group: Group; user: User }): Observable<void> {
+    const { group, user } = params;
     return this.setPublic({
       group,
+      user,
       public: false
     });
   }
