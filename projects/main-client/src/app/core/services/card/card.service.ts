@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
 import {
-  AngularFirestoreCollection,
   AngularFirestore,
-  CollectionReference
+  AngularFirestoreCollection
 } from '@angular/fire/firestore';
+import { forkJoin, from, Observable } from 'rxjs';
+import { mapTo } from 'rxjs/operators';
 import { Card } from '../../../models/card';
-import { Collections } from '../../collections';
-import { Observable, from, of } from 'rxjs';
 import { User } from '../../../models/user';
+import { Collections } from '../../collections';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CardService {
-  private cardCollectionRef: CollectionReference;
+  private cardCollection: AngularFirestoreCollection<Card>;
   constructor(private db: AngularFirestore) {
-    this.cardCollectionRef = this.db.firestore.collection(Collections.Cards);
+    this.cardCollection = this.db.collection(Collections.Cards);
   }
 
   /**
@@ -26,18 +26,16 @@ export class CardService {
     user: User;
   }): Observable<void> {
     const { cards, user } = params;
-    const finalBatch = cards
-      .map(card => ({
-        ...card,
-        uid: this.db.createId(),
-        createdOn: new Date(),
-        createdBy: user.uid
-      }))
-      .reduce(
-        (batch, card) => batch.set(this.cardCollectionRef.doc(card.uid), card),
-        this.db.firestore.batch()
-      );
-    return from(finalBatch.commit());
+    return forkJoin(
+      cards
+        .map(card => ({
+          ...card,
+          uid: this.db.createId(),
+          createdOn: new Date(),
+          createdBy: user.uid
+        }))
+        .map(card => from(this.cardCollection.doc(card.uid).set(card)))
+    ).pipe(mapTo(undefined));
   }
 
   /**
@@ -48,28 +46,20 @@ export class CardService {
     user: User;
   }): Observable<void> {
     const { cards, user } = params;
-    const finalBatch = cards
-      .map(card => ({ ...card, updatedOn: new Date(), updatedBy: user.uid }))
-      .reduce(
-        (batch, card) =>
-          batch.update(this.cardCollectionRef.doc(card.uid), card),
-        this.db.firestore.batch()
-      );
-    return from(finalBatch.commit());
+    return forkJoin(
+      cards
+        .map(card => ({ ...card, updatedOn: new Date(), updatedBy: user.uid }))
+        .map(card => from(this.cardCollection.doc(card.uid).update(card)))
+    ).pipe(mapTo(undefined));
   }
 
   /**
    * Removes the given cards
    */
-  public remove(params: {
-    cards: Array<Partial<Card>>;
-    user: User;
-  }): Observable<void> {
-    const { cards, user } = params;
-    const finalBatch = cards.reduce(
-      (batch, card) => batch.delete(this.cardCollectionRef.doc(card.uid)),
-      this.db.firestore.batch()
-    );
-    return from(finalBatch.commit());
+  public remove(params: { cards: Array<Partial<Card>> }): Observable<void> {
+    const { cards } = params;
+    return forkJoin(
+      cards.map(card => from(this.cardCollection.doc(card.uid).delete()))
+    ).pipe(mapTo(undefined));
   }
 }
