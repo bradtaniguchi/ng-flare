@@ -6,7 +6,7 @@ import {
 } from '@angular/fire/firestore';
 import { Collections } from '../../collections';
 import { Group } from '../../../models/group';
-import { Observable, from } from 'rxjs';
+import { Observable, from, combineLatest } from 'rxjs';
 import { User } from '../../../models/user';
 import { Permission } from '../../../models/permission';
 import { RoleType } from '../../../models/role';
@@ -34,6 +34,21 @@ export class GroupService {
         createdOn: new Date()
       } as Partial<Group>)
     );
+  }
+
+  /**
+   * Returns a list of all groups that are public
+   */
+  public list(params: { orderBy: string; limit: number }): Observable<Group[]> {
+    const { orderBy, limit } = params;
+    return this.db
+      .collection<Group>(Collections.Groups, ref =>
+        ref
+          .where('public', '==', true)
+          .orderBy(orderBy)
+          .limit(limit)
+      )
+      .valueChanges();
   }
 
   /**
@@ -67,6 +82,45 @@ export class GroupService {
         ref.where('userId', '==', user.uid).where('groupId', '==', group.uid)
       )
       .valueChanges();
+  }
+
+  /**
+   * Returns the users default group, which is created when the user is created, and has the
+   * same user id.
+   */
+  public getDefaultGroup(user: User): Observable<Group> {
+    return this.groupCollection.doc<Group>(user.uid).valueChanges();
+  }
+
+  /**
+   * Creates the users default group
+   */
+  public createDefaultGroup(user: User): Observable<void> {
+    return from(
+      this.groupCollection.doc(user.uid).set({
+        uid: user.uid,
+        createdBy: user.uid,
+        description: 'Users default group',
+        createdOn: new Date(),
+        name: 'Default Group',
+        public: false
+      } as Group)
+    );
+  }
+
+  /**
+   * Returns the groups the user has access to according to the users permissions
+   */
+  public listUserGroups(params: {
+    permissions: Permission[];
+  }): Observable<Group[]> {
+    const { permissions } = params;
+    return combineLatest(
+      permissions
+        .map(({ groupId }) => groupId)
+        .filter(_ => !!_)
+        .map(uid => this.get(uid))
+    );
   }
 
   /**
