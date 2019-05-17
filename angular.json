@@ -28,9 +28,7 @@
               "projects/main-client/src/favicon.ico",
               "projects/main-client/src/assets"
             ],
-            "styles": [
-              "projects/main-client/src/styles.scss"
-            ],
+            "styles": ["projects/main-client/src/styles.scss"],
             "scripts": [],
             "es5BrowserSupport": true
           },
@@ -85,14 +83,18 @@
             "polyfills": "projects/main-client/src/polyfills.ts",
             "tsConfig": "projects/main-client/tsconfig.spec.json",
             "karmaConfig": "projects/main-client/karma.conf.js",
-            "styles": [
-              "projects/main-client/src/styles.scss"
-            ],
+            "styles": ["projects/main-client/src/styles.scss"],
             "scripts": [],
             "assets": [
               "projects/main-client/src/favicon.ico",
               "projects/main-client/src/assets"
             ]
+          },
+          "configurations": {
+            "ci": {
+              "watch": false,
+              "browsers": "ChromeHeadless"
+            }
           }
         },
         "lint": {
@@ -102,9 +104,7 @@
               "projects/main-client/tsconfig.app.json",
               "projects/main-client/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -130,9 +130,7 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": "projects/main-client-e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         }
       }

@@ -1,7 +1,7 @@
 import { StudyService } from './study.service';
 import { Card } from '../../../models/card';
 
-describe('DeckStudyUtilService', () => {
+fdescribe('StudyService', () => {
   let service: StudyService;
   beforeEach(() => (service = new StudyService()));
 
