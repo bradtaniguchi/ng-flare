@@ -6,7 +6,7 @@ import { StartLoading, StopLoading, SetLoading } from './loading.actions';
 @Injectable({
   providedIn: 'root'
 })
-export class LoadingFacade {
+export class LoadingFacadeService {
   public getLoadingState$ = createSelector(
     (state: AppState) => state,
     state => state.loading
