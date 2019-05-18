@@ -1,8 +1,19 @@
 import { Injectable } from '@angular/core';
-import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { createFeatureSelector, createSelector, Store } from '@ngrx/store';
 import { StudyState } from './study.state';
 import { AppState } from '../../../app-store/app-state';
 import { DateTime, Duration } from 'luxon';
+import {
+  ClearStudySession,
+  StartStudySession,
+  SetStudyDeck,
+  SelectStudyCard,
+  SkipStudyCard,
+  MarkStudyCardCorrect,
+  MarkStudyCardWrong
+} from './study.actions';
+import { Card } from '../../../models/card';
+import { Deck } from '../../../models/deck';
 
 @Injectable({
   providedIn: 'root'
@@ -58,12 +69,40 @@ export class StudyFacadeService {
     state => this.getDurationFromStart(state.startedOn)
   );
 
-  constructor() {}
+  constructor(private store: Store<AppState>) {}
 
   /**
    * Returns the duration from the start date
    */
   private getDurationFromStart(start: Date): Duration {
     return DateTime.fromJSDate(start).diffNow();
+  }
+
+  public startStudySession(startedOn: Date) {
+    this.store.dispatch(new StartStudySession({ startedOn }));
+  }
+
+  public clearStudySession() {
+    this.store.dispatch(new ClearStudySession());
+  }
+
+  public setStudyDeck(deck: Deck) {
+    this.store.dispatch(new SetStudyDeck({ deck }));
+  }
+
+  public selectStudyCard(card: Card) {
+    this.store.dispatch(new SelectStudyCard({ card: card.uid }));
+  }
+
+  public skipStudyCard() {
+    this.store.dispatch(new SkipStudyCard());
+  }
+
+  public markStudyCardCorrect() {
+    this.store.dispatch(new MarkStudyCardCorrect());
+  }
+
+  public markStudyCardWrong() {
+    this.store.dispatch(new MarkStudyCardWrong());
   }
 }
