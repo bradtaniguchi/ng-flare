@@ -9,7 +9,7 @@ import {
 import { Observable } from 'rxjs';
 import { AppState } from '../../app-store/app-state';
 import { Store, select } from '@ngrx/store';
-import { AuthFacade } from '../../app-store/auth/auth.facade';
+import { AuthFacadeService } from '../../app-store/auth/auth-facade.service';
 import { map, take } from 'rxjs/operators';
 
 @Injectable({
@@ -18,7 +18,7 @@ import { map, take } from 'rxjs/operators';
 export class AuthGuard implements CanActivate {
   constructor(
     private store: Store<AppState>,
-    private authFacade: AuthFacade,
+    private authFacade: AuthFacadeService,
     private router: Router
   ) {}
 

@@ -6,7 +6,7 @@ import { AuthState } from './auth.state';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthFacade {
+export class AuthFacadeService {
   private authState = createFeatureSelector<AuthState>(
     'auth' as keyof AppState
   );
