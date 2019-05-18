@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-decks-list',
@@ -7,7 +7,8 @@ import { Component, OnInit } from '@angular/core';
       decks-list works!
     </p>
   `,
-  styles: []
+  styles: [],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DecksListComponent implements OnInit {
   constructor() {}
