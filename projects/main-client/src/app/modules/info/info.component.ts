@@ -1,16 +1,24 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { CONFIG } from '../../config.env';
 
 @Component({
   selector: 'app-info',
   template: `
-    <p>
-      info works!
-    </p>
+    <div>
+      <pre>
+        {{ config | json }}
+      </pre
+      >
+    </div>
   `,
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InfoComponent implements OnInit {
+  public config = {
+    revision: CONFIG.revision,
+    date: CONFIG.date
+  };
   constructor() {}
 
   ngOnInit() {}
