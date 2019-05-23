@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { mergeMap } from 'rxjs/operators';
-import { NotifyService } from 'src/app/core/services/notify/notify.service';
 import { Notify, NotifyActionTypes } from './notify.actions';
+import { NotifyService } from '../../core/services/notify/notify.service';
 
 @Injectable()
 export class NotifyEffects {
@@ -13,6 +13,6 @@ export class NotifyEffects {
   })
   public notify$ = this.action$.pipe(
     ofType(NotifyActionTypes.Notify),
-    mergeMap((action: Notify) => this.notify.open(action))
+    mergeMap((action: Notify) => this.notify.notify(action.payload))
   );
 }

@@ -29,8 +29,8 @@ const getConfig = (params: { revision: string; version: string }) => `
   import { Config } from './models/config';
 
   export const CONFIG: Config = {
-    revision: "${params.revision}",
-    date: "${new Date()}",
+    revision: '${params.revision}',
+    date: '${new Date()}',
     version: '${params.version}',
     firebase: {
       apiKey: '${process.env.FIREBASE_API_KEY || ''}',

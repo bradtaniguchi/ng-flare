@@ -3,6 +3,6 @@ export interface User {
   displayName: string;
   email: string;
   photoURL: string;
-  createdOn: Date;
+  createdOn?: Date;
   lastLogin?: Date;
 }

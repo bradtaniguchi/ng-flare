@@ -8,7 +8,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    loadChildren: './decks-list/decks-list.module#DeckListModule'
+    loadChildren: './decks-list/decks-list.module#DecksListModule'
   }
 ];
 

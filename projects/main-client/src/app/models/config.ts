@@ -10,6 +10,10 @@ export interface Config {
    */
   date: Date | string;
   /**
+   * The version of angular the app was built with
+   */
+  version: string;
+  /**
    * The firebase configs to pass to the module
    */
   firebase: FirebaseOptions;
