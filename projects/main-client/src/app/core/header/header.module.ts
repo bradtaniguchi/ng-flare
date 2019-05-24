@@ -7,16 +7,19 @@ import {
   MatButtonModule,
   MatIconModule
 } from '@angular/material';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [HeaderComponent],
   imports: [
     CommonModule,
+    RouterModule,
     // angular material
     FlexLayoutModule,
     MatToolbarModule,
     MatButtonModule,
     MatIconModule
-  ]
+  ],
+  exports: [HeaderComponent]
 })
 export class HeaderModule {}

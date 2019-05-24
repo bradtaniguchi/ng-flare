@@ -22,7 +22,7 @@ import {
               menu
             </mat-icon>
           </button>
-          <a [routerLink]="/" class="mat-title">
+          <a routerLink="/" class="mat-title">
             Flare
           </a>
         </span>
