@@ -10,6 +10,7 @@ import { LoadingReducer } from './loading/loading.state';
 import { AuthEffects } from './auth/auth.effects';
 import { NotifyEffects } from './notify/notify.effects';
 import { MatSnackBarModule, MatDialogModule } from '@angular/material';
+import { DrawerReducer } from './drawer/drawer.state';
 
 @NgModule({
   declarations: [],
@@ -18,7 +19,8 @@ import { MatSnackBarModule, MatDialogModule } from '@angular/material';
     // ngrx
     StoreModule.forRoot<AppState>({
       auth: AuthReducer,
-      loading: LoadingReducer
+      loading: LoadingReducer,
+      drawer: DrawerReducer
     }),
     EffectsModule.forRoot([AuthEffects, NotifyEffects]),
     StoreDevtoolsModule.instrument({

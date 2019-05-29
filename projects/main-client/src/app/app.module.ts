@@ -9,11 +9,12 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { HeaderModule } from './core/header/header.module';
 import { MatSidenavModule } from '@angular/material';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     // app modules
     AppStoreModule,
