@@ -3,26 +3,34 @@ import { Store, createSelector } from '@ngrx/store';
 import { AppState } from '../../../app-store/app-state';
 import { DashboardState } from './dashboard.state';
 import { GetDashboardDecks } from './dashboard.actions';
+import { SearchParamsService } from '../../../core/services/search-params/search-params.service';
+import { Deck } from '../../../models/deck';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DashboardFacadeService {
-  public loading = createSelector(
-    this.selectState,
-    state => state.loading
+  public getLoading = this.searchParamsService.createLoadingSelector(
+    state => state.dashboard.loading
   );
-  public decks = createSelector(
-    this.selectState,
-    state => state.decks
+  public getDecks = this.searchParamsService.createEntitiesSelector<Deck>(
+    state => state.dashboard.ids,
+    state => state.dashboard.entities
   );
-  constructor(private store: Store<AppState>) {}
 
-  private selectState(state: { dashboard: DashboardState }) {
-    return state.dashboard;
+  constructor(
+    private store: Store<AppState>,
+    private searchParamsService: SearchParamsService
+  ) {}
+
+  public getDeckSelector(deckId: string) {
+    return createSelector(
+      (state: AppState) => state.dashboard.entities[deckId],
+      _ => _
+    );
   }
 
-  public getDecks(params: any) {
+  public getDashboardDecks(params: any) {
     this.store.dispatch(new GetDashboardDecks(params));
   }
 }

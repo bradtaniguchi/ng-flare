@@ -1,16 +1,22 @@
 import { DashboardActions, DashboardActionTypes } from './dashboard.actions';
 import { Deck } from '../../../models/deck';
 import { SearchParams } from '../../../models/search-params';
-
-export interface DashboardState extends SearchParams<Deck> {
+import { EntityState, createEntityAdapter } from '@ngrx/entity';
+export interface DashboardState extends EntityState<Deck>, SearchParams<Deck> {
   loading: boolean;
-  decks: Deck[];
 }
+
+export const dashboardAdapter = createEntityAdapter<Deck>({
+  selectId: deck => deck.uid
+});
+
+// TODO: add searchParamAdapter
 
 export function DashboardReducer(
   state: DashboardState = {
     loading: false,
-    decks: [],
+    ids: [],
+    entities: {},
     orderBy: 'name',
     limit: 2
   },
@@ -20,9 +26,12 @@ export function DashboardReducer(
     case DashboardActionTypes.GET_DECKS:
       return { ...state, loading: true, ...action.payload };
     case DashboardActionTypes.GET_DECKS_UPDATE:
-      return { ...state, loading: false, ...action.payload };
+      return dashboardAdapter.upsertMany(action.payload.decks, {
+        ...state,
+        loading: false
+      });
     case DashboardActionTypes.GET_DECKS_FAILED:
-      return { ...state, loading: false, decks: [] };
+      return dashboardAdapter.removeAll({ ...state, loading: false });
   }
   return state;
 }
