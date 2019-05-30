@@ -33,6 +33,14 @@ import { GroupFacadeService } from '../../app-store/group/group-facade.service';
             <mat-card-content> </mat-card-content>
             <mat-card-actions align="end">
               <span>
+                <a
+                  type="button"
+                  mat-button
+                  color="primary"
+                  routerLink="/decks/create"
+                >
+                  Create Deck
+                </a>
                 <button
                   type="button"
                   mat-icon-button

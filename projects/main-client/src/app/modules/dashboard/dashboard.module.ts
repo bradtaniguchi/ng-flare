@@ -13,11 +13,13 @@ import {
 import { LoadingSpinnerModule } from '../../shared/loading-spinner/loading-spinner.module';
 import { EffectsModule } from '@ngrx/effects';
 import { DashboardEffects } from './store/dashboard.effects';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [DashboardComponent],
   imports: [
     CommonModule,
+    RouterModule,
     DashboardRoutingModule,
     // app modules
     LoadingSpinnerModule,
