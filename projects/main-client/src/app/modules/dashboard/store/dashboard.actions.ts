@@ -16,7 +16,7 @@ export type DashboardActions =
 
 export class GetDashboardDecks {
   readonly type = DashboardActionTypes.GET_DECKS;
-  constructor(public payload: SearchParams<Deck>) {}
+  constructor(public payload: Partial<SearchParams<Deck>>) {}
 }
 
 export class DashboardDecksUpdate {

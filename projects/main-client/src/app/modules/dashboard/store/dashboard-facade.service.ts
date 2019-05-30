@@ -5,6 +5,7 @@ import { DashboardState } from './dashboard.state';
 import { GetDashboardDecks } from './dashboard.actions';
 import { SearchParamsService } from '../../../core/services/search-params/search-params.service';
 import { Deck } from '../../../models/deck';
+import { SearchParams } from '../../../models/search-params';
 
 @Injectable({
   providedIn: 'root'
@@ -36,7 +37,7 @@ export class DashboardFacadeService {
     );
   }
 
-  public getDashboardDecks(params: any) {
+  public getDashboardDecks(params: Partial<SearchParams<Deck>>) {
     this.store.dispatch(new GetDashboardDecks(params));
   }
 }

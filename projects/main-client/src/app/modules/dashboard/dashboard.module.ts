@@ -10,12 +10,15 @@ import {
   MatCardModule,
   MatIconModule
 } from '@angular/material';
+import { LoadingSpinnerModule } from '../../shared/loading-spinner/loading-spinner.module';
 
 @NgModule({
   declarations: [DashboardComponent],
   imports: [
     CommonModule,
     DashboardRoutingModule,
+    // app modules
+    LoadingSpinnerModule,
     // ngrx
     StoreModule.forFeature('dashboard', DashboardReducer),
     // angular material

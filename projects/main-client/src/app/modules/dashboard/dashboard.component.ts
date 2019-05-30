@@ -8,12 +8,12 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-dashboard',
   template: `
-    <div>
-      <mat-card>
+    <div fxLayout="column" fxLayoutGap="16px">
+      <mat-card fxFlex="50">
         TOOLBAR STUFF GOES HERE
       </mat-card>
       <ng-container *ngIf="loading$ | async">
-        SPINNER
+        <app-loading-spinner> </app-loading-spinner>
       </ng-container>
       <ng-container *ngFor="let deck of decks$ | async">
         <mat-card>
@@ -36,5 +36,6 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.loading$ = this.store.pipe(select(this.dashboardFacade.getLoading));
     this.decks$ = this.store.pipe(select(this.dashboardFacade.getDecks));
+    this.dashboardFacade.getDashboardDecks({});
   }
 }
