@@ -11,7 +11,8 @@ import {
   map,
   catchError,
   takeUntil,
-  withLatestFrom
+  withLatestFrom,
+  filter
 } from 'rxjs/operators';
 import { DeckService } from '../../../core/services/deck/deck.service';
 import { logger } from '../../../core/logger';
@@ -20,6 +21,8 @@ import { Store, select } from '@ngrx/store';
 import { AppState } from '../../../app-store/app-state';
 import { DashboardFacadeService } from './dashboard-facade.service';
 import { Deck } from '../../../models/deck';
+import { GroupFacadeService } from '../../../app-store/group/group-facade.service';
+import { Group } from '../../../models/group';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +32,7 @@ export class DashboardEffects {
     private actions$: Actions,
     private store: Store<AppState>,
     private dashboardFacade: DashboardFacadeService,
+    private groupFacade: GroupFacadeService,
     private deckService: DeckService
   ) {}
 
@@ -37,17 +41,27 @@ export class DashboardEffects {
   private getOrderBy$ = this.store.pipe(
     select(this.dashboardFacade.getOrderBy)
   );
+  private getSelectedGroup$ = this.store.pipe(
+    select(this.groupFacade.getSelected),
+    filter(_ => !!_)
+  );
+
   @Effect()
   getDecks$ = this.actions$.pipe(
     ofType(DashboardActionTypes.GET_DECKS),
-    withLatestFrom(this.getLimit$, this.getOrderBy$),
+    withLatestFrom(this.getLimit$, this.getOrderBy$, this.getSelectedGroup$),
     switchMap(
-      ([action, limit, orderBy]: [GetDashboardDecks, number, keyof Deck]) =>
+      ([action, limit, orderBy, group]: [
+        GetDashboardDecks,
+        number,
+        keyof Deck,
+        Group
+      ]) =>
         this.deckService
           .list({
             limit,
             orderBy,
-            group: undefined as any,
+            group,
             ...action.payload
           })
           .pipe(

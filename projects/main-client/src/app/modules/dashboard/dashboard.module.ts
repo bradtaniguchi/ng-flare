@@ -11,6 +11,8 @@ import {
   MatIconModule
 } from '@angular/material';
 import { LoadingSpinnerModule } from '../../shared/loading-spinner/loading-spinner.module';
+import { EffectsModule } from '@ngrx/effects';
+import { DashboardEffects } from './store/dashboard.effects';
 
 @NgModule({
   declarations: [DashboardComponent],
@@ -21,6 +23,7 @@ import { LoadingSpinnerModule } from '../../shared/loading-spinner/loading-spinn
     LoadingSpinnerModule,
     // ngrx
     StoreModule.forFeature('dashboard', DashboardReducer),
+    EffectsModule.forFeature([DashboardEffects]),
     // angular material
     FlexLayoutModule,
     MatCardModule,

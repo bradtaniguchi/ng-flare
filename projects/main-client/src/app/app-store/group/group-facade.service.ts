@@ -3,7 +3,7 @@ import { Store, createSelector } from '@ngrx/store';
 import { SearchParamsService } from '../../core/services/search-params/search-params.service';
 import { AppState } from '../app-state';
 import { SearchParams } from '../../models/search-params';
-import { GetGroups } from './group.actions';
+import { ListUserGroups } from './group.actions';
 import { Group } from '../../models/group';
 
 @Injectable({
@@ -23,6 +23,12 @@ export class GroupFacadeService {
   public getLimit = this.searchParamsService.createLimitSelector(
     state => state.group.limit
   );
+  public getSelected = createSelector(
+    (state: AppState) => state.group.selected,
+    (state: AppState) => state.group.entities,
+    (selected, groups) => groups && selected && groups[selected]
+  );
+
   constructor(
     private store: Store<AppState>,
     private searchParamsService: SearchParamsService
@@ -35,7 +41,7 @@ export class GroupFacadeService {
     );
   }
 
-  public searchGroups(params: Partial<SearchParams<Group>>) {
-    this.store.dispatch(new GetGroups(params));
+  public listUserGroups(params: Partial<SearchParams<Group>>) {
+    this.store.dispatch(new ListUserGroups(params));
   }
 }
