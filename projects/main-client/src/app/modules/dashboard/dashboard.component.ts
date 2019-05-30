@@ -36,6 +36,6 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.loading$ = this.store.pipe(select(this.dashboardFacade.getLoading));
     this.decks$ = this.store.pipe(select(this.dashboardFacade.getDecks));
-    this.dashboardFacade.getDashboardDecks({});
+    this.dashboardFacade.searchDashboardDecks({});
   }
 }

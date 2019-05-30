@@ -37,7 +37,7 @@ export class DashboardFacadeService {
     );
   }
 
-  public getDashboardDecks(params: Partial<SearchParams<Deck>>) {
+  public searchDashboardDecks(params: Partial<SearchParams<Deck>>) {
     this.store.dispatch(new GetDashboardDecks(params));
   }
 }
