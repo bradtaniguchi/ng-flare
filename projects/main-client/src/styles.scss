@@ -11,3 +11,27 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+ul {
+  padding: inherit;
+}
+
+.margin {
+  margin: 16px;
+}
+
+.hover-hide {
+  .hover-hide-el {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 0.25s, opacity 0.25s linear;
+  }
+
+  &:hover {
+    .hover-hide-el {
+      visibility: visible;
+      opacity: 1;
+      transition: opacity 0.25s linear;
+    }
+  }
+}
