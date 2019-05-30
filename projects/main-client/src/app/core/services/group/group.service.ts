@@ -72,7 +72,7 @@ export class GroupService {
   /**
    * Returns the given users permissions for the given group
    */
-  public getPermissions(params: {
+  public getPermissionsForGroup(params: {
     group: Partial<Group>;
     user: Partial<User>;
   }): Observable<Permission[]> {
@@ -80,6 +80,20 @@ export class GroupService {
     return this.db
       .collection<Permission>(Collections.Permissions, ref =>
         ref.where('userId', '==', user.uid).where('groupId', '==', group.uid)
+      )
+      .valueChanges();
+  }
+
+  /**
+   * Returns the permissions for the given user for all groups
+   */
+  public getPermissions(params: {
+    user: Partial<User>;
+  }): Observable<Permission[]> {
+    const { user } = params;
+    return this.db
+      .collection<Permission>(Collections.Permissions, ref =>
+        ref.where('userId', '==', user.uid)
       )
       .valueChanges();
   }

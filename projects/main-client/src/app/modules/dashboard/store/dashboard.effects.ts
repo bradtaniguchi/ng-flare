@@ -12,7 +12,9 @@ import {
   catchError,
   takeUntil,
   withLatestFrom,
-  filter
+  filter,
+  mergeMap,
+  first
 } from 'rxjs/operators';
 import { DeckService } from '../../../core/services/deck/deck.service';
 import { logger } from '../../../core/logger';
@@ -42,36 +44,39 @@ export class DashboardEffects {
     select(this.dashboardFacade.getOrderBy)
   );
   private getSelectedGroup$ = this.store.pipe(
-    select(this.groupFacade.getSelected),
-    filter(_ => !!_)
+    select(this.groupFacade.getSelected)
   );
 
   @Effect()
   getDecks$ = this.actions$.pipe(
     ofType(DashboardActionTypes.GET_DECKS),
-    withLatestFrom(this.getLimit$, this.getOrderBy$, this.getSelectedGroup$),
+    withLatestFrom(this.getLimit$, this.getOrderBy$),
     switchMap(
-      ([action, limit, orderBy, group]: [
-        GetDashboardDecks,
-        number,
-        keyof Deck,
-        Group
-      ]) =>
-        this.deckService
-          .list({
-            limit,
-            orderBy,
-            group,
-            ...action.payload
-          })
-          .pipe(
-            map(decks => new DashboardDecksUpdate({ decks })),
-            catchError(err => {
-              logger.error(err);
-              return of(new GetDashboardDecksFailed());
-            }),
-            takeUntil(this.getStop$)
+      ([action, limit, orderBy]: [GetDashboardDecks, number, keyof Deck]) => {
+        const group$ = this.getSelectedGroup$.pipe(
+          filter(_ => !!_),
+          first()
+        );
+        return group$.pipe(
+          mergeMap(group =>
+            this.deckService
+              .list({
+                limit,
+                orderBy,
+                group,
+                ...action.payload
+              })
+              .pipe(
+                map(decks => new DashboardDecksUpdate({ decks })),
+                catchError(err => {
+                  logger.error(err);
+                  return of(new GetDashboardDecksFailed());
+                }),
+                takeUntil(this.getStop$)
+              )
           )
+        );
+      }
     )
   );
 }

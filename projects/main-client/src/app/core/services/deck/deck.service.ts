@@ -38,10 +38,11 @@ export class DeckService {
     limit: number;
   }): Observable<Deck[]> {
     const { group, orderBy, limit } = params;
+    console.log('group list called', params);
     return this.db
       .collection<Deck>(Collections.Decks, ref =>
         ref
-          .where('groupId', '==', group.uid)
+          .where('group', '==', group.uid)
           .orderBy(orderBy)
           .limit(limit)
       )

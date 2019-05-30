@@ -41,14 +41,14 @@ export function GroupReducer(
   action: GroupActions
 ): GroupState {
   switch (action.type) {
-    case GroupActionTypes.GET_GROUPS:
+    case GroupActionTypes.LIST_USER_GROUPS:
       return { ...state, loading: true, ...action.payload };
-    case GroupActionTypes.GET_GROUPS_UPDATE:
+    case GroupActionTypes.LIST_USER_GROUPS_UPDATE:
       return groupAdapter.upsertMany(action.payload.groups, {
         ...state,
         loading: false
       });
-    case GroupActionTypes.GET_GROUPS_FAILED:
+    case GroupActionTypes.LIST_USER_GROUPS_FAILED:
       return groupAdapter.removeAll({ ...state, loading: false });
     case GroupActionTypes.SET_SELECTED_GROUP:
       return setSelectedGroup(state, action);

@@ -4,6 +4,7 @@ import { Group } from './models/group';
 import { DrawerFacade } from './app-store/drawer/drawer.facade';
 import { Store, select } from '@ngrx/store';
 import { AppState } from './app-store/app-state';
+import { GroupFacadeService } from './app-store/group/group-facade.service';
 
 @Component({
   selector: 'app-root',
@@ -41,11 +42,12 @@ export class AppComponent implements OnInit {
 
   constructor(
     private store: Store<AppState>,
+    private groupFacade: GroupFacadeService,
     private drawerFacade: DrawerFacade
   ) {}
 
   ngOnInit() {
-    this.group$ = of();
+    this.group$ = this.store.pipe(select(this.groupFacade.getSelected));
     this.drawerMode$ = this.store.pipe(select(this.drawerFacade.getMode));
   }
 

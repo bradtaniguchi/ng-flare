@@ -9,9 +9,19 @@ import { Observable } from 'rxjs';
   selector: 'app-dashboard',
   template: `
     <div fxLayout="column" fxLayoutGap="16px">
-      <mat-card fxFlex="50">
-        TOOLBAR STUFF GOES HERE
-      </mat-card>
+      <div fxLayout="row" fxLayoutAlign="center center">
+        <mat-card fxFlex="50">
+          <mat-card-content> </mat-card-content>
+          <mat-card-actions>
+            <button type="button" mat-button color="primary">
+              Edit Group
+            </button>
+            <button type="button" mat-button color="primary">
+              Edit Group
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
       <ng-container *ngIf="loading$ | async">
         <app-loading-spinner> </app-loading-spinner>
       </ng-container>

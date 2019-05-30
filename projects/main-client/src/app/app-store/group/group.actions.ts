@@ -24,7 +24,7 @@ export class ListUserGroups implements Action {
 }
 
 export class ListUserGroupsUpdate implements Action {
-  readonly type = GroupActionTypes.LIST_USER_GROUPS;
+  readonly type = GroupActionTypes.LIST_USER_GROUPS_UPDATE;
   constructor(public payload: { groups: Group[] }) {}
 }
 
