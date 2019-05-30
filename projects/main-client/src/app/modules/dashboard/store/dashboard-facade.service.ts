@@ -17,6 +17,12 @@ export class DashboardFacadeService {
     state => state.dashboard.ids,
     state => state.dashboard.entities
   );
+  public getOrderBy = this.searchParamsService.createOrderBySelector<Deck>(
+    state => state.dashboard.orderBy
+  );
+  public getLimit = this.searchParamsService.createLimitSelector(
+    state => state.dashboard.limit
+  );
 
   constructor(
     private store: Store<AppState>,
