@@ -38,5 +38,5 @@ export class StopGetGroups implements Action {
 
 export class SetSelectedGroup implements Action {
   readonly type = GroupActionTypes.SET_SELECTED_GROUP;
-  constructor(public payload: { group: Group }) {}
+  constructor(public payload: { group?: Group | string }) {}
 }

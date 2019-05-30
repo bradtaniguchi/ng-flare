@@ -11,6 +11,8 @@ import { AuthEffects } from './auth/auth.effects';
 import { NotifyEffects } from './notify/notify.effects';
 import { MatSnackBarModule, MatDialogModule } from '@angular/material';
 import { DrawerReducer } from './drawer/drawer.state';
+import { GroupReducer } from './group/group.state';
+import { GroupEffects } from './group/group.effects';
 
 @NgModule({
   declarations: [],
@@ -20,9 +22,10 @@ import { DrawerReducer } from './drawer/drawer.state';
     StoreModule.forRoot<AppState>({
       auth: AuthReducer,
       loading: LoadingReducer,
-      drawer: DrawerReducer
+      drawer: DrawerReducer,
+      group: GroupReducer
     }),
-    EffectsModule.forRoot([AuthEffects, NotifyEffects]),
+    EffectsModule.forRoot([AuthEffects, NotifyEffects, GroupEffects]),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production // Restrict extension to log-only mode

@@ -1,7 +1,11 @@
 import { SearchParams } from '../../models/search-params';
 import { Group } from '../../models/group';
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
-import { GroupActions, GroupActionTypes } from './group.actions';
+import {
+  GroupActions,
+  GroupActionTypes,
+  SetSelectedGroup
+} from './group.actions';
 
 export interface GroupState extends EntityState<Group>, SearchParams<Group> {
   loading: boolean;
@@ -15,6 +19,17 @@ export const groupAdapter = createEntityAdapter<Group>({
   selectId: group => group.uid
 });
 
+export const setSelectedGroup = (
+  state: GroupState,
+  { payload }: SetSelectedGroup
+) => ({
+  ...state,
+  selected: payload
+    ? typeof payload.group === 'string'
+      ? payload.group
+      : payload.group.uid
+    : undefined
+});
 export function GroupReducer(
   state: GroupState = {
     loading: false,
@@ -36,7 +51,7 @@ export function GroupReducer(
     case GroupActionTypes.GET_GROUPS_FAILED:
       return groupAdapter.removeAll({ ...state, loading: false });
     case GroupActionTypes.SET_SELECTED_GROUP:
-      return { ...state, selected: action.payload.group.uid };
+      return setSelectedGroup(state, action);
   }
   return state;
 }

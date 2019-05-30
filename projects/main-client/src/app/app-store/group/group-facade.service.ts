@@ -17,7 +17,7 @@ export class GroupFacadeService {
     state => state.group.ids,
     state => state.group.entities
   );
-  public getOrderBy = this.searchParamsService.createOrderBySelector<Deck>(
+  public getOrderBy = this.searchParamsService.createOrderBySelector<Group>(
     state => state.group.orderBy
   );
   public getLimit = this.searchParamsService.createLimitSelector(

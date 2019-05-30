@@ -50,24 +50,27 @@ export class AuthEffects {
    * Fired whenever a user is logged in, without ever logging in before.
    */
   @Effect()
-  // register$ = this.actions$.pipe(
-  //   ofType(AuthActionTypes.REGISTER),
-  //   mergeMap((action: AuthRegister) =>
-  //     this.user.create(action.payload).pipe(
-  //       map((createUserResponse: any) =>
-  //         // if we "created" a new registered user emit success, otherwise
-  //         // emit that we only "updated" the existing user who logged in
-  //         createUserResponse.newUser
-  //           ? new AuthRegisterSuccess()
-  //           : new AuthRegisterOnlyUpdateSuccess()
-  //       ),
-  //       catchError(err => {
-  //         logger.error(err);
-  //         return of(new AuthRegisterFailed());
-  //       })
-  //     )
-  //   )
-  // );
+  register$ = this.actions$.pipe(
+    ofType(AuthActionTypes.REGISTER),
+    mergeMap((action: AuthRegister) =>
+      this.user.exists(action.payload.user).pipe(
+        mergeMap<boolean, AuthRegisterOnlyUpdateSuccess | AuthRegisterSuccess>(
+          exists =>
+            exists
+              ? this.user
+                  .updateLogin(action.payload.user)
+                  .pipe(map(() => new AuthRegisterOnlyUpdateSuccess()))
+              : this.user
+                  .create(action.payload.user)
+                  .pipe(map(() => new AuthRegisterSuccess()))
+        ),
+        catchError(err => {
+          logger.error(err);
+          return of(new AuthRegisterFailed());
+        })
+      )
+    )
+  );
   @Effect()
   logout$ = this.actions$.pipe(
     ofType(AuthActionTypes.LOGOUT),
