@@ -13,6 +13,7 @@ import { MatSnackBarModule, MatDialogModule } from '@angular/material';
 import { DrawerReducer } from './drawer/drawer.state';
 import { GroupReducer } from './group/group.state';
 import { GroupEffects } from './group/group.effects';
+import { DeckReducer } from './deck/deck.state';
 
 @NgModule({
   declarations: [],
@@ -23,7 +24,8 @@ import { GroupEffects } from './group/group.effects';
       auth: AuthReducer,
       loading: LoadingReducer,
       drawer: DrawerReducer,
-      group: GroupReducer
+      group: GroupReducer,
+      deck: DeckReducer
     }),
     EffectsModule.forRoot([AuthEffects, NotifyEffects, GroupEffects]),
     StoreDevtoolsModule.instrument({

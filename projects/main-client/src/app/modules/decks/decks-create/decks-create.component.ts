@@ -1,5 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Deck } from '../../../models/deck';
+import { NgForm } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../app-store/app-state';
 
 @Component({
   selector: 'app-decks-create',
@@ -18,9 +21,16 @@ import { Deck } from '../../../models/deck';
             type="text"
             name="name"
             required
+            maxlength="32"
             #name="ngModel"
             [(ngModel)]="deck.name"
           />
+          <mat-error *ngIf="name.errors.required">
+            Field is Required
+          </matInput>
+          <mat-error *ngIf="name.errors.maxlength">
+            Name is too long
+          </matInput>
         </mat-form-field>
         <mat-form-field>
           <mat-label>Description</mat-label>
@@ -28,10 +38,14 @@ import { Deck } from '../../../models/deck';
             matInput
             type="text"
             name="description"
+            maxlength="256"
             #description="ngModel"
             [(ngModel)]="deck.description"
           >
           </textarea>
+          <mat-error *ngIf="name.errors.maxlength">
+            Description is too long
+          </matInput>
         </mat-form-field>
         <div fxLayout="row" fxLayoutAlign="end center">
           <button mat-button type="submit" color="primary">
@@ -46,11 +60,13 @@ import { Deck } from '../../../models/deck';
 })
 export class DecksCreateComponent implements OnInit {
   public deck: Partial<Deck> = {};
-  constructor() {}
+  constructor(private store: Store<AppState>) {}
 
   ngOnInit() {}
 
-  onSubmit(form: any) {
-    console.log('test with form: ', form);
+  onSubmit(form: NgForm) {
+    if (form.valid) {
+      console.log('test with form: ', form);
+    }
   }
 }
