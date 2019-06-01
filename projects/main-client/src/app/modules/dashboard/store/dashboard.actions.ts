@@ -2,10 +2,10 @@ import { Deck } from '../../../models/deck';
 import { SearchParams } from '../../../models/search-params';
 
 export enum DashboardActionTypes {
-  GET_DECKS = '[Study] GET_DECKS',
-  GET_DECKS_UPDATE = '[Study] GET_DECKS_UPDATE',
-  GET_DECKS_FAILED = '[Study] GET_DECKS_FAILED',
-  GET_STOP = '[Study] GET_STOP'
+  GET_DECKS = '[Dashboard] GET_DECKS',
+  GET_DECKS_UPDATE = '[Dashboard] GET_DECKS_UPDATE',
+  GET_DECKS_FAILED = '[Dashboard] GET_DECKS_FAILED',
+  GET_STOP = '[Dashboard] GET_STOP'
 }
 
 export type DashboardActions =
