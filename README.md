@@ -1,5 +1,8 @@
 [![CircleCI](https://circleci.com/gh/bradtaniguchi/ng-flare/tree/master.svg?style=svg)](https://circleci.com/gh/bradtaniguchi/ng-flare/tree/master)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/bradtaniguchi/ng-flare/master/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/Naereen/StrapDown.js.svg)](https://github.com/bradtaniguchi/ng-flare/issues/)
+[![GitHub pull-requests closed](https://img.shields.io/github/issues-pr-closed/Naereen/StrapDown.js.svg)](https://github.com/bradtaniguchi/ng-flare/pull/)
 
 # NgFlare
 
