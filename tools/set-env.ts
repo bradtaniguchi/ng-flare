@@ -39,22 +39,22 @@ const getFalsyConfigValues = () =>
 
 const targetPath = `./projects/main-client/src/app/config.env.ts`;
 const getConfig = (params: { revision: string; version: string }) => `
-  import { Config } from './models/config';
+import { Config } from './models/config';
 
-  export const CONFIG: Config = {
-    revision: '${params.revision}',
-    date: '${new Date()}',
-    version: '${params.version}',
-    firebase: {
-      apiKey: '${process.env.FIREBASE_API_KEY || ''}',
-      authDomain: '${process.env.FIREBASE_AUTH_DOMAIN || ''}',
-      databaseURL: '${process.env.FIREBASE_DATABASE_URL || ''}',
-      projectId: '${process.env.FIREBASE_DATABASE_URL || ''}',
-      storageBucket: '${process.env.FIREBASE_STORAGE_BUCKET || ''}',
-      messagingSenderId: '${process.env.FIREBASE_MSG_SENDER_ID || ''}'
-    }
-  };
-  `;
+export const CONFIG: Config = {
+  revision: '${params.revision}',
+  date: '${new Date()}',
+  version: '${params.version}',
+  firebase: {
+    apiKey: '${process.env.FIREBASE_API_KEY || ''}',
+    authDomain: '${process.env.FIREBASE_AUTH_DOMAIN || ''}',
+    databaseURL: '${process.env.FIREBASE_DATABASE_URL || ''}',
+    projectId: '${process.env.FIREBASE_DATABASE_URL || ''}',
+    storageBucket: '${process.env.FIREBASE_STORAGE_BUCKET || ''}',
+    messagingSenderId: '${process.env.FIREBASE_MSG_SENDER_ID || ''}'
+  }
+};
+`;
 (async () => {
   try {
     const revision = await getRevision();
