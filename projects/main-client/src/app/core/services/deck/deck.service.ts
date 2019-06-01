@@ -8,6 +8,7 @@ import { Collections } from '../../collections';
 import { Observable, from } from 'rxjs';
 import { Group } from '../../../models/group';
 import { mapTo } from 'rxjs/operators';
+import { User } from '../../../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -21,9 +22,26 @@ export class DeckService {
   /**
    * Creates a new deck
    */
-  public create(deck: Partial<Deck>): Observable<Deck> {
+  public create(params: {
+    deck: Partial<Deck>;
+    /**
+     * The group the deck goes to
+     */
+    group: Group;
+    /**
+     * The user creating the deck
+     */
+    user: User;
+  }): Observable<Deck> {
+    const { deck, group, user } = params;
     const uid = this.db.createId();
-    const createdDeck = { uid, ...deck, createdOn: new Date() } as Deck;
+    const createdDeck = {
+      uid,
+      createdBy: user.uid,
+      group: group.uid,
+      ...deck,
+      createdOn: new Date()
+    } as Deck;
     return from(this.deckCollection.doc(uid).set(createdDeck)).pipe(
       mapTo(createdDeck)
     );

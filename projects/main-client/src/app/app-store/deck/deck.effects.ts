@@ -23,6 +23,9 @@ import { GroupFacadeService } from '../group/group-facade.service';
 import { Injectable } from '@angular/core';
 import { logger } from '../../core/logger';
 import { of } from 'rxjs';
+import { Group } from '../../models/group';
+import { User } from '../../models/user';
+import { AuthFacadeService } from '../auth/auth-facade.service';
 
 @Injectable({
   providedIn: 'root'
@@ -32,8 +35,8 @@ export class DeckEffects {
     private actions$: Actions,
     private store: Store<AppState>,
     private deckService: DeckService,
-    private deckFacadeService: DeckFacadeService,
-    private groupFacadeService: GroupFacadeService
+    private groupFacadeService: GroupFacadeService,
+    private authFacadeService: AuthFacadeService
   ) {}
 
   private group$ = this.store.pipe(select(this.groupFacadeService.getSelected));
@@ -44,18 +47,26 @@ export class DeckEffects {
   private listStop$ = this.actions$.pipe(
     ofType(DeckActionTypes.LIST_GROUP_DECKS_STOP)
   );
+  private user$ = this.store.pipe(select(this.authFacadeService.getUserState));
 
   @Effect()
   createDeck$ = this.actions$.pipe(
     ofType(DeckActionTypes.CREATE),
-    mergeMap((action: CreateDeck) =>
-      this.deckService.create(action.payload.deck).pipe(
-        map(deck => new CreateDeckSuccess({ deck })),
-        catchError(err => {
-          logger.error(err);
-          return of(new CreateDeckFailed());
+    withLatestFrom(this.group$, this.user$),
+    mergeMap(([action, group, user]: [CreateDeck, Group, User]) =>
+      this.deckService
+        .create({
+          deck: action.payload.deck,
+          group,
+          user
         })
-      )
+        .pipe(
+          map(deck => new CreateDeckSuccess({ deck })),
+          catchError(err => {
+            logger.error(err);
+            return of(new CreateDeckFailed());
+          })
+        )
     )
   );
   @Effect()

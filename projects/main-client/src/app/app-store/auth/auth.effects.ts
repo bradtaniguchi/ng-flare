@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { catchError, map, mergeMap, tap } from 'rxjs/operators';
+import { catchError, map, mergeMap } from 'rxjs/operators';
+import { logger } from '../../core/logger';
+import { AuthService } from '../../core/services/auth/auth.service';
+import { UserService } from '../../core/services/user/user.service';
 import {
   AuthActionTypes,
   AuthLoginFailed,
   AuthLoginSuccess,
-  AuthRegister,
-  AuthRegisterFailed,
-  AuthRegisterSuccess,
   AuthLogoutFailed,
   AuthLogoutSuccess,
-  AuthRegisterOnlyUpdateSuccess
+  AuthRegister,
+  AuthRegisterFailed,
+  AuthRegisterOnlyUpdateSuccess,
+  AuthRegisterSuccess
 } from './auth.actions';
-import { AuthService } from '../../core/services/auth/auth.service';
-import { UserService } from '../../core/services/user/user.service';
-import { logger } from '../../core/logger';
 
 @Injectable()
 export class AuthEffects {
