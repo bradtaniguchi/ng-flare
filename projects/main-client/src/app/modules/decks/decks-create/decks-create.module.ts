@@ -5,7 +5,10 @@ import { FormsModule } from '@angular/forms';
 import {
   MatButtonModule,
   MatFormFieldModule,
-  MatInputModule
+  MatInputModule,
+  MatIconModule,
+  MatListModule,
+  MatCardModule
 } from '@angular/material';
 import { DecksCreateRoutingModule } from './decks-create-routing.module';
 import { DecksCreateComponent } from './decks-create.component';
@@ -20,7 +23,10 @@ import { DecksCreateComponent } from './decks-create.component';
     FlexLayoutModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatIconModule,
+    MatListModule,
+    MatCardModule
   ]
 })
 export class DecksCreateModule {}

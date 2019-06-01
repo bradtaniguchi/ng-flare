@@ -14,6 +14,10 @@ a {
 
 ul {
   padding: inherit;
+  margin: inherit;
+  list-style-type: none;
+  margin-block-start: 0;
+  margin-block-end: 0;
 }
 
 .margin {
@@ -34,4 +38,9 @@ ul {
       transition: opacity 0.25s linear;
     }
   }
+}
+
+mat-card.flat {
+  box-shadow: none !important; // TODO: fix later
+  border: solid 1px rgba(0, 0, 0, 0.22);
 }
