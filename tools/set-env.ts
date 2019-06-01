@@ -24,18 +24,17 @@ const writeFilePromise = (path: string, data: any) =>
     writeFile(path, data, err => (err ? reject(err) : resolve()))
   );
 
-const getFalsyConfigValues = () =>
-  Object.entries(process.env)
-    .filter(([key]) =>
-      [
-        'FIREBASE_API_KEY',
-        'FIREBASE_AUTH_DOMAIN',
-        'FIREBASE_DATABASE_URL',
-        'FIREBASE_STORAGE_BUCKET',
-        'FIREBASE_MSG_SENDER_ID'
-      ].includes(key)
-    )
-    .filter(([key, value]) => !value);
+const getMissingVariables = () => {
+  const envKeys = Object.keys(process.env);
+  return [
+    'FIREBASE_API_KEY',
+    'FIREBASE_AUTH_DOMAIN',
+    'FIREBASE_DATABASE_URL',
+    'FIREBASE_PROJECT_ID',
+    'FIREBASE_STORAGE_BUCKET',
+    'FIREBASE_MSG_SENDER_ID'
+  ].filter(key => !envKeys.includes(key) || !process.env[key]);
+};
 
 const targetPath = `./projects/main-client/src/app/config.env.ts`;
 const getConfig = (params: { revision: string; version: string }) => `
@@ -49,7 +48,7 @@ export const CONFIG: Config = {
     apiKey: '${process.env.FIREBASE_API_KEY || ''}',
     authDomain: '${process.env.FIREBASE_AUTH_DOMAIN || ''}',
     databaseURL: '${process.env.FIREBASE_DATABASE_URL || ''}',
-    projectId: '${process.env.FIREBASE_DATABASE_URL || ''}',
+    projectId: '${process.env.FIREBASE_PROJECT_ID || ''}',
     storageBucket: '${process.env.FIREBASE_STORAGE_BUCKET || ''}',
     messagingSenderId: '${process.env.FIREBASE_MSG_SENDER_ID || ''}'
   }
@@ -62,10 +61,13 @@ export const CONFIG: Config = {
 
     const pack = await getFile('package.json');
     const version = getAngularVersion(pack);
-    const falsyConfigValues = getFalsyConfigValues();
-    falsyConfigValues.forEach(([key]) =>
-      console.warn(`environment key missing for key ${key}`)
+    const falsyConfigValues = getMissingVariables();
+    falsyConfigValues.forEach(key =>
+      console.warn(`  environment key missing for key ${key}`)
     );
+    if (falsyConfigValues.length) {
+      console.warn('  See README.MD');
+    }
     const config = getConfig({ revision, version });
     await writeFilePromise(targetPath, config);
     console.log(`Output generated at ${targetPath}`);
