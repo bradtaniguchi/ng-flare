@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Store, createSelector } from '@ngrx/store';
+import { createSelector, Store } from '@ngrx/store';
 import { AppState } from '../../../app-store/app-state';
-import { DashboardState } from './dashboard.state';
-import { GetDashboardDecks } from './dashboard.actions';
 import { SearchParamsService } from '../../../core/services/search-params/search-params.service';
 import { Deck } from '../../../models/deck';
 import { SearchParams } from '../../../models/search-params';
+import { GetDashboardDecks } from './dashboard.actions';
 
 @Injectable({
   providedIn: 'root'

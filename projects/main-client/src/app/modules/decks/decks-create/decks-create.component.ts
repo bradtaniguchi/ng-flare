@@ -25,12 +25,12 @@ import { AppState } from '../../../app-store/app-state';
             #name="ngModel"
             [(ngModel)]="deck.name"
           />
-          <mat-error *ngIf="name.errors.required">
+          <mat-error *ngIf="name.errors?.required">
             Field is Required
-          </matInput>
-          <mat-error *ngIf="name.errors.maxlength">
+          </mat-error>
+          <mat-error *ngIf="name.errors?.maxlength">
             Name is too long
-          </matInput>
+          </mat-error>
         </mat-form-field>
         <mat-form-field>
           <mat-label>Description</mat-label>
@@ -43,9 +43,9 @@ import { AppState } from '../../../app-store/app-state';
             [(ngModel)]="deck.description"
           >
           </textarea>
-          <mat-error *ngIf="name.errors.maxlength">
+          <mat-error *ngIf="name.errors?.maxlength">
             Description is too long
-          </matInput>
+          </mat-error>
         </mat-form-field>
         <div fxLayout="row" fxLayoutAlign="end center">
           <button mat-button type="submit" color="primary">

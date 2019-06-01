@@ -23,7 +23,7 @@ export class SearchParamsService {
     return createSelector(
       idSelector,
       entitySelector,
-      (ids: string[], entities) => ids.map(id => entities[id])
+      (ids: string[], entities) => (ids || []).map(id => entities[id])
     );
   }
 
