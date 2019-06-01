@@ -1,12 +1,34 @@
 import { StudyService } from './study.service';
 import { Card } from '../../../models/card';
+import { StudyState } from '../../../modules/study/store/study.state';
 
-fdescribe('StudyService', () => {
+describe('StudyService', () => {
   let service: StudyService;
   beforeEach(() => (service = new StudyService()));
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  describe('getPrevious', () => {
+    it('returns empty array', () =>
+      expect(
+        service.getPrevious({
+          missed: [],
+          correct: [],
+          skipped: []
+        })
+      ).toEqual([]));
+    it('returns empty array, when given empty state', () =>
+      expect(service.getPrevious({})).toEqual([]));
+    it('returns array, of missed, correct and skipped', () =>
+      expect(
+        service.getPrevious({
+          missed: ['missedCard'],
+          correct: ['correctCard', 'correctCard2'],
+          skipped: ['skippedCard']
+        })
+      ).toEqual(['missedCard', 'correctCard', 'correctCard2', 'skippedCard']));
   });
 
   describe('getNextCard', () => {
@@ -17,15 +39,13 @@ fdescribe('StudyService', () => {
         'getRandom'
       ).and.returnValue(0);
     });
-    const testGetNextCard = (state: StudyService, expected: Partial<Card>) => {
+    const testGetNextCard = (state: StudyState, expected: Partial<Card>) => {
       expect(service.getNextCard(state)).toEqual(expected as any);
     };
-    const defaultState: any = {
+    const defaultState: StudyState = {
       card: undefined,
       deck: undefined,
-      group: undefined,
       flipped: false,
-      previous: [],
       cards: [],
       correct: [],
       missed: [],

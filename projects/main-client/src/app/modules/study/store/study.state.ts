@@ -24,10 +24,6 @@ export interface StudyState {
    */
   stoppedOn?: Date;
   /**
-   * The list of previous cards we already went over
-   */
-  previous?: string[];
-  /**
    * The cards the user is studying
    */
   cards?: Card[];
