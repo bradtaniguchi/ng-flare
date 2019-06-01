@@ -100,4 +100,8 @@ export class DashboardComponent implements OnInit {
     this.decks$ = this.store.pipe(select(this.dashboardFacade.getDecks));
     this.dashboardFacade.searchDashboardDecks({});
   }
+
+  ngOnDestroy() {
+    this.dashboardFacade.stopSearchDashboardDecks();
+  }
 }
