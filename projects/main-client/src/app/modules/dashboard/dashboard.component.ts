@@ -1,4 +1,9 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  OnDestroy
+} from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { AppState } from '../../app-store/app-state';
 import { DashboardFacadeService } from './store/dashboard-facade.service';
@@ -84,7 +89,7 @@ import { GroupFacadeService } from '../../app-store/group/group-facade.service';
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
   public loading$: Observable<boolean>;
   public group$: Observable<Group>;
   public decks$: Observable<Deck[]>;
