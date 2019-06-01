@@ -28,6 +28,7 @@ import { AppState } from '../../../app-store/app-state';
             required
             maxlength="32"
             #name="ngModel"
+            autocomplete="off"
             [(ngModel)]="deck.name"
           />
           <mat-error *ngIf="name.errors?.required">

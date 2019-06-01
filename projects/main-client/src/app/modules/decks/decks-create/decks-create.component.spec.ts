@@ -71,14 +71,15 @@ describe('DecksCreateComponent', () => {
     expect(form.valid).toEqual(true);
   });
   // not finished yet
-  xit('form show required if create is clicked', async () => {
+  it('form show required if create is clicked', async () => {
     await fixture.whenStable();
     const submit = getSubmit().nativeElement;
     submit.dispatchEvent(new MouseEvent('click'));
-
-    const form = component.form;
-    console.log('test with form', form);
-    // TODO
+    fixture.detectChanges();
+    const error = fixture.debugElement.query(By.css('mat-error'));
+    // console.log('test with form and error', { form, error });
+    expect(error).toBeDefined();
+    expect(error.nativeElement.textContent).toContain('Field is Required');
   });
   it('form is invalid if user just fills out description', async () => {
     await fixture.whenStable();
