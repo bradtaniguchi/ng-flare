@@ -1,31 +1,30 @@
-import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Store, select } from '@ngrx/store';
-import { AppState } from '../app-state';
-import { DeckService } from '../../core/services/deck/deck.service';
-import { DeckFacadeService } from './deck-facade.service';
-import {
-  DeckActionTypes,
-  ListGroupDecksUpdate,
-  ListGroupDecksFailed,
-  CreateDeck,
-  CreateDeckSuccess,
-  CreateDeckFailed
-} from './deck.actions';
-import {
-  withLatestFrom,
-  switchMap,
-  map,
-  catchError,
-  takeUntil,
-  mergeMap
-} from 'rxjs/operators';
-import { GroupFacadeService } from '../group/group-facade.service';
 import { Injectable } from '@angular/core';
-import { logger } from '../../core/logger';
+import { Actions, Effect, ofType } from '@ngrx/effects';
+import { select, Store } from '@ngrx/store';
 import { of } from 'rxjs';
+import {
+  catchError,
+  map,
+  mergeMap,
+  switchMap,
+  takeUntil,
+  withLatestFrom
+} from 'rxjs/operators';
+import { logger } from '../../core/logger';
+import { DeckService } from '../../core/services/deck/deck.service';
 import { Group } from '../../models/group';
 import { User } from '../../models/user';
+import { AppState } from '../app-state';
 import { AuthFacadeService } from '../auth/auth-facade.service';
+import { GroupFacadeService } from '../group/group-facade.service';
+import {
+  CreateDeck,
+  CreateDeckFailed,
+  CreateDeckSuccess,
+  DeckActionTypes,
+  ListGroupDecksFailed,
+  ListGroupDecksUpdate
+} from './deck.actions';
 
 @Injectable({
   providedIn: 'root'

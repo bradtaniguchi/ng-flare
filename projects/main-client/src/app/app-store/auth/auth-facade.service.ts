@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { createSelector, Store } from '@ngrx/store';
+import { createSelector } from '@ngrx/store';
 import { AppState } from '../app-state';
 
 @Injectable({
@@ -18,5 +18,5 @@ export class AuthFacadeService {
     (state: AppState) => state.auth.newRegister,
     _ => _
   );
-  constructor(private store: Store<AppState>) {}
+  constructor() {}
 }

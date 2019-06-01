@@ -71,6 +71,7 @@ export class AuthEffects {
       )
     )
   );
+
   @Effect()
   logout$ = this.actions$.pipe(
     ofType(AuthActionTypes.LOGOUT),
