@@ -10,6 +10,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "deploy": "echo Not Ready yet",
     "smoke": "npx ts-node tools/smoke-server",
     "config": "npx ts-node --project=tools/tsconfig.tools.json tools/set-env.ts",
     "clean": "npx rimraf dist"
