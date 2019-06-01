@@ -20,7 +20,13 @@ export const groupAdapter = createEntityAdapter<Group>({
 });
 
 export const setSelectedGroup = (
-  state: GroupState = {},
+  state: GroupState = {
+    loading: false,
+    ids: [],
+    entities: {},
+    orderBy: 'name',
+    limit: 2
+  },
   { payload }: SetSelectedGroup
 ) => ({
   ...state,
