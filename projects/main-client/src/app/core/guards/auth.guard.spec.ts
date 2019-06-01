@@ -18,7 +18,7 @@ describe('AuthGuard', () => {
       imports: [RouterTestingModule]
     });
 
-    TestBed.get(Store);
+    store = TestBed.get(Store);
   });
 
   it('exists', inject([AuthGuard], (guard: AuthGuard) => {
