@@ -1,15 +1,13 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   OnInit,
-  ChangeDetectionStrategy,
   ViewChild
 } from '@angular/core';
-import { Deck } from '../../../models/deck';
 import { NgForm } from '@angular/forms';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../app-store/app-state';
-import { CreateDeck } from '../../../app-store/deck/deck.actions';
 import { DeckFacadeService } from '../../../app-store/deck/deck-facade.service';
+import { Deck } from '../../../models/deck';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-decks-create',
@@ -56,6 +54,9 @@ import { DeckFacadeService } from '../../../app-store/deck/deck-facade.service';
           </mat-error>
         </mat-form-field>
         <div fxLayout="row" fxLayoutAlign="end center">
+          <a mat-button (click)="back()">
+            Cancel
+          </a>
           <button mat-button type="submit" color="primary">
             Create
           </button>
@@ -70,9 +71,16 @@ export class DecksCreateComponent implements OnInit {
   public deck: Partial<Deck> = {};
 
   @ViewChild('form') form: NgForm;
-  constructor(private deckFacade: DeckFacadeService) {}
+  constructor(
+    private deckFacade: DeckFacadeService,
+    private location: Location
+  ) {}
 
   ngOnInit() {}
+
+  back() {
+    this.location.back();
+  }
 
   onSubmit(form: NgForm) {
     if (form.valid) {

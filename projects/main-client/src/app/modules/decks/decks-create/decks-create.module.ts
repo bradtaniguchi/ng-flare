@@ -1,15 +1,14 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { DecksCreateRoutingModule } from './decks-create-routing.module';
-import { DecksCreateComponent } from './decks-create.component';
+import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule } from '@angular/forms';
 import {
   MatButtonModule,
   MatFormFieldModule,
   MatInputModule
 } from '@angular/material';
-import { FormsModule } from '@angular/forms';
+import { DecksCreateRoutingModule } from './decks-create-routing.module';
+import { DecksCreateComponent } from './decks-create.component';
 
 @NgModule({
   declarations: [DecksCreateComponent],

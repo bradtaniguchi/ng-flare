@@ -18,6 +18,7 @@ import { AppState } from '../../../app-store/app-state';
 import { DeckFacadeService } from '../../../app-store/deck/deck-facade.service';
 import { SearchParamsService } from '../../../core/services/search-params/search-params.service';
 import { DecksCreateComponent } from './decks-create.component';
+import { RouterModule } from '@angular/router';
 
 describe('DecksCreateComponent', () => {
   let component: DecksCreateComponent;
