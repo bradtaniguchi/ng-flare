@@ -13,7 +13,7 @@ import { AppState } from '../../../app-store/app-state';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 
-fdescribe('DecksCreateComponent', () => {
+describe('DecksCreateComponent', () => {
   let component: DecksCreateComponent;
   let fixture: ComponentFixture<DecksCreateComponent>;
   const initialState: Partial<AppState> = {};
