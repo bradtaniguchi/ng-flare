@@ -54,10 +54,9 @@ export function GroupReducer(
         ...state,
         loading: false
       });
-    case GroupActionTypes.LIST_USER_GROUPS_FAILED:
-      return groupAdapter.removeAll({ ...state, loading: false });
     case GroupActionTypes.SET_SELECTED_GROUP:
       return setSelectedGroup(state, action);
+    default:
+      return state;
   }
-  return state;
 }

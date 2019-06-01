@@ -38,6 +38,7 @@ import { GroupFacadeService } from '../../app-store/group/group-facade.service';
                   mat-button
                   color="primary"
                   routerLink="/decks/create"
+                  class="hover-hide-el"
                 >
                   Create Deck
                 </a>

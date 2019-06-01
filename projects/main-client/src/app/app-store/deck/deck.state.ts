@@ -1,7 +1,8 @@
-import { EntityState, createEntityAdapter } from '@ngrx/entity';
+import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { Deck } from '../../models/deck';
 import { SearchParams } from '../../models/search-params';
-import { DeckActionTypes } from './deck.actions';
+import { DeckActions, DeckActionTypes } from './deck.actions';
+import { getDefaultState } from '../get-default-state';
 
 export interface DeckState extends EntityState<Deck>, SearchParams<Deck> {
   loading: boolean;
@@ -12,15 +13,20 @@ export const deckAdapter = createEntityAdapter<Deck>({
 });
 
 export function DeckReducer(
-  state: DeckState = {
-    loading: false,
-    ids: [],
-    entities: {},
-    orderBy: 'name',
-    limit: 2
-  },
-  action: DeckActionTypes
+  state: DeckState = getDefaultState({ loading: false }),
+  action: DeckActions
 ): DeckState {
-  // TODO
-  return state;
+  switch (action.type) {
+    case DeckActionTypes.CREATE_SUCCESS:
+      return deckAdapter.addOne(action.payload.deck, state);
+    case DeckActionTypes.LIST_GROUP_DECKS:
+      return { ...state, loading: true, ...action.payload };
+    case DeckActionTypes.LIST_GROUP_DECKS_UPDATE:
+      return deckAdapter.upsertMany(action.payload.decks, {
+        ...state,
+        loading: false
+      });
+    default:
+      return state;
+  }
 }

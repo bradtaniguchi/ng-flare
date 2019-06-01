@@ -1,19 +1,20 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { MatDialogModule, MatSnackBarModule } from '@angular/material';
 import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../../environments/environment';
-import { StoreModule } from '@ngrx/store';
 import { AppState } from './app-state';
-import { AuthReducer } from './auth/auth.state';
-import { LoadingReducer } from './loading/loading.state';
 import { AuthEffects } from './auth/auth.effects';
-import { NotifyEffects } from './notify/notify.effects';
-import { MatSnackBarModule, MatDialogModule } from '@angular/material';
-import { DrawerReducer } from './drawer/drawer.state';
-import { GroupReducer } from './group/group.state';
-import { GroupEffects } from './group/group.effects';
+import { AuthReducer } from './auth/auth.state';
+import { DeckEffects } from './deck/deck.effects';
 import { DeckReducer } from './deck/deck.state';
+import { DrawerReducer } from './drawer/drawer.state';
+import { GroupEffects } from './group/group.effects';
+import { GroupReducer } from './group/group.state';
+import { LoadingReducer } from './loading/loading.state';
+import { NotifyEffects } from './notify/notify.effects';
 
 @NgModule({
   declarations: [],
@@ -27,7 +28,12 @@ import { DeckReducer } from './deck/deck.state';
       group: GroupReducer,
       deck: DeckReducer
     }),
-    EffectsModule.forRoot([AuthEffects, NotifyEffects, GroupEffects]),
+    EffectsModule.forRoot([
+      AuthEffects,
+      NotifyEffects,
+      GroupEffects,
+      DeckEffects
+    ]),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production // Restrict extension to log-only mode
