@@ -1,27 +1,33 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { DecksCreateComponent } from './decks-create.component';
+import {
+  async,
+  ComponentFixture,
+  inject,
+  TestBed
+} from '@angular/core/testing';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule } from '@angular/forms';
 import {
   MatCardModule,
-  MatInputModule,
-  MatFormFieldModule
+  MatFormFieldModule,
+  MatInputModule
 } from '@angular/material';
-import { FormsModule, NgForm } from '@angular/forms';
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideMockStore } from '@ngrx/store/testing';
 import { AppState } from '../../../app-store/app-state';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { By } from '@angular/platform-browser';
+import { DeckFacadeService } from '../../../app-store/deck/deck-facade.service';
+import { SearchParamsService } from '../../../core/services/search-params/search-params.service';
+import { DecksCreateComponent } from './decks-create.component';
 
 describe('DecksCreateComponent', () => {
   let component: DecksCreateComponent;
   let fixture: ComponentFixture<DecksCreateComponent>;
   const initialState: Partial<AppState> = {};
 
-  const getInput = () =>
+  const getNameInput = () =>
     fixture.debugElement.query(By.css('input[name="name"]'));
 
-  const getDescription = () =>
+  const getDescriptionInput = () =>
     fixture.debugElement.query(By.css('textarea[name="description"]'));
 
   const getSubmit = () =>
@@ -33,7 +39,9 @@ describe('DecksCreateComponent', () => {
       providers: [
         provideMockStore({
           initialState
-        })
+        }),
+        DeckFacadeService,
+        SearchParamsService
       ],
       imports: [
         FormsModule,
@@ -63,7 +71,7 @@ describe('DecksCreateComponent', () => {
   });
   it('form is valid after filling just name', async () => {
     await fixture.whenStable();
-    const input = getInput().nativeElement;
+    const input = getNameInput().nativeElement;
     input.value = 'some value';
     input.dispatchEvent(new Event('input'));
 
@@ -83,7 +91,7 @@ describe('DecksCreateComponent', () => {
   });
   it('form is invalid if user just fills out description', async () => {
     await fixture.whenStable();
-    const description = getDescription().nativeElement;
+    const description = getDescriptionInput().nativeElement;
     description.value = 'some value';
     description.dispatchEvent(new Event('input'));
 
@@ -92,7 +100,7 @@ describe('DecksCreateComponent', () => {
   });
   it('form is invalid if name is too long', async () => {
     await fixture.whenStable();
-    const input = getInput().nativeElement;
+    const input = getNameInput().nativeElement;
     input.value = 'o'.repeat(33);
     input.dispatchEvent(new Event('input'));
 
@@ -102,4 +110,45 @@ describe('DecksCreateComponent', () => {
     console.log(form);
     expect(form.valid).toEqual(false);
   });
+  it('dispatches action to create deck with name, description', inject(
+    [DeckFacadeService],
+    async (deckFacade: DeckFacadeService) => {
+      const spy = spyOn(deckFacade, 'createDeck');
+      await fixture.whenStable();
+
+      const nameInput = getNameInput().nativeElement;
+      nameInput.value = 'Deck Name';
+      nameInput.dispatchEvent(new Event('input'));
+
+      const descriptionInput = getDescriptionInput().nativeElement;
+      (descriptionInput.value = 'Deck description'),
+        descriptionInput.dispatchEvent(new Event('input'));
+
+      const submit = getSubmit().nativeElement;
+      submit.dispatchEvent(new MouseEvent('click'));
+
+      fixture.detectChanges();
+      expect(spy).toHaveBeenCalledWith({
+        name: 'Deck Name',
+        description: 'Deck description'
+      });
+    }
+  ));
+  it('does not dispatch action to create deck if no name', inject(
+    [DeckFacadeService],
+    async (deckFacade: DeckFacadeService) => {
+      const spy = spyOn(deckFacade, 'createDeck');
+      await fixture.whenStable();
+
+      const descriptionInput = getDescriptionInput().nativeElement;
+      descriptionInput.value = 'Deck description';
+      descriptionInput.dispatchEvent(new Event('input'));
+
+      const submit = getSubmit().nativeElement;
+      submit.dispatchEvent(new MouseEvent('click'));
+
+      fixture.detectChanges();
+      expect(spy).not.toHaveBeenCalled();
+    }
+  ));
 });
