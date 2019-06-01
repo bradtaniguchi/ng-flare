@@ -30,11 +30,12 @@ export const setSelectedGroup = (
   { payload }: SetSelectedGroup
 ) => ({
   ...state,
-  selected: payload
-    ? typeof payload.group === 'string'
-      ? payload.group
-      : payload.group.uid
-    : undefined
+  selected:
+    payload && payload.group
+      ? typeof payload.group === 'string'
+        ? payload.group
+        : payload.group.uid
+      : undefined
 });
 export function GroupReducer(
   state: GroupState = {

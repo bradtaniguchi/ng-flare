@@ -42,10 +42,10 @@ export class StudyFacadeService {
     this.studyState,
     state => state.stoppedOn
   );
-  public getPrevious = createSelector(
-    this.studyState,
-    state => state.previous
-  );
+  // public getPrevious = createSelector(
+  //   this.studyState,
+  //   state => state.previous
+  // );
   public getCards = createSelector(
     this.studyState,
     state => state.cards

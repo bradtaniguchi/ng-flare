@@ -1,4 +1,9 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  ViewChild
+} from '@angular/core';
 import { Deck } from '../../../models/deck';
 import { NgForm } from '@angular/forms';
 import { Store } from '@ngrx/store';
@@ -60,6 +65,8 @@ import { AppState } from '../../../app-store/app-state';
 })
 export class DecksCreateComponent implements OnInit {
   public deck: Partial<Deck> = {};
+
+  @ViewChild('form') form: NgForm;
   constructor(private store: Store<AppState>) {}
 
   ngOnInit() {}

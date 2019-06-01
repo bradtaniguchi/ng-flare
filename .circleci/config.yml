@@ -23,6 +23,9 @@ jobs:
           command: npm run test -- --project=main-client -c=ci --progress=false --code-coverage
       - store_artifacts:
           path: coverage
+      - run:
+          name: jit build
+          command: npm run build -- --project=main-client
   build_deploy_main_client:
     docker:
       - image: circleci/node:8-browsers
