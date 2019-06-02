@@ -2,7 +2,7 @@ import { Document } from './document';
 
 export interface Deck extends Document {
   uid: string;
-  groupId: string;
+  group: string;
   name: string;
   description: string;
 }

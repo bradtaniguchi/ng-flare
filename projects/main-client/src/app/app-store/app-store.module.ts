@@ -15,6 +15,10 @@ import { GroupEffects } from './group/group.effects';
 import { GroupReducer } from './group/group.state';
 import { LoadingReducer } from './loading/loading.state';
 import { NotifyEffects } from './notify/notify.effects';
+import { CardReducer } from './cards/card.state';
+import { CardEffects } from './cards/card.effects';
+import { RouteEffects } from './route/route.effects';
+import { RouteReducer } from './route/route.state';
 
 @NgModule({
   declarations: [],
@@ -24,15 +28,19 @@ import { NotifyEffects } from './notify/notify.effects';
     StoreModule.forRoot<AppState>({
       auth: AuthReducer,
       loading: LoadingReducer,
+      route: RouteReducer,
       drawer: DrawerReducer,
       group: GroupReducer,
-      deck: DeckReducer
+      deck: DeckReducer,
+      card: CardReducer
     }),
     EffectsModule.forRoot([
       AuthEffects,
       NotifyEffects,
+      RouteEffects,
       GroupEffects,
-      DeckEffects
+      DeckEffects,
+      CardEffects
     ]),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states

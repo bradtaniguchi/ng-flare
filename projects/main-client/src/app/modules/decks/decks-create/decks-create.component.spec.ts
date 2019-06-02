@@ -185,7 +185,7 @@ describe('DecksCreateComponent', () => {
   it('dispatches action to create deck with name, description, and card', inject(
     [DeckFacadeService],
     async (deckFacade: DeckFacadeService) => {
-      const spy = spyOn(deckFacade, 'createDeck');
+      const spy = spyOn(deckFacade, 'createDeckWithCards');
       await fixture.whenStable();
 
       const nameInput = getNameInput().nativeElement;
@@ -209,15 +209,23 @@ describe('DecksCreateComponent', () => {
 
       fixture.detectChanges();
       expect(spy).toHaveBeenCalledWith({
-        name: 'Deck Name',
-        description: 'Deck description'
+        deck: {
+          name: 'Deck Name',
+          description: 'Deck description'
+        },
+        cards: [
+          {
+            front: 'Card Front',
+            back: 'Card Back'
+          }
+        ]
       });
     }
   ));
   it('does not dispatch action to create deck if no name', inject(
     [DeckFacadeService],
     async (deckFacade: DeckFacadeService) => {
-      const spy = spyOn(deckFacade, 'createDeck');
+      const spy = spyOn(deckFacade, 'createDeckWithCards');
       await fixture.whenStable();
 
       const descriptionInput = getDescriptionInput().nativeElement;

@@ -25,7 +25,7 @@ jobs:
           path: coverage
       - run:
           name: jit build
-          command: npm run build -- --project=main-client
+          command: npm run build -- --project=main-client --progress=false
   build_deploy_main_client:
     docker:
       - image: circleci/node:8-browsers

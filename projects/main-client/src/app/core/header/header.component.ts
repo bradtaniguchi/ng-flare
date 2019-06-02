@@ -16,7 +16,7 @@ import { Group } from '../../models/group';
         <span>
           <button
             type="button"
-            aria-label="Menu"
+            aria-label="Toggle Menu"
             mat-icon-button
             (click)="toggleMenu.emit()"
           >
@@ -24,11 +24,11 @@ import { Group } from '../../models/group';
               menu
             </mat-icon>
           </button>
-          <a routerLink="/" class="mat-title">
+          <a routerLink="/" class="mat-title" aria-label="Go to the main page">
             Flare
           </a>
           <ng-container *ngIf="group">
-            <a class="mat-title" fxHide.xs>
+            <a class="mat-title" fxHide.xs aria-label="Go to group info page">
               {{ group.name }}
             </a>
           </ng-container>
@@ -39,12 +39,26 @@ import { Group } from '../../models/group';
         </span>
       </mat-toolbar-row>
     </mat-toolbar>
+    <mat-progress-bar
+      mode="indeterminate"
+      *ngIf="loading"
+      color="primary"
+    ></mat-progress-bar>
   `,
-  styles: [],
+  styles: [
+    `
+      mat-progress-bar {
+        position: absolute;
+        z-index: 2;
+        top: 60px;
+      }
+    `
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent implements OnInit {
   @Input() group: Group;
+  @Input() loading: boolean;
   @Output() toggleMenu = new EventEmitter();
   constructor() {}
 

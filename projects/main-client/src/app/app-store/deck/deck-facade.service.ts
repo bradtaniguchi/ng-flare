@@ -4,7 +4,13 @@ import { AppState } from '../app-state';
 import { createSelector, Store } from '@ngrx/store';
 import { Deck } from '../../models/deck';
 import { SearchParams } from '../../models/search-params';
-import { ListGroupDecks, CreateDeck, ListGroupDecksStop } from './deck.actions';
+import {
+  ListGroupDecks,
+  CreateDeck,
+  ListGroupDecksStop,
+  CreateDeckWithCards
+} from './deck.actions';
+import { Card } from '../../models/card';
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +48,13 @@ export class DeckFacadeService {
 
   public createDeck(deck: Partial<Deck>) {
     this.store.dispatch(new CreateDeck({ deck }));
+  }
+
+  public createDeckWithCards(params: {
+    deck: Partial<Deck>;
+    cards: Array<Partial<Card>>;
+  }) {
+    this.store.dispatch(new CreateDeckWithCards(params));
   }
 
   public stopList() {

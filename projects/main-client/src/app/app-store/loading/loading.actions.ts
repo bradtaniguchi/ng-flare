@@ -1,22 +1,16 @@
 import { Action } from '@ngrx/store';
 
 export enum LoadingTypes {
-  Start = '[Loading] start',
-  Stop = '[Loading] stop',
-  Set = '[Loading] set'
+  USE_LOADING = '[Loading] USE_LOADING',
+  DONT_USE_LOADING = '[Loading] stop'
 }
 
-export type LoadingActions = StartLoading | StopLoading | SetLoading;
+export type LoadingActions = UseLoading | DontUseLoading;
 
-export class StartLoading implements Action {
-  readonly type = LoadingTypes.Start;
+export class UseLoading implements Action {
+  readonly type = LoadingTypes.USE_LOADING;
 }
 
-export class StopLoading implements Action {
-  readonly type = LoadingTypes.Stop;
-}
-
-export class SetLoading implements Action {
-  readonly type = LoadingTypes.Set;
-  constructor(public payload: { loading: boolean }) {}
+export class DontUseLoading implements Action {
+  readonly type = LoadingTypes.DONT_USE_LOADING;
 }

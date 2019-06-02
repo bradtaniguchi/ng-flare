@@ -1,10 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthGuard } from './core/guards/auth.guard';
+import { LoginGuard } from './core/guards/login.guard';
 
 const routes: Routes = [
   {
     path: '',
     // TODO: add auth guards
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'decks',
@@ -26,6 +29,7 @@ const routes: Routes = [
   },
   {
     path: 'login',
+    canActivate: [LoginGuard],
     loadChildren: './modules/login/login.module#LoginModule'
   },
   {

@@ -5,7 +5,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import {
   MatToolbarModule,
   MatButtonModule,
-  MatIconModule
+  MatIconModule,
+  MatProgressBarModule
 } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
@@ -18,7 +19,8 @@ import { RouterModule } from '@angular/router';
     FlexLayoutModule,
     MatToolbarModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatProgressBarModule
   ],
   exports: [HeaderComponent]
 })

@@ -4,10 +4,12 @@ import {
   AngularFirestoreCollection
 } from '@angular/fire/firestore';
 import { forkJoin, from, Observable } from 'rxjs';
-import { mapTo } from 'rxjs/operators';
+import { mapTo, tap, catchError } from 'rxjs/operators';
 import { Card } from '../../../models/card';
 import { User } from '../../../models/user';
 import { Collections } from '../../collections';
+import { Deck } from '../../../models/deck';
+import { logger } from '../../logger';
 
 @Injectable({
   providedIn: 'root'
@@ -23,19 +25,33 @@ export class CardService {
    */
   public create(params: {
     cards: Array<Partial<Card>>;
+    deck: Deck;
     user: User;
-  }): Observable<void> {
-    const { cards, user } = params;
-    return forkJoin(
-      cards
-        .map(card => ({
+  }): Observable<Card[]> {
+    const { cards, deck, user } = params;
+    const cardsCreated: Card[] = cards.map(
+      card =>
+        ({
           ...card,
+          group: deck.group,
+          deck: deck.uid,
           uid: this.db.createId(),
           createdOn: new Date(),
           createdBy: user.uid
-        }))
-        .map(card => from(this.cardCollection.doc(card.uid).set(card)))
-    ).pipe(mapTo(undefined));
+        } as Card)
+    );
+    logger.log('cards created', { cards, cardsCreated });
+    return forkJoin(
+      cardsCreated.map(card =>
+        from(this.cardCollection.doc(card.uid).set(card)).pipe(
+          catchError(err => {
+            // TODO: handle more gracefully
+            logger.error(err);
+            return null;
+          })
+        )
+      )
+    ).pipe(mapTo(cardsCreated));
   }
 
   /**
@@ -61,5 +77,24 @@ export class CardService {
     return forkJoin(
       cards.map(card => from(this.cardCollection.doc(card.uid).delete()))
     ).pipe(mapTo(undefined));
+  }
+
+  /**
+   * Returns a list of cards for the given deck
+   */
+  public list(params: {
+    deck: Deck;
+    orderBy: keyof Card;
+    limit: number;
+  }): Observable<Card[]> {
+    const { deck, orderBy, limit } = params;
+    return this.db
+      .collection<Card>(Collections.Cards, ref =>
+        ref
+          .where('group', '==', deck.uid)
+          .orderBy(orderBy)
+          .limit(limit)
+      )
+      .valueChanges();
   }
 }

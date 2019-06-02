@@ -1,13 +1,18 @@
 import { LoadingTypes, LoadingActions } from './loading.actions';
 
-export function LoadingReducer(_, action: LoadingActions): boolean {
+export interface LoadingState {
+  useLoading: boolean;
+}
+export function LoadingReducer(
+  state: LoadingState = { useLoading: true },
+  action: LoadingActions
+): LoadingState {
   switch (action.type) {
-    case LoadingTypes.Set:
-      return action.payload.loading;
-    case LoadingTypes.Start:
-      return true;
-    case LoadingTypes.Stop:
+    case LoadingTypes.USE_LOADING:
+      return { ...state, useLoading: true };
+    case LoadingTypes.DONT_USE_LOADING:
+      return { ...state, useLoading: false };
     default:
-      return false;
+      return state;
   }
 }

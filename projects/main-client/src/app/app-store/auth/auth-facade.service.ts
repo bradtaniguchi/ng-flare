@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { createSelector } from '@ngrx/store';
+import { createSelector, Store } from '@ngrx/store';
 import { AppState } from '../app-state';
+import { AuthLogin } from './auth.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -18,5 +19,13 @@ export class AuthFacadeService {
     (state: AppState) => state.auth.newRegister,
     _ => _
   );
-  constructor() {}
+  constructor(private store: Store<AppState>) {}
+
+  public login(type: 'popup' | 'redirect') {
+    this.store.dispatch(
+      new AuthLogin({
+        type
+      })
+    );
+  }
 }

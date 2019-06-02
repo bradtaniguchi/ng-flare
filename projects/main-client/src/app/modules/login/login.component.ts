@@ -1,10 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { logger } from '../../core/logger';
+import { AuthFacadeService } from '../../app-store/auth/auth-facade.service';
 
 @Component({
   selector: 'app-login',
   template: `
-    <div>
+    <div fxLayout="column" fxLayoutAlign="center center" style="height: 100%">
       <mat-card>
         <mat-card-content>
           <button
@@ -14,7 +15,7 @@ import { logger } from '../../core/logger';
             mat-raised-button
             color="primary"
           >
-            Login
+            Login With Google
           </button>
         </mat-card-content>
       </mat-card>
@@ -31,11 +32,12 @@ import { logger } from '../../core/logger';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent implements OnInit {
-  constructor() {}
+  constructor(private authFacadeService: AuthFacadeService) {}
 
   ngOnInit() {}
 
   login() {
     logger.log('login clicked');
+    this.authFacadeService.login('popup');
   }
 }

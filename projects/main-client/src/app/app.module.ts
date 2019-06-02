@@ -1,15 +1,17 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuth, AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { MatSidenavModule } from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Store } from '@ngrx/store';
 import { AppRoutingModule } from './app-routing.module';
 import { AppStoreModule } from './app-store/app-store.module';
 import { AppComponent } from './app.component';
-import { AngularFireModule } from '@angular/fire';
 import { CONFIG } from './config.env';
-import { AngularFireAuthModule } from '@angular/fire/auth';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { HeaderModule } from './core/header/header.module';
-import { MatSidenavModule } from '@angular/material';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { initAppFactory } from './init';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -27,7 +29,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     // core angular material
     MatSidenavModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      deps: [AngularFireAuth, Store],
+      multi: true,
+      useFactory: initAppFactory
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

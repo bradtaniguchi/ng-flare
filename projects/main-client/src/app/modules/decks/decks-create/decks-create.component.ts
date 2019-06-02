@@ -153,8 +153,10 @@ export class DecksCreateComponent implements OnInit {
 
   public onSubmit(form: NgForm) {
     if (form.valid) {
-      this.deckFacade.createDeck(this.deck);
-      // TODO: create cards
+      this.deckFacade.createDeckWithCards({
+        deck: this.deck,
+        cards: this.cards
+      });
     }
   }
 }

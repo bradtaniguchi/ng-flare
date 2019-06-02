@@ -23,8 +23,10 @@ import {
   CreateDeckSuccess,
   DeckActionTypes,
   ListGroupDecksFailed,
-  ListGroupDecksUpdate
+  ListGroupDecksUpdate,
+  CreateDeckWithCards
 } from './deck.actions';
+import { CreateCards } from '../cards/card.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -68,6 +70,31 @@ export class DeckEffects {
         )
     )
   );
+
+  @Effect()
+  createDeckAndCards$ = this.actions$.pipe(
+    ofType(DeckActionTypes.CREATE_WITH_CARDS),
+    withLatestFrom(this.group$, this.user$),
+    mergeMap(([action, group, user]: [CreateDeckWithCards, Group, User]) =>
+      this.deckService
+        .create({
+          deck: action.payload.deck,
+          group,
+          user
+        })
+        .pipe(
+          mergeMap(deck => [
+            new CreateDeckSuccess({ deck }),
+            new CreateCards({ cards: action.payload.cards, deck })
+          ]),
+          catchError(err => {
+            logger.error(err);
+            return of(new CreateDeckFailed());
+          })
+        )
+    )
+  );
+
   @Effect()
   listGroupDecks$ = this.actions$.pipe(
     ofType(DeckActionTypes.LIST_GROUP_DECKS),

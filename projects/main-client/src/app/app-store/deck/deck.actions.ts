@@ -1,9 +1,11 @@
 import { Action } from '@ngrx/store';
 import { Deck } from '../../models/deck';
 import { SearchParams } from '../../models/search-params';
+import { Card } from '../../models/card';
 
 export enum DeckActionTypes {
   CREATE = '[Deck] CREATE',
+  CREATE_WITH_CARDS = '[Deck] CREATE_WITH_CARDS',
   CREATE_SUCCESS = '[Deck] CREATE_SUCCESS',
   CREATE_FAILED = '[Deck] CREATE_FAILED',
 
@@ -27,6 +29,15 @@ export class CreateDeck implements Action {
   constructor(
     public payload: {
       deck: Partial<Deck>;
+    }
+  ) {}
+}
+export class CreateDeckWithCards implements Action {
+  readonly type = DeckActionTypes.CREATE_WITH_CARDS;
+  constructor(
+    public payload: {
+      deck: Partial<Deck>;
+      cards: Array<Partial<Card>>;
     }
   ) {}
 }
