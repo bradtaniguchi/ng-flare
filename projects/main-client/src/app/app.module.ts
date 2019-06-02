@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule, ErrorHandler } from '@angular/core';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuth, AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
@@ -12,6 +12,7 @@ import { AppComponent } from './app.component';
 import { CONFIG } from './config.env';
 import { HeaderModule } from './core/header/header.module';
 import { initAppFactory } from './init';
+import { GlobalErrorHandlerService } from './core/services/global-error-handler/global-error-handler.service';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -35,6 +36,10 @@ import { initAppFactory } from './init';
       deps: [AngularFireAuth, Store],
       multi: true,
       useFactory: initAppFactory
+    },
+    {
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandlerService
     }
   ],
   bootstrap: [AppComponent]

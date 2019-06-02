@@ -19,6 +19,7 @@ import { CardReducer } from './cards/card.state';
 import { CardEffects } from './cards/card.effects';
 import { RouteEffects } from './route/route.effects';
 import { RouteReducer } from './route/route.state';
+import { ErrorEffects } from './error/error.effects';
 
 @NgModule({
   declarations: [],
@@ -40,7 +41,8 @@ import { RouteReducer } from './route/route.state';
       RouteEffects,
       GroupEffects,
       DeckEffects,
-      CardEffects
+      CardEffects,
+      ErrorEffects
     ]),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
