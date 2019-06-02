@@ -3,11 +3,14 @@ machine:
   node:
     version: 8.9.0
 jobs:
+  ################################################################################
   test_main_client:
     docker:
       - image: circleci/node:8-browsers
     steps:
       - checkout
+      - restore_cache:
+          keys: npm-deps-{{ checksum "package.json" }}-${CACHE_VERSION}
       - run:
           name: install-deps
           command: npm ci
@@ -26,11 +29,34 @@ jobs:
       - run:
           name: jit build
           command: npm run build -- --project=main-client --progress=false
+  ################################################################################
+  test_functions:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - checkout
+      - restore_cache:
+          keys: function-npm-deps-{{ checksum "package.json" }}-${CACHE_VERSION}
+      - run:
+          working_directory: ./functions
+          name: install-deps
+          command: npm ci
+      - save_cache:
+          key: function-npm-deps-{{ checksum "package.json" }}-${CACHE_VERSION}
+          paths:
+            - ./node_modules
+      - run:
+          working_directory: ./functions
+          name: build
+          command: npm run build
+  ################################################################################
   build_deploy_main_client:
     docker:
       - image: circleci/node:8-browsers
     steps:
       - checkout
+      - restore_cache:
+          keys: npm-deps-{{ checksum "package.json" }}-${CACHE_VERSION}
       - run:
           name: install-deps
           command: npm ci
@@ -44,8 +70,10 @@ jobs:
       - run:
           name: deploy
           command: npm run deploy
+  ################################################################################
 workflows:
   version: 2
   test_and_deploy:
     jobs:
       - test_main_client
+      - test_functions
