@@ -1,16 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { HeaderComponent } from './header.component';
-import {
-  MatIconModule,
-  MatToolbarModule,
-  MatProgressBarModule,
-  MatButtonModule
-} from '@angular/material';
-import { RouterTestingModule } from '@angular/router/testing';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import {
+  MatButtonModule,
+  MatIconModule,
+  MatProgressBarModule,
+  MatToolbarModule
+} from '@angular/material';
 import { By } from '@angular/platform-browser';
-import { CommonModule } from '@angular/common';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HeaderComponent } from './header.component';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -18,6 +16,12 @@ describe('HeaderComponent', () => {
 
   const getProgressBar = () =>
     fixture.debugElement.query(By.css('mat-progress-bar'));
+
+  const getGroupName = () =>
+    fixture.debugElement.queryAll(By.css('.mat-title'))[1];
+
+  const getToggle = () =>
+    fixture.debugElement.query(By.css('button[mat-icon-button]'));
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -36,7 +40,6 @@ describe('HeaderComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.componentInstance;
-    // fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -44,15 +47,36 @@ describe('HeaderComponent', () => {
   });
 
   it('shows progress bar if loading is true', async () => {
-    // await fixture.whenStable();
     component.loading = true;
     fixture.detectChanges();
     const progressBar = getProgressBar();
-    console.log('test', { component, fixture, progressBar });
     expect(progressBar).toBeTruthy();
   });
-  it('does not show progress bar if loading is false');
-  it('shows group name if given');
-  it('does not show group name if not given');
-  it('emits toggle menu on menu click');
+  it('does not show progress bar if loading is false', () => {
+    component.loading = false;
+    fixture.detectChanges();
+    const progressBar = getProgressBar();
+    expect(progressBar).toBeFalsy();
+  });
+  it('shows group name if given', () => {
+    component.group = {
+      name: 'group name'
+    } as any;
+    fixture.detectChanges();
+    const groupName = getGroupName().nativeElement;
+    console.log('group name', groupName);
+    expect(groupName.textContent.trim()).toEqual('group name');
+  });
+  it('does not show group name if not given', async () => {
+    await fixture.whenStable();
+    const groupName = getGroupName();
+    expect(groupName).toBeFalsy();
+  });
+  it('emits toggle menu on menu click', () => {
+    const spy = spyOn(component.toggleMenu, 'emit');
+    const toggle = getToggle().nativeElement;
+    toggle.dispatchEvent(new MouseEvent('click'));
+
+    expect(spy).toHaveBeenCalled();
+  });
 });
