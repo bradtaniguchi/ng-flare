@@ -86,7 +86,7 @@ jobs:
           command: npm install firebase-tools
       - run:
           name: deploy to firebase
-          command: npx firebase deploy --token=$FIREBASE_TOKEN
+          command: npx firebase deploy --token=$FIREBASE_TOKEN --only=hosting
   ################################################################################
 
 workflows:
