@@ -90,7 +90,7 @@ workflows:
   version: 2
   ################################################################################
   test_and_build:
-    riggers:
+    triggers:
       - schedule:
           cron: '0 22 * * *'
           filters:
