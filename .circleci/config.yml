@@ -68,13 +68,13 @@ jobs:
           name: build
           command: npm run build -- --project=main-client -c=production --progress=false
       - save_cache:
-        key: v1-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
-        paths:
-          - dist
-          - package.json
-          - firebase.json
-          - .firebaserc
-          - firebase.json
+          key: v1-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - dist
+            - package.json
+            - firebase.json
+            - .firebaserc
+            - firebase.json
   ################################################################################
   deploy_main_client:
     docker:
@@ -82,8 +82,8 @@ jobs:
     steps:
       - checkout
       - run:
-        name: Deploy Master to Firebase
-        command: npx firebase deploy --token=$FIREBASE_TOKEN
+          name: Deploy Master to Firebase
+          command: npx firebase deploy --token=$FIREBASE_TOKEN
   ################################################################################
 
 workflows:
