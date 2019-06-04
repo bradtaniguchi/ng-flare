@@ -9,6 +9,7 @@ import {
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HeaderComponent } from './header.component';
+import { UserIconModule } from '../../shared/user-icon/user-icon.module';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -27,6 +28,9 @@ describe('HeaderComponent', () => {
     TestBed.configureTestingModule({
       declarations: [HeaderComponent],
       imports: [
+        // app modules
+        UserIconModule,
+        // angular material
         FlexLayoutModule,
         MatIconModule,
         MatToolbarModule,

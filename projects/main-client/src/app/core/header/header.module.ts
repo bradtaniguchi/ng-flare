@@ -9,12 +9,14 @@ import {
   MatProgressBarModule
 } from '@angular/material';
 import { RouterModule } from '@angular/router';
+import { UserIconModule } from '../../shared/user-icon/user-icon.module';
 
 @NgModule({
   declarations: [HeaderComponent],
   imports: [
     CommonModule,
     RouterModule,
+    UserIconModule,
     // angular material
     FlexLayoutModule,
     MatToolbarModule,
