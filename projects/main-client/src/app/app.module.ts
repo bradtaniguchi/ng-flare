@@ -13,6 +13,7 @@ import { CONFIG } from './config.env';
 import { HeaderModule } from './core/header/header.module';
 import { initAppFactory } from './init';
 import { GlobalErrorHandlerService } from './core/services/global-error-handler/global-error-handler.service';
+import { SideNavModule } from './core/side-nav/side-nav.module';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -27,6 +28,7 @@ import { GlobalErrorHandlerService } from './core/services/global-error-handler/
     AngularFirestoreModule,
     // core display modules
     HeaderModule,
+    SideNavModule,
     // core angular material
     MatSidenavModule
   ],

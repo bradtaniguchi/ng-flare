@@ -1,0 +1,10 @@
+// Import material theming functions
+@import '~@angular/material/theming';
+@import './variables.scss';
+
+$theme: mat-dark-theme(
+  mat-palette($mat-blue),
+  mat-palette($mat-cyan),
+  mat-palette($mat-red)
+);
+@include angular-material-theme($theme);

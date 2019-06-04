@@ -21,7 +21,7 @@ import { LoadingFacadeService } from './app-store/loading/loading.facade.service
         [mode]="drawerMode$ | async"
         [opened]="drawerOpened$ | async"
       >
-        sidenav
+        <app-side-nav> </app-side-nav>
       </mat-drawer>
       <mat-drawer-content>
         <router-outlet></router-outlet>
@@ -37,6 +37,8 @@ import { LoadingFacadeService } from './app-store/loading/loading.facade.service
     `
       mat-drawer {
         width: 256px;
+        background: inherit;
+        border-right: none;
       }
     `
   ],
