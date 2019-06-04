@@ -50,7 +50,7 @@ jobs:
           name: build
           command: npm run build
   ################################################################################
-  build_deploy_main_client:
+  build_main_client:
     docker:
       - image: circleci/node:8-browsers
     steps:
@@ -67,13 +67,53 @@ jobs:
       - run:
           name: build
           command: npm run build -- --project=main-client -c=production --progress=false
-      - run:
-          name: deploy
-          command: npm run deploy
+      - save_cache:
+        key: v1-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+        paths:
+          - dist
+          - package.json
+          - firebase.json
+          - .firebaserc
+          - firebase.json
   ################################################################################
+  deploy_main_client:
+    docker:
+      - image: circleci/node:8-browsers
+    steps:
+      - checkout
+      - run:
+        name: Deploy Master to Firebase
+        command: npx firebase deploy --token=$FIREBASE_TOKEN
+  ################################################################################
+
 workflows:
   version: 2
+  ################################################################################
+  test_and_build:
+    riggers:
+      - schedule:
+          cron: '0 22 * * *'
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - test_main_client
+      - build_main_client:
+          requires:
+            - test_main_client
+  ################################################################################
   test_and_deploy:
     jobs:
       - test_main_client
+      - build_main_client:
+          requires:
+            - test_main_client
+      - deploy_main_client:
+          filters:
+            branches:
+              only:
+                - master
+          requires:
+            - build_main_client
       - test_functions
