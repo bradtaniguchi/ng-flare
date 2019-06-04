@@ -82,7 +82,10 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Deploy Master to Firebase
+          name: install firebase cli
+          command: npm install firebase-tools
+      - run:
+          name: deploy to firebase
           command: npx firebase deploy --token=$FIREBASE_TOKEN
   ################################################################################
 
