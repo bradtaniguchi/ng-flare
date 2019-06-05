@@ -3,15 +3,15 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'preview',
+    path: ':deckId/preview',
     loadChildren: './study-preview/study-preview.module#StudyPreviewModule'
   },
   {
-    path: 'review',
+    path: ':deckId/review',
     loadChildren: './study-review/study-review.module#StudyReviewModule'
   },
   {
-    path: '',
+    path: ':deckId/card/:cardId',
     loadChildren: './study-card/study-card.module#StudyCardModule'
   }
 ];

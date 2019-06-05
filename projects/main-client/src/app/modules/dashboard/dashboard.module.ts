@@ -14,6 +14,7 @@ import { LoadingSpinnerModule } from '../../shared/loading-spinner/loading-spinn
 import { EffectsModule } from '@ngrx/effects';
 import { DashboardEffects } from './store/dashboard.effects';
 import { RouterModule } from '@angular/router';
+import { DeckOverviewModule } from '../../shared/deck-overview/deck-overview.module';
 
 @NgModule({
   declarations: [DashboardComponent],
@@ -23,6 +24,7 @@ import { RouterModule } from '@angular/router';
     DashboardRoutingModule,
     // app modules
     LoadingSpinnerModule,
+    DeckOverviewModule,
     // ngrx
     StoreModule.forFeature('dashboard', DashboardReducer),
     EffectsModule.forFeature([DashboardEffects]),

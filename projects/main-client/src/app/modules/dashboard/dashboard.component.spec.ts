@@ -13,6 +13,7 @@ import { AppState } from '../../app-store/app-state';
 import { GroupFacadeService } from '../../app-store/group/group-facade.service';
 import { DashboardFacadeService } from './store/dashboard-facade.service';
 import { SearchParamsService } from '../../core/services/search-params/search-params.service';
+import { DeckOverviewModule } from '../../shared/deck-overview/deck-overview.module';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -33,6 +34,7 @@ describe('DashboardComponent', () => {
       imports: [
         // display module
         LoadingSpinnerModule,
+        DeckOverviewModule,
         FlexLayoutModule,
         MatCardModule,
         MatButtonModule,

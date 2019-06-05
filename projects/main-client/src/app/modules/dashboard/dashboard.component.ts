@@ -20,7 +20,10 @@ import { GroupFacadeService } from '../../app-store/group/group-facade.service';
         <ng-container *ngIf="group$ | async as group">
           <mat-card fxFlex="50" class="hover-hide">
             <mat-card-title fxLayout="row" fxLayoutAlign="space-between">
-              <span>{{ group.name }}</span>
+              <div fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon>group</mat-icon>
+                <span>{{ group.name }}</span>
+              </div>
               <span>
                 <button
                   mat-icon-button
@@ -32,10 +35,11 @@ import { GroupFacadeService } from '../../app-store/group/group-facade.service';
                 </button>
               </span>
             </mat-card-title>
-            <p>
-              {{ group.description }}
-            </p>
-            <mat-card-content> </mat-card-content>
+            <mat-card-content>
+              <p>
+                {{ group.description }}
+              </p>
+            </mat-card-content>
             <mat-card-actions align="end">
               <span>
                 <a
@@ -75,12 +79,11 @@ import { GroupFacadeService } from '../../app-store/group/group-facade.service';
       <ng-container *ngIf="loading$ | async">
         <app-loading-spinner> </app-loading-spinner>
       </ng-container>
-      <ul>
+      <ul fxLayout="column" fxLayoutGap="4px">
         <ng-container *ngFor="let deck of decks$ | async">
           <li fxLayout="row" fxLayoutAlign="center center">
-            <mat-card fxFlex="50">
-              {{ deck | json }}
-            </mat-card>
+            <app-deck-overview [deck]="deck" [canEdit]="false" fxFlex="50">
+            </app-deck-overview>
           </li>
         </ng-container>
       </ul>
