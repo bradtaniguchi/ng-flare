@@ -1,72 +1,65 @@
 import { Injectable } from '@angular/core';
-import { createFeatureSelector, createSelector, Store } from '@ngrx/store';
-import { StudyState } from './study.state';
-import { AppState } from '../../../app-store/app-state';
+import { createSelector, Store } from '@ngrx/store';
 import { DateTime, Duration } from 'luxon';
-import {
-  ClearStudySession,
-  StartStudySession,
-  SetStudyDeck,
-  SelectStudyCard,
-  SkipStudyCard,
-  MarkStudyCardCorrect,
-  MarkStudyCardWrong
-} from './study.actions';
+import { AppState } from '../../../app-store/app-state';
 import { Card } from '../../../models/card';
 import { Deck } from '../../../models/deck';
+import {
+  ClearStudySession,
+  GetStudyDeck,
+  MarkStudyCardCorrect,
+  MarkStudyCardWrong,
+  SelectStudyCard,
+  SetStudyDeck,
+  SkipStudyCard,
+  StartStudySession
+} from './study.actions';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudyFacadeService {
-  private studyState = createFeatureSelector<StudyState>(
-    'study' as keyof AppState
-  );
   public getCard = createSelector(
-    this.studyState,
-    state => state.card
+    (state: AppState) => state.study.card,
+    _ => _
   );
   public getDeck = createSelector(
-    this.studyState,
-    state => state.deck
+    (state: AppState) => state.study.deck,
+    _ => _
   );
   public getFlipped = createSelector(
-    this.studyState,
-    state => state.flipped
+    (state: AppState) => state.study.flipped,
+    _ => _
   );
   public getStartedOn = createSelector(
-    this.studyState,
-    state => state.startedOn
+    (state: AppState) => state.study.startedOn,
+    _ => _
   );
   public getStoppedOn = createSelector(
-    this.studyState,
-    state => state.stoppedOn
+    (state: AppState) => state.study.stoppedOn,
+    _ => _
   );
-  // public getPrevious = createSelector(
-  //   this.studyState,
-  //   state => state.previous
-  // );
   public getCards = createSelector(
-    this.studyState,
-    state => state.cards
+    (state: AppState) => state.study.cards,
+    _ => _
   );
   public getMissed = createSelector(
-    this.studyState,
-    state => state.missed
+    (state: AppState) => state.study.missed,
+    _ => _
   );
   public getCorrect = createSelector(
-    this.studyState,
-    state => state.correct
+    (state: AppState) => state.study.correct,
+    _ => _
   );
   public getSkipped = createSelector(
-    this.studyState,
-    state => state.skipped
+    (state: AppState) => state.study.skipped,
+    _ => _
   );
 
   // calculated selectors
   public getDuration = createSelector(
-    this.studyState,
-    state => this.getDurationFromStart(state.startedOn)
+    (state: AppState) => state.study.startedOn,
+    startedOn => this.getDurationFromStart(startedOn)
   );
 
   constructor(private store: Store<AppState>) {}
@@ -76,6 +69,14 @@ export class StudyFacadeService {
    */
   private getDurationFromStart(start: Date): Duration {
     return DateTime.fromJSDate(start).diffNow();
+  }
+
+  /**
+   * Loads a deck that doesn't update, then marks that deck as the
+   * deck to study.
+   */
+  public loadDeck(deckId: string) {
+    this.store.dispatch(new GetStudyDeck({ deckId }));
   }
 
   public startStudySession(startedOn: Date) {

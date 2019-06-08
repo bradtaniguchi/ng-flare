@@ -7,7 +7,7 @@ import { Deck } from '../../../models/deck';
 import { Collections } from '../../collections';
 import { Observable, from } from 'rxjs';
 import { Group } from '../../../models/group';
-import { mapTo } from 'rxjs/operators';
+import { mapTo, take } from 'rxjs/operators';
 import { User } from '../../../models/user';
 
 @Injectable({
@@ -45,6 +45,19 @@ export class DeckService {
     return from(this.deckCollection.doc(uid).set(createdDeck)).pipe(
       mapTo(createdDeck)
     );
+  }
+
+  /**
+   * Returns the deck with the given id
+   */
+  public get(params: { deckId: string; takeOne: boolean }): Observable<Deck> {
+    const { deckId, takeOne } = params;
+    return takeOne
+      ? this.deckCollection
+          .doc<Deck>(deckId)
+          .valueChanges()
+          .pipe(take(1))
+      : this.deckCollection.doc<Deck>(deckId).valueChanges();
   }
 
   /**

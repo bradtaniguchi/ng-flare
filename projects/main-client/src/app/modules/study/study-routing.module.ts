@@ -3,16 +3,31 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: ':deckId/preview',
-    loadChildren: './study-preview/study-preview.module#StudyPreviewModule'
+    path: '',
+    children: [
+      {
+        path: ':deckId/preview',
+        loadChildren: './study-preview/study-preview.module#StudyPreviewModule'
+      },
+      {
+        path: ':deckId/review',
+        loadChildren: './study-review/study-review.module#StudyReviewModule'
+      },
+      {
+        path: ':deckId/card/:cardId',
+        loadChildren: './study-card/study-card.module#StudyCardModule'
+      }
+      // TODO: add!
+      // {
+      //   path: '',
+      //   pathMatch: 'full',
+      //   loadChildren: './study-card/study-card-list.module#StudyCardListModule'
+      // }
+    ]
   },
   {
-    path: ':deckId/review',
-    loadChildren: './study-review/study-review.module#StudyReviewModule'
-  },
-  {
-    path: ':deckId/card/:cardId',
-    loadChildren: './study-card/study-card.module#StudyCardModule'
+    path: '**',
+    redirectTo: ''
   }
 ];
 

@@ -37,7 +37,7 @@ import { Deck } from '../../models/deck';
           mat-button
           color="primary"
           class="hover-hide-el"
-          [routerLink]="['study', deck?.uid]"
+          [routerLink]="['study', deck?.uid, 'preview']"
         >
           Study
         </a>

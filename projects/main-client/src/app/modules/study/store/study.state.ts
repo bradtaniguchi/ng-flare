@@ -8,6 +8,10 @@ export interface StudyState {
    */
   card?: string;
   /**
+   * If we are loading the deck async
+   */
+  loadingDeck?: boolean;
+  /**
    * The deck we are studying
    */
   deck?: Deck;
@@ -45,6 +49,12 @@ export function StudyReducer(
   action: StudyActions
 ): StudyState {
   switch (action.type) {
+    case StudyActionTypes.GET_DECK:
+      return { ...state, loadingDeck: true };
+    case StudyActionTypes.GET_DECK_SUCCESS:
+      return { ...state, loadingDeck: false };
+    case StudyActionTypes.GET_DECK_SUCCESS:
+      return { ...state, loadingDeck: false };
     case StudyActionTypes.START:
     case StudyActionTypes.STOP:
     case StudyActionTypes.SET_DECK:
