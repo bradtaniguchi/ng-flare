@@ -104,7 +104,7 @@ import {
           fxLayout="row"
           fxFlex
           style="padding-left: 24px;"
-          (click)="report.next()"
+          (click)="report.emit()"
         >
           <mat-icon>
             report_problem
@@ -119,7 +119,7 @@ import {
           fxLayout="row"
           fxFlex
           style="padding-left: 24px;"
-          (click)="logout.next()"
+          (click)="logout.emit()"
         >
           <mat-icon>
             logout

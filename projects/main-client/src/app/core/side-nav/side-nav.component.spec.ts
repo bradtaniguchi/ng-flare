@@ -12,7 +12,10 @@ import { By } from '@angular/platform-browser';
 describe('SideNavComponent', () => {
   let component: SideNavComponent;
   let fixture: ComponentFixture<SideNavComponent>;
-  const getLogoutButton = () => fixture.debugElement.query(By.css('button'));
+  const getReportButton = () =>
+    fixture.debugElement.queryAll(By.css('button'))[0];
+  const getLogoutButton = () =>
+    fixture.debugElement.queryAll(By.css('button'))[1];
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [SideNavComponent],
@@ -36,8 +39,16 @@ describe('SideNavComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  // TODO
-  xit('dispatches logout action on clicking logout button', () => {
-    const logoutButton = getLogoutButton();
+  it('dispatches report action on clicking report button', () => {
+    const spy = spyOn(component.report, 'emit');
+    const reportButton = getReportButton().nativeElement;
+    reportButton.dispatchEvent(new MouseEvent('click'));
+    expect(spy).toHaveBeenCalled();
+  });
+  it('dispatches logout action on clicking logout button', () => {
+    const spy = spyOn(component.logout, 'emit');
+    const logoutButton = getLogoutButton().nativeElement;
+    logoutButton.dispatchEvent(new MouseEvent('click'));
+    expect(spy).toHaveBeenCalled();
   });
 });
