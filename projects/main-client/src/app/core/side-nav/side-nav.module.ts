@@ -5,7 +5,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import {
   MatListModule,
   MatIconModule,
-  MatRippleModule
+  MatRippleModule,
+  MatButtonModule
 } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
@@ -18,7 +19,8 @@ import { RouterModule } from '@angular/router';
     FlexLayoutModule,
     MatRippleModule,
     MatListModule,
-    MatIconModule
+    MatIconModule,
+    MatButtonModule
   ],
   exports: [SideNavComponent]
 })

@@ -1,76 +1,135 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  Output,
+  EventEmitter
+} from '@angular/core';
 
 @Component({
   selector: 'app-side-nav',
   template: `
-    <!--<mat-nav-list fxLayout="column">-->
-    <nav>
-      <ul>
-        <li>
-          <a
-            class="nav-element"
-            fxLayout="row"
-            fxLayoutAlign="start center"
-            routerLink="/"
-            matRipple
-            routerLinkActive="active-link"
-            [routerLinkActiveOptions]="{ exact: true }"
-          >
-            <mat-icon class="large">
-              view_compact
-            </mat-icon>
-            <div class="subheading-2 margin">
-              Dashboard
-            </div>
-          </a>
-          <a
-            class="nav-element"
-            matRipple
-            fxLayoutAlign="start center"
-            fxLayout="row"
-            routerLink="study"
-            routerLinkActive="active-link"
-          >
-            <mat-icon class="large">
-              library_books
-            </mat-icon>
-            <div class="subheading-2 margin">
-              Study
-            </div>
-          </a>
-        </li>
-      </ul>
-      <mat-divider> </mat-divider>
-      <ul>
-        <li>
-          <a
-            class="nav-element"
-            matRipple
-            fxLayoutAlign="start center"
-            fxLayout="row"
-            routerLink="info"
-            routerLinkActive="active-link"
-          >
-            <mat-icon class="large">
-              settings
-            </mat-icon>
-            <div class="subheading-2 margin">
-              Info
-            </div>
-          </a>
-        </li>
-        <li>
-          <!-- <div mat-list-item type="button">
-            <mat-icon mat-list-icon>
-              settings
-            </mat-icon>
-            <div mat-line>
-              Info
-            </div>
-          </div> -->
-        </li>
-      </ul>
-    </nav>
+    <div fxLayout="column" fxLayoutAlign="space-between" class="full-height">
+      <nav>
+        <ul>
+          <li>
+            <a
+              class="nav-element"
+              fxLayout="row"
+              fxLayoutAlign="start center"
+              routerLink="/"
+              matRipple
+              routerLinkActive="active-link"
+              [routerLinkActiveOptions]="{ exact: true }"
+            >
+              <mat-icon class="large">
+                view_compact
+              </mat-icon>
+              <div class="subheading-2 margin">
+                Dashboard
+              </div>
+            </a>
+            <a
+              class="nav-element"
+              matRipple
+              fxLayoutAlign="start center"
+              fxLayout="row"
+              routerLink="study"
+              routerLinkActive="active-link"
+            >
+              <mat-icon class="large">
+                library_books
+              </mat-icon>
+              <div class="subheading-2 margin">
+                Study
+              </div>
+            </a>
+          </li>
+        </ul>
+        <mat-divider> </mat-divider>
+        <ul>
+          <li>
+            <a
+              class="nav-element"
+              matRipple
+              fxLayoutAlign="start center"
+              fxLayout="row"
+              routerLink="info"
+              routerLinkActive="active-link"
+            >
+              <mat-icon class="large">
+                settings
+              </mat-icon>
+              <div class="subheading-2 margin">
+                Info
+              </div>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <div fxLayout="column" style="margin: 8px 0">
+        <a
+          mat-button
+          fxLayoutAlign="start center"
+          fxLayout="row"
+          fxFlex
+          style="padding-left: 24px;"
+          routerLink="settings"
+        >
+          <mat-icon>
+            settings
+          </mat-icon>
+          <span class="margin">
+            Settings
+          </span>
+        </a>
+        <a
+          mat-button
+          fxLayoutAlign="start center"
+          fxLayout="row"
+          fxFlex
+          style="padding-left: 24px;"
+          href="https://github.com/bradtaniguchi/ng-flare"
+        >
+          <mat-icon>
+            start
+          </mat-icon>
+          <span class="margin">
+            Star
+          </span>
+        </a>
+        <button
+          mat-button
+          fxLayoutAlign="start center"
+          fxLayout="row"
+          fxFlex
+          style="padding-left: 24px;"
+          (click)="report.next()"
+        >
+          <mat-icon>
+            report_problem
+          </mat-icon>
+          <span class="margin">
+            Report Bug
+          </span>
+        </button>
+        <button
+          mat-button
+          fxLayoutAlign="start center"
+          fxLayout="row"
+          fxFlex
+          style="padding-left: 24px;"
+          (click)="logout.next()"
+        >
+          <mat-icon>
+            logout
+          </mat-icon>
+          <span class="margin">
+            Logout
+          </span>
+        </button>
+      </div>
+    </div>
     <!--</mat-nav-list>-->
   `,
   styles: [
@@ -85,11 +144,18 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
       ul {
         padding: 8px 0;
       }
+    `,
+    `
+      .full-height {
+        height: 100%;
+      }
     `
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SideNavComponent implements OnInit {
+  @Output() logout = new EventEmitter();
+  @Output() report = new EventEmitter();
   constructor() {}
 
   ngOnInit() {}
