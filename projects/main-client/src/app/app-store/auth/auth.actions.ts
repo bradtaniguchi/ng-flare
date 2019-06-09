@@ -51,7 +51,7 @@ export class AuthLoginFailed implements Action {
 }
 export class SetAuthCred implements Action {
   readonly type = AuthActionTypes.SET_CRED;
-  constructor(public payload: { cred: auth.UserCredential }) {}
+  constructor(public payload: { credentials: auth.UserCredential }) {}
 }
 // STATE CHANGE
 export class AuthStateChange implements Action {

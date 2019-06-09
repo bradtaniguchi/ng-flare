@@ -110,15 +110,16 @@
         }
       }
     },
-    "main-client-e2e": {
+    "main-client-e2e-cypress": {
       "root": "projects/main-client-e2e/",
       "projectType": "application",
       "prefix": "",
       "architect": {
         "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
+          "builder": "@nrwl/builders:cypress",
           "options": {
-            "protractorConfig": "projects/main-client-e2e/protractor.conf.js",
+            "cypressConfig": "projects/main-client-e2e/cypress.json",
+            "tsConfig": "projects/main-client-e2e/tsconfig.e2e.json",
             "devServerTarget": "main-client:serve"
           },
           "configurations": {

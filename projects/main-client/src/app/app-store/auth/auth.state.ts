@@ -21,6 +21,8 @@ export function AuthReducer(
       return { ...state, newRegister: true };
     case AuthActionTypes.ONLY_UPDATE_SUCCESS:
       return { ...state, newRegister: false };
+    case AuthActionTypes.SET_CRED:
+      return { ...state, credentials: action.payload.credentials };
     case AuthActionTypes.LOGOUT:
       return {};
     default:
