@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  log: false
+  log: false,
+  allowEmailLogin: false
 };

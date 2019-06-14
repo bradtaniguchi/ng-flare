@@ -14,8 +14,11 @@ import {
   AuthRegister,
   AuthRegisterFailed,
   AuthRegisterOnlyUpdateSuccess,
-  AuthRegisterSuccess
+  AuthRegisterSuccess,
+  AuthLogin,
+  AuthLoginWithEmail
 } from './auth.actions';
+import { LoginProvider } from '../../models/login-providers';
 
 @Injectable()
 export class AuthEffects {
@@ -32,8 +35,8 @@ export class AuthEffects {
   @Effect()
   login$ = this.actions$.pipe(
     ofType(AuthActionTypes.LOGIN),
-    mergeMap(() =>
-      this.auth.googleLogin().pipe(
+    mergeMap((action: AuthLogin) =>
+      this.login(action).pipe(
         mergeMap(userCredentials => [
           new AuthRegister({ user: userCredentials.user }),
           new AuthLoginSuccess({ user: userCredentials.user })
@@ -46,6 +49,22 @@ export class AuthEffects {
     )
   );
 
+  @Effect()
+  loginWithEmail$ = this.actions$.pipe(
+    ofType(AuthActionTypes.LOGIN_WITH_EMAIL),
+    mergeMap((action: AuthLoginWithEmail) =>
+      this.auth.loginWithEmailPassword(action.payload).pipe(
+        mergeMap(userCredentials => [
+          new AuthRegister({ user: userCredentials.user }),
+          new AuthLoginSuccess({ user: userCredentials.user })
+        ]),
+        catchError(err => {
+          logger.error(err);
+          return of(new AuthLoginFailed(err));
+        })
+      )
+    )
+  );
   /**
    * Fired whenever a user is logged in, without ever logging in before.
    */
@@ -85,4 +104,17 @@ export class AuthEffects {
       )
     )
   );
+
+  /**
+   * "logs" the user in properly
+   */
+  private login(action: AuthLogin) {
+    switch (action.payload.provider) {
+      case LoginProvider.GOOGLE:
+      default:
+        return this.auth.googleLogin();
+      case LoginProvider.GITHUB:
+        return this.auth.githubLogin();
+    }
+  }
 }

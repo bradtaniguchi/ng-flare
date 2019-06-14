@@ -11,10 +11,11 @@
     "test": "ng test",
     "prelint": "npm run config",
     "lint": "ng lint",
-    "pree2e": "npm run config",
+    "pree2e": "npm run config && npm run config:e2e",
     "e2e": "ng e2e",
     "deploy": "echo Not Ready yet",
     "smoke": "npx ts-node tools/smoke-server",
+    "config:e2e": "npx ts-node --project=tools/tsconfig.tools.json tools/set-e2e-env.ts",
     "config": "npx ts-node --project=tools/tsconfig.tools.json tools/set-env.ts",
     "clean": "npx rimraf dist"
   },

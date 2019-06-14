@@ -1,9 +1,11 @@
 import { Action } from '@ngrx/store';
 import { User } from '../../models/user';
 import { auth } from 'firebase/app';
+import { LoginProvider } from '../../models/login-providers';
 
 export enum AuthActionTypes {
   LOGIN = '[Auth] LOGIN',
+  LOGIN_WITH_EMAIL = '[Auth] LOGIN_WITH_EMAIL',
   LOGIN_SUCCESS = '[Auth] LOGIN_SUCCESS',
   LOGIN_FAILED = '[Auth] LOGIN_FAILED',
 
@@ -24,6 +26,7 @@ export enum AuthActionTypes {
 export type AuthActions =
   // login
   | AuthLogin
+  | AuthLoginWithEmail
   | AuthLoginSuccess
   | AuthLoginFailed
   | AuthStateChange
@@ -37,9 +40,20 @@ export type AuthActions =
   | AuthRegisterFailed;
 
 // LOGIN
+export class AuthLoginWithEmail implements Action {
+  readonly type = AuthActionTypes.LOGIN_WITH_EMAIL;
+  constructor(
+    public payload: {
+      email: string;
+      password: string;
+    }
+  ) {}
+}
 export class AuthLogin implements Action {
   readonly type = AuthActionTypes.LOGIN;
-  constructor(public payload: { type: 'popup' | 'redirect' }) {}
+  constructor(
+    public payload: { type: 'popup' | 'redirect'; provider: LoginProvider }
+  ) {}
 }
 export class AuthLoginSuccess implements Action {
   readonly type = AuthActionTypes.LOGIN_SUCCESS;

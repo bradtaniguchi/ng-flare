@@ -8,6 +8,7 @@ import { GroupFacadeService } from './app-store/group/group-facade.service';
 import { LoadingFacadeService } from './app-store/loading/loading.facade.service';
 import { User } from './models/user';
 import { AuthFacadeService } from './app-store/auth/auth-facade.service';
+import { logger } from './core/logger';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +25,7 @@ import { AuthFacadeService } from './app-store/auth/auth-facade.service';
         [mode]="drawerMode$ | async"
         [opened]="drawerOpened$ | async"
       >
-        <app-side-nav> </app-side-nav>
+        <app-side-nav (logout)="logout()" (report)="report()"> </app-side-nav>
       </mat-drawer>
       <mat-drawer-content>
         <router-outlet></router-outlet>
@@ -72,5 +73,14 @@ export class AppComponent implements OnInit {
 
   public onToggleMenu() {
     this.drawerFacade.toggleDrawer();
+  }
+
+  public logout() {
+    this.authFacade.logout();
+  }
+
+  public report() {
+    // this.authFacade.
+    logger.log('report called');
   }
 }
