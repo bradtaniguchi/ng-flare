@@ -4,9 +4,11 @@
     "lint": "tslint --project tsconfig.json",
     "build": "tsc",
     "serve": "npm run build && firebase serve --only functions",
+    "serve:prod": "npm run build && firebase serve --only functions:prod",
+    "serve:dev": "npm run build && firebase serve --only functions:dev",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
-    "deploy": "firebase deploy --only functions",
+    "deploy": "firebase deploy --only functions:prod",
     "logs": "firebase functions:log"
   },
   "main": "lib/index.js",
