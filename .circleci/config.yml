@@ -113,7 +113,8 @@ workflows:
   test_and_build_overnight:
     triggers:
       - schedule:
-          cron: '0 22 * * *'
+          # 10pm PST
+          cron: '0 05 * * *'
           filters:
             branches:
               only:
