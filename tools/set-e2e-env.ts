@@ -1,3 +1,4 @@
+require('dotenv').config();
 import { writeFile } from 'fs';
 
 const targetPath = './projects/main-client-e2e/src/e2e-config.env.ts';

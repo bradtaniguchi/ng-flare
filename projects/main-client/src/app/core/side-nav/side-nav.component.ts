@@ -67,7 +67,7 @@ import {
           </li>
         </ul>
       </nav>
-      <div fxLayout="column" style="margin: 8px 0">
+      <div fxLayout="column" class="side-nav-actions">
         <a
           mat-button
           fxLayoutAlign="start center"
@@ -119,6 +119,7 @@ import {
           fxLayout="row"
           fxFlex
           style="padding-left: 24px;"
+          aria-label="Logout"
           (click)="logout.emit()"
         >
           <mat-icon>
@@ -148,6 +149,12 @@ import {
     `
       .full-height {
         height: 100%;
+      }
+    `,
+    `
+      .side-nav-actions {
+        margin: 8px 0;
+        min-height: 80px;
       }
     `
   ],

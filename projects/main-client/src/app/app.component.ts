@@ -9,6 +9,8 @@ import { LoadingFacadeService } from './app-store/loading/loading.facade.service
 import { User } from './models/user';
 import { AuthFacadeService } from './app-store/auth/auth-facade.service';
 import { logger } from './core/logger';
+import { EnvironmentService } from './core/services/environment/environment.service';
+import { WindowInjectorService } from './core/services/window-injector/window-injector.service';
 
 @Component({
   selector: 'app-root',
@@ -60,7 +62,9 @@ export class AppComponent implements OnInit {
     private authFacade: AuthFacadeService,
     private groupFacade: GroupFacadeService,
     private drawerFacade: DrawerFacade,
-    private loadingFacade: LoadingFacadeService
+    private loadingFacade: LoadingFacadeService,
+    private environment: EnvironmentService,
+    private windowInjector: WindowInjectorService
   ) {}
 
   ngOnInit() {
@@ -69,6 +73,10 @@ export class AppComponent implements OnInit {
     this.loading$ = this.store.pipe(select(this.loadingFacade.getLoading));
     this.drawerMode$ = this.store.pipe(select(this.drawerFacade.getMode));
     this.drawerOpened$ = this.store.pipe(select(this.drawerFacade.getOpened));
+
+    if (!this.environment.get().production) {
+      this.windowInjector.init();
+    }
   }
 
   public onToggleMenu() {

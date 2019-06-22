@@ -46,7 +46,9 @@ jobs:
             - ./node_modules
       - run:
           name: e2e
-          command: npm run e2e -- --project=main-client-e2e-cypress --headless --record=false
+          command: npm run e2e -- --project=main-client-e2e-cypress --headless
+      - store_artifacts:
+          path: dist/out-tsc/apps/main-client-e2e
   ################################################################################
   test_functions:
     docker:
