@@ -1,6 +1,5 @@
-import { StudyService } from './study.service';
-import { Card } from '../../../models/card';
 import { StudyState } from '../../../modules/study/store/study.state';
+import { StudyService } from './study.service';
 
 describe('StudyService', () => {
   let service: StudyService;
@@ -39,8 +38,8 @@ describe('StudyService', () => {
         'getRandom'
       ).and.returnValue(0);
     });
-    const testGetNextCard = (state: StudyState, expected: Partial<Card>) => {
-      expect(service.getNextCard(state)).toEqual(expected as any);
+    const testGetNextCard = (state: StudyState, expected: string) => {
+      expect(service.getNextCard(state)).toEqual(expected);
     };
     const defaultState: StudyState = {
       card: undefined,
@@ -63,7 +62,7 @@ describe('StudyService', () => {
       testGetNextCard(
         {
           ...defaultState,
-          cards: [{ uid: { uid: 'cardOne' } }] as any,
+          cards: ['cardOne'],
           missed: ['cardsOne']
         },
         undefined
@@ -73,40 +72,30 @@ describe('StudyService', () => {
       testGetNextCard(
         {
           ...defaultState,
-          cards: [{ uid: 'cardOne' }, { uid: 'cardTwo' }] as any,
+          cards: ['cardOne', 'cardTwo'] as any,
           missed: ['cardOne']
         },
-        {
-          uid: 'cardTwo'
-        }
+        'cardTwo'
       );
     });
     it('returns card not in skipped', () => {
       testGetNextCard(
         {
           ...defaultState,
-          cards: [{ uid: 'cardOne' }, { uid: 'cardTwo' }] as any,
+          cards: ['cardOne', 'cardTwo'] as any,
           skipped: ['cardTwo']
         },
-        {
-          uid: 'cardOne'
-        }
+        'cardOne'
       );
     });
     it('returns card not in correct', () => {
       testGetNextCard(
         {
           ...defaultState,
-          cards: [
-            { uid: 'cardOne' },
-            { uid: 'cardTwo' },
-            { uid: 'cardThree' }
-          ] as any,
+          cards: ['cardOne', 'cardTwo', 'cardThree'],
           correct: ['cardOne', 'cardThree']
         },
-        {
-          uid: 'cardTwo'
-        }
+        'cardTwo'
       );
     });
     it('returns second card', () => {
@@ -114,16 +103,10 @@ describe('StudyService', () => {
       testGetNextCard(
         {
           ...defaultState,
-          cards: [
-            { uid: 'cardOne' },
-            { uid: 'cardTwo' },
-            { uid: 'cardThree' }
-          ] as any,
+          cards: ['cardOne', 'cardTwo', 'cardThree'],
           correct: ['cardOne']
         },
-        {
-          uid: 'cardThree'
-        }
+        'cardThree'
       );
     });
   });

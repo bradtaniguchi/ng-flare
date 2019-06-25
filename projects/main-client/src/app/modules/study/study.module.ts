@@ -5,7 +5,6 @@ import { StudyRoutingModule } from './study-routing.module';
 import { StoreModule } from '@ngrx/store';
 import { StudyReducer } from './store/study.state';
 import { EffectsModule } from '@ngrx/effects';
-import { StudyEffects } from './store/study.effects';
 
 @NgModule({
   declarations: [],
@@ -13,8 +12,7 @@ import { StudyEffects } from './store/study.effects';
     CommonModule,
     StudyRoutingModule,
     // ngrx
-    StoreModule.forFeature('study', StudyReducer),
-    EffectsModule.forFeature([StudyEffects])
+    StoreModule.forFeature('study', StudyReducer)
   ]
 })
 export class StudyModule {}

@@ -1,31 +1,31 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Store, select } from '@ngrx/store';
-import { AppState } from '../app-state';
-import { CardService } from '../../core/services/card/card.service';
+import { select, Store } from '@ngrx/store';
+import { of } from 'rxjs';
 import {
-  CardActionTypes,
-  CreateCards,
-  ListDeckCards,
-  ListDeckCardsUpdate,
-  ListDeckCardsFailed,
-  CreateCardsSuccess,
-  CreateCardsFailed
-} from './card.actions';
-import {
-  withLatestFrom,
+  catchError,
+  map,
   mergeMap,
   switchMap,
   takeUntil,
-  map,
-  catchError
+  withLatestFrom
 } from 'rxjs/operators';
-import { AuthFacadeService } from '../auth/auth-facade.service';
-import { User } from '../../models/user';
-import { CardFacadeService } from './card-facade.service';
+import { CardService } from '../../core/services/card/card.service';
 import { Card } from '../../models/card';
-import { logger } from '../../core/logger';
-import { of } from 'rxjs';
+import { User } from '../../models/user';
+import { AppState } from '../app-state';
+import { AuthFacadeService } from '../auth/auth-facade.service';
+import { ReportError } from '../error/error.actions';
+import {
+  CardActionTypes,
+  CreateCards,
+  CreateCardsFailed,
+  CreateCardsSuccess,
+  ListDeckCards,
+  ListDeckCardsFailed,
+  ListDeckCardsUpdate
+} from './card.actions';
+import { CardFacadeService } from './card.facade';
 
 @Injectable({
   providedIn: 'root'
@@ -39,8 +39,6 @@ export class CardEffects {
     private authFacadeService: AuthFacadeService
   ) {}
 
-  private limit$ = this.store.pipe(select(this.cardFacadeService.getLimit));
-  private orderBy$ = this.store.pipe(select(this.cardFacadeService.getOrderBy));
   private user$ = this.store.pipe(select(this.authFacadeService.getUserState));
   private listStop$ = this.actions$.pipe(
     ofType(CardActionTypes.LIST_DECK_CARDS_STOP)
@@ -63,10 +61,15 @@ export class CardEffects {
                 cards
               })
           ),
-          catchError(err => {
-            logger.error(err);
-            return of(new CreateCardsFailed());
-          })
+          catchError(err =>
+            of([
+              new CreateCardsFailed(),
+              new ReportError({
+                err,
+                message: 'There was an error creating cards'
+              })
+            ])
+          )
         )
     )
   );
@@ -74,20 +77,24 @@ export class CardEffects {
   @Effect()
   listDeckCards$ = this.actions$.pipe(
     ofType(CardActionTypes.LIST_DECK_CARDS),
-    withLatestFrom(this.orderBy$, this.limit$),
-    switchMap(([action, orderBy, limit]: [ListDeckCards, keyof Card, number]) =>
+    switchMap((action: ListDeckCards) =>
       this.cardService
         .list({
           deck: action.payload.deck,
-          limit,
-          orderBy
+          limit: action.payload.limit,
+          orderBy: action.payload.orderBy
         })
         .pipe(
           map(cards => new ListDeckCardsUpdate({ cards })),
-          catchError(err => {
-            logger.error(err);
-            return of(new ListDeckCardsFailed());
-          }),
+          catchError(err =>
+            of([
+              new ListDeckCardsFailed(),
+              new ReportError({
+                err,
+                message: 'There was an error getting cards for deck'
+              })
+            ])
+          ),
           takeUntil(this.listStop$)
         )
     )

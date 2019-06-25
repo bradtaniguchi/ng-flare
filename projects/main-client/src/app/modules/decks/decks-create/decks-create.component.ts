@@ -5,7 +5,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { DeckFacadeService } from '../../../app-store/deck/deck-facade.service';
+import { DeckFacadeService } from '../../../app-store/deck/deck.facade';
 import { Deck } from '../../../models/deck';
 import { Location } from '@angular/common';
 import { Card } from '../../../models/card';

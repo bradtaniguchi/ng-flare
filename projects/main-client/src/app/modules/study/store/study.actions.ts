@@ -9,11 +9,7 @@ export enum StudyActionTypes {
   SELECT_CARD = '[Study] SELECT_CARD',
   SKIP_CARD = '[Study] SKIP_CARD',
   MARK_CARD_CORRECT = '[Study] MARK_CARD_CORRECT',
-  MARK_CARD_WRONG = '[Study] MARK_CARD_WRONG',
-
-  GET_DECK = '[Study] GET_DECK',
-  GET_DECK_SUCCESS = '[Study] GET_DECK_SUCCESS',
-  GET_DECK_FAILED = '[Study] GET_DECK_FAILED'
+  MARK_CARD_WRONG = '[Study] MARK_CARD_WRONG'
 }
 
 export type StudyActions =
@@ -24,10 +20,7 @@ export type StudyActions =
   | SelectStudyCard
   | SkipStudyCard
   | MarkStudyCardCorrect
-  | MarkStudyCardWrong
-  | GetStudyDeck
-  | GetStudyDeckSuccess
-  | GetStudyDeckFailed;
+  | MarkStudyCardWrong;
 
 export class StartStudySession implements Action {
   readonly type = StudyActionTypes.START;
@@ -49,7 +42,7 @@ export class StopStudySession implements Action {
 
 export class SetStudyDeck implements Action {
   readonly type = StudyActionTypes.SET_DECK;
-  constructor(public payload: { deck: Deck }) {}
+  constructor(public payload: { deck: string }) {}
 }
 
 export class SelectStudyCard implements Action {
@@ -69,24 +62,24 @@ export class MarkStudyCardWrong implements Action {
   readonly type = StudyActionTypes.MARK_CARD_WRONG;
 }
 
-export class GetStudyDeck implements Action {
-  readonly type = StudyActionTypes.GET_DECK;
-  constructor(
-    public payload: {
-      deckId: string;
-    }
-  ) {}
-}
+// export class GetStudyDeck implements Action {
+//   readonly type = StudyActionTypes.GET_DECK;
+//   constructor(
+//     public payload: {
+//       deckId: string;
+//     }
+//   ) {}
+// }
 
-export class GetStudyDeckSuccess implements Action {
-  readonly type = StudyActionTypes.GET_DECK_SUCCESS;
-  constructor(
-    public payload: {
-      deck: Deck;
-    }
-  ) {}
-}
+// export class GetStudyDeckSuccess implements Action {
+//   readonly type = StudyActionTypes.GET_DECK_SUCCESS;
+//   constructor(
+//     public payload: {
+//       deck: Deck;
+//     }
+//   ) {}
+// }
 
-export class GetStudyDeckFailed implements Action {
-  readonly type = StudyActionTypes.GET_DECK_FAILED;
-}
+// export class GetStudyDeckFailed implements Action {
+//   readonly type = StudyActionTypes.GET_DECK_FAILED;
+// }

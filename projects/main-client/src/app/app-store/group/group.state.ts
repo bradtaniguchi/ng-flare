@@ -7,7 +7,7 @@ import {
   SetSelectedGroup
 } from './group.actions';
 
-export interface GroupState extends EntityState<Group>, SearchParams<Group> {
+export interface GroupState extends EntityState<Group> {
   loading: boolean;
   /**
    * The currently selected group
@@ -23,9 +23,7 @@ export const setSelectedGroup = (
   state: GroupState = {
     loading: false,
     ids: [],
-    entities: {},
-    orderBy: 'name',
-    limit: 2
+    entities: {}
   },
   { payload }: SetSelectedGroup
 ) => ({
@@ -41,9 +39,7 @@ export function GroupReducer(
   state: GroupState = {
     loading: false,
     ids: [],
-    entities: {},
-    orderBy: 'name',
-    limit: 2
+    entities: {}
   },
   action: GroupActions
 ): GroupState {

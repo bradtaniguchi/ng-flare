@@ -4,7 +4,7 @@ import { SearchParams } from '../../models/search-params';
 import { DeckActions, DeckActionTypes } from './deck.actions';
 import { getDefaultState } from '../get-default-state';
 
-export interface DeckState extends EntityState<Deck>, SearchParams<Deck> {
+export interface DeckState extends EntityState<Deck> {
   loading: boolean;
 }
 

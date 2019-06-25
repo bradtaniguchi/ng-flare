@@ -18,7 +18,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { AppState } from '../../../app-store/app-state';
-import { DeckFacadeService } from '../../../app-store/deck/deck-facade.service';
+import { DeckFacadeService } from '../../../app-store/deck/deck.facade';
 import { SearchParamsService } from '../../../core/services/search-params/search-params.service';
 import { DecksCreateComponent } from './decks-create.component';
 

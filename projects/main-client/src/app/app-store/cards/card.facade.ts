@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Store, createSelector } from '@ngrx/store';
 import { SearchParamsService } from '../../core/services/search-params/search-params.service';
 import { Card } from '../../models/card';
 import { SearchParams } from '../../models/search-params';
@@ -19,21 +19,29 @@ export class CardFacadeService {
   public getLoading = this.searchParamsService.createLoadingSelector(
     state => state.card.loading
   );
-  public getDecks = this.searchParamsService.createEntitiesSelector(
+  public getCards = this.searchParamsService.createEntitiesSelector(
     state => state.card.ids,
     state => state.card.entities
-  );
-  public getOrderBy = this.searchParamsService.createOrderBySelector<Card>(
-    state => state.card.orderBy
-  );
-  public getLimit = this.searchParamsService.createLimitSelector(
-    state => state.card.limit
   );
 
   constructor(
     private store: Store<AppState>,
     private searchParamsService: SearchParamsService
   ) {}
+
+  public getCardsByDeck(deckId: string) {
+    return createSelector(
+      this.getCards,
+      (cards: Card[]) => cards.filter(card => card.deck === deckId)
+    );
+  }
+
+  public getCardsByGroup(groupId: string) {
+    return createSelector(
+      this.getCards,
+      (cards: Card[]) => cards.filter(card => card.group === groupId)
+    );
+  }
 
   public listCards(params?: ListDeckCardsParams) {
     this.store.dispatch(new ListDeckCards(params));

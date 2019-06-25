@@ -1,6 +1,6 @@
 import { Injectable, ErrorHandler } from '@angular/core';
 import { logger } from '../../logger';
-import { ErrorFacadeService } from '../../../app-store/error/error-facade.service';
+import { ErrorFacadeService } from '../../../app-store/error/error.facade';
 
 @Injectable({
   providedIn: 'root'

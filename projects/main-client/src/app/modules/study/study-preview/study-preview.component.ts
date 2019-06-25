@@ -77,10 +77,6 @@ export class StudyPreviewComponent implements OnInit, OnDestroy {
     this.deckId$ = this.route.params.pipe(map(params => params.deckId));
     this.deck$ = this.store.pipe(select(this.studyFacade.getDeck));
     this.cards$ = this.store.pipe(select(this.studyFacade.getCards));
-
-    this.deckId$
-      .pipe(takeUntil(this.takeUntil))
-      .subscribe(deckId => this.studyFacade.loadDeck(deckId));
   }
 
   ngOnDestroy() {

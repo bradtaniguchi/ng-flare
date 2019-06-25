@@ -3,14 +3,11 @@ import { createSelector, Store } from '@ngrx/store';
 import { DateTime, Duration } from 'luxon';
 import { AppState } from '../../../app-store/app-state';
 import { Card } from '../../../models/card';
-import { Deck } from '../../../models/deck';
 import {
   ClearStudySession,
-  GetStudyDeck,
   MarkStudyCardCorrect,
   MarkStudyCardWrong,
   SelectStudyCard,
-  SetStudyDeck,
   SkipStudyCard,
   StartStudySession
 } from './study.actions';
@@ -25,7 +22,8 @@ export class StudyFacadeService {
   );
   public getDeck = createSelector(
     (state: AppState) => state.study.deck,
-    _ => _
+    (state: AppState) => state.deck.entities,
+    (deck, entities) => entities[deck]
   );
   public getFlipped = createSelector(
     (state: AppState) => state.study.flipped,
@@ -41,7 +39,8 @@ export class StudyFacadeService {
   );
   public getCards = createSelector(
     (state: AppState) => state.study.cards,
-    _ => _
+    (state: AppState) => state.card.entities,
+    (cards, entities) => cards.map(card => entities[card])
   );
   public getMissed = createSelector(
     (state: AppState) => state.study.missed,
@@ -75,9 +74,9 @@ export class StudyFacadeService {
    * Loads a deck that doesn't update, then marks that deck as the
    * deck to study.
    */
-  public loadDeck(deckId: string) {
-    this.store.dispatch(new GetStudyDeck({ deckId }));
-  }
+  // public loadDeck(deckId: string) {
+  //   this.store.dispatch(new GetStudyDeck({ deckId }));
+  // }
 
   public startStudySession(startedOn: Date) {
     this.store.dispatch(new StartStudySession({ startedOn }));
@@ -87,9 +86,9 @@ export class StudyFacadeService {
     this.store.dispatch(new ClearStudySession());
   }
 
-  public setStudyDeck(deck: Deck) {
-    this.store.dispatch(new SetStudyDeck({ deck }));
-  }
+  // public setStudyDeck(deck: Deck) {
+  //   this.store.dispatch(new SetStudyDeck({ deck }));
+  // }
 
   public selectStudyCard(card: Card) {
     this.store.dispatch(new SelectStudyCard({ card: card.uid }));

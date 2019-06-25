@@ -10,8 +10,7 @@ import { LoadingSpinnerModule } from '../../shared/loading-spinner/loading-spinn
 import { DashboardComponent } from './dashboard.component';
 import { provideMockStore } from '@ngrx/store/testing';
 import { AppState } from '../../app-store/app-state';
-import { GroupFacadeService } from '../../app-store/group/group-facade.service';
-import { DashboardFacadeService } from './store/dashboard-facade.service';
+import { GroupFacadeService } from '../../app-store/group/group.facade';
 import { SearchParamsService } from '../../core/services/search-params/search-params.service';
 import { DeckOverviewModule } from '../../shared/deck-overview/deck-overview.module';
 
@@ -19,8 +18,7 @@ describe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
   const initialState: Partial<AppState> = {
-    group: {} as any,
-    dashboard: {} as any
+    group: {} as any
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -28,7 +26,6 @@ describe('DashboardComponent', () => {
       providers: [
         provideMockStore({ initialState }),
         GroupFacadeService,
-        DashboardFacadeService,
         SearchParamsService
       ],
       imports: [

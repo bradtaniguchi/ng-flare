@@ -16,7 +16,7 @@ import { Group } from '../../models/group';
 import { User } from '../../models/user';
 import { AppState } from '../app-state';
 import { AuthFacadeService } from '../auth/auth-facade.service';
-import { GroupFacadeService } from '../group/group-facade.service';
+import { GroupFacadeService } from '../group/group.facade';
 import {
   CreateDeck,
   CreateDeckFailed,
@@ -24,7 +24,8 @@ import {
   DeckActionTypes,
   ListGroupDecksFailed,
   ListGroupDecksUpdate,
-  CreateDeckWithCards
+  CreateDeckWithCards,
+  ListGroupDecks
 } from './deck.actions';
 import { CreateCards } from '../cards/card.actions';
 
@@ -41,10 +42,7 @@ export class DeckEffects {
   ) {}
 
   private group$ = this.store.pipe(select(this.groupFacadeService.getSelected));
-  private orderBy$ = this.store.pipe(
-    select(this.groupFacadeService.getOrderBy)
-  );
-  private getLimit$ = this.store.pipe(select(this.groupFacadeService.getLimit));
+
   private listStop$ = this.actions$.pipe(
     ofType(DeckActionTypes.LIST_GROUP_DECKS_STOP)
   );
@@ -98,13 +96,13 @@ export class DeckEffects {
   @Effect()
   listGroupDecks$ = this.actions$.pipe(
     ofType(DeckActionTypes.LIST_GROUP_DECKS),
-    withLatestFrom(this.group$, this.orderBy$, this.getLimit$),
-    switchMap(([_, group, orderBy, limit]) =>
+    withLatestFrom(this.group$),
+    switchMap(([action, group]: [ListGroupDecks, Group]) =>
       this.deckService
         .list({
           group,
-          orderBy,
-          limit
+          orderBy: action.payload.orderBy,
+          limit: action.payload.limit
         })
         .pipe(
           map(decks => new ListGroupDecksUpdate({ decks })),

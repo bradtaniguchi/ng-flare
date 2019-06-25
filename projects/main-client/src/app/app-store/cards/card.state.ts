@@ -1,10 +1,9 @@
-import { EntityState, createEntityAdapter } from '@ngrx/entity';
+import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { Card } from '../../models/card';
-import { SearchParams } from '../../models/search-params';
 import { getDefaultState } from '../get-default-state';
 import { CardActions, CardActionTypes } from './card.actions';
 
-export interface CardState extends EntityState<Card>, SearchParams<Card> {
+export interface CardState extends EntityState<Card> {
   loading: boolean;
 }
 

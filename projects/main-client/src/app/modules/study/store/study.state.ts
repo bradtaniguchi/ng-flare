@@ -12,9 +12,9 @@ export interface StudyState {
    */
   loadingDeck?: boolean;
   /**
-   * The deck we are studying
+   * The deckId we are studying
    */
-  deck?: Deck;
+  deck?: string;
   /**
    * If we are showing the "back" of the card
    */
@@ -28,9 +28,9 @@ export interface StudyState {
    */
   stoppedOn?: Date;
   /**
-   * The cards the user is studying
+   * The cardIds the user is studying
    */
-  cards?: Card[];
+  cards?: string[];
   /**
    * List of cards marked as skipped
    */
@@ -49,12 +49,6 @@ export function StudyReducer(
   action: StudyActions
 ): StudyState {
   switch (action.type) {
-    case StudyActionTypes.GET_DECK:
-      return { ...state, loadingDeck: true };
-    case StudyActionTypes.GET_DECK_SUCCESS:
-      return { ...state, loadingDeck: false };
-    case StudyActionTypes.GET_DECK_SUCCESS:
-      return { ...state, loadingDeck: false };
     case StudyActionTypes.START:
     case StudyActionTypes.STOP:
     case StudyActionTypes.SET_DECK:

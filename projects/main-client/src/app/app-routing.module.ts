@@ -22,8 +22,14 @@ const routes: Routes = [
         loadChildren: './modules/study/study.module#StudyModule'
       },
       {
-        path: '',
+        path: 'dashboard',
         loadChildren: './modules/dashboard/dashboard.module#DashboardModule'
+      },
+      {
+        // TODO: remove later
+        path: '',
+        pathMatch: 'full',
+        redirectTo: '/groups'
       }
     ]
   },

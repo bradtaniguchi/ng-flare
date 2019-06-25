@@ -6,11 +6,10 @@ import {
 } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { AppState } from '../../app-store/app-state';
-import { DashboardFacadeService } from './store/dashboard-facade.service';
 import { Deck } from '../../models/deck';
 import { Observable } from 'rxjs';
 import { Group } from '../../models/group';
-import { GroupFacadeService } from '../../app-store/group/group-facade.service';
+import { GroupFacadeService } from '../../app-store/group/group.facade';
 
 @Component({
   selector: 'app-dashboard',
@@ -98,18 +97,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public decks$: Observable<Deck[]>;
   constructor(
     private store: Store<AppState>,
-    private groupFacade: GroupFacadeService,
-    private dashboardFacade: DashboardFacadeService
+    private groupFacade: GroupFacadeService
   ) {}
 
-  ngOnInit() {
-    this.group$ = this.store.pipe(select(this.groupFacade.getSelected));
-    this.loading$ = this.store.pipe(select(this.dashboardFacade.getLoading));
-    this.decks$ = this.store.pipe(select(this.dashboardFacade.getDecks));
-    this.dashboardFacade.searchDashboardDecks({});
-  }
+  ngOnInit() {}
 
-  ngOnDestroy() {
-    this.dashboardFacade.stopSearchDashboardDecks();
-  }
+  ngOnDestroy() {}
 }

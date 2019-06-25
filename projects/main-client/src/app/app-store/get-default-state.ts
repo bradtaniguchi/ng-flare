@@ -1,4 +1,3 @@
-import { SearchParams } from '../models/search-params';
 import { EntityState } from '@ngrx/entity';
 
 /**
@@ -8,7 +7,5 @@ import { EntityState } from '@ngrx/entity';
 export const getDefaultState = (state: any): any => ({
   ...state,
   ids: [],
-  entities: {},
-  orderBy: 'name' as any,
-  limit: 2
+  entities: {}
 });

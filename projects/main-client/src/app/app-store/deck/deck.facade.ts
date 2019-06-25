@@ -23,11 +23,11 @@ export class DeckFacadeService {
     state => state.deck.ids,
     state => state.deck.entities
   );
-  public getOrderBy = this.searchParamsService.createOrderBySelector<Deck>(
-    state => state.deck.orderBy
-  );
-  public getLimit = this.searchParamsService.createLimitSelector(
-    state => state.deck.limit
+
+  public getDecksByGroup = createSelector(
+    this.getDecks,
+    (decks: Deck[], props: { groupId: string }) =>
+      decks.filter(deck => deck.group === props.groupId)
   );
 
   constructor(
@@ -37,10 +37,14 @@ export class DeckFacadeService {
 
   public getDeckSelector(deckId: string) {
     return createSelector(
-      (state: AppState) => state.deck.entities[deckId],
-      _ => _
+      (state: AppState) => state.deck.entities,
+      decks => decks[deckId]
     );
   }
+
+  // public searchDecks(params: SearchParams<Deck>) {
+  //   return createSelector((state: AppState) => state.deck.entities, decks => Object.values(decks).sort((a, b) => a))
+  // }
 
   public listGroupDecks(params: Partial<SearchParams<Deck>>) {
     this.store.dispatch(new ListGroupDecks(params));

@@ -24,7 +24,7 @@ export class StudyService {
    * It will randomly select
    * @param state the state we are to calculate the next card from
    */
-  public getNextCard(state: StudyState): Card | undefined {
+  public getNextCard(state: StudyState): string | undefined {
     const { cards } = state;
     if (cards.length === 0) {
       return undefined;
@@ -33,7 +33,7 @@ export class StudyService {
     if (previous.length >= cards.length) {
       return undefined;
     }
-    const cardsToStudy = cards.filter(card => !previous.includes(card.uid));
+    const cardsToStudy = cards.filter(card => !previous.includes(card));
     const randomIndex = this.getRandom(cardsToStudy.length);
     return cardsToStudy[randomIndex];
   }
