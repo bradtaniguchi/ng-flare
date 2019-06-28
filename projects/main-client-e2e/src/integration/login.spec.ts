@@ -1,5 +1,4 @@
-/// <reference types="cypress" />
-
+import 'cypress';
 import { CONFIG } from '../e2e-config.env';
 
 describe('login', () => {

@@ -9,17 +9,26 @@ import {
   MatButtonModule
 } from '@angular/material';
 import { CreateFabModule } from '../../../shared/create-fab/create-fab.module';
+import { RouterTestingModule } from '@angular/router/testing';
+
+import { provideMockStore } from '@ngrx/store/testing';
 
 describe('GroupsListComponent', () => {
   let component: GroupsListComponent;
   let fixture: ComponentFixture<GroupsListComponent>;
-
+  const initialState = {
+    group: {
+      entities: {}
+    }
+  };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [GroupsListComponent],
+      providers: [provideMockStore({ initialState })],
       imports: [
         FlexLayoutModule,
         LoadingSpinnerModule,
+        RouterTestingModule,
         CreateFabModule,
         MatIconModule,
         MatCardModule,
