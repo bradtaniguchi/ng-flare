@@ -123,7 +123,7 @@ workflows:
                 - master
     jobs:
       - test_main_client
-      - e2e_main_client
+      # - e2e_main_client
       - test_functions
       - build_main_client:
           requires:
@@ -132,7 +132,7 @@ workflows:
   test_and_deploy:
     jobs:
       - test_main_client
-      - e2e_main_client
+      # - e2e_main_client
       - build_main_client:
           requires:
             - test_main_client
@@ -143,5 +143,5 @@ workflows:
                 - master
           requires:
             - build_main_client
-            - e2e_main_client
+            # - e2e_main_client
       - test_functions
