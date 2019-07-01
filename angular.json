@@ -119,7 +119,7 @@
       "prefix": "",
       "architect": {
         "e2e": {
-          "builder": "@nrwl/builders:cypress",
+          "builder": "@nrwl/cypress:cypress",
           "options": {
             "cypressConfig": "projects/main-client-e2e/cypress.json",
             "tsConfig": "projects/main-client-e2e/tsconfig.e2e.json",

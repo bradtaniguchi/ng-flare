@@ -55,6 +55,8 @@
     "@angular/compiler-cli": "~8.0.3",
     "@angular/language-service": "~8.0.3",
     "@nrwl/builders": "7.8.7",
+    "@nrwl/cypress": "^8.2.0",
+    "@nrwl/workspace": "^8.2.0",
     "@types/jasmine": "~3.3.13",
     "@types/jasminewd2": "~2.0.3",
     "@types/luxon": "^1.13.0",
@@ -76,7 +78,7 @@
     "pretty-quick": "^1.10.0",
     "ts-node": "^8.3.0",
     "tslint": "~5.18.0",
-    "typescript": "^3.5.2",
+    "typescript": "^3.4.3",
     "webpack-bundle-analyzer": "^3.3.2"
   }
 }
