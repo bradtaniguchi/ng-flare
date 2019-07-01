@@ -11,19 +11,25 @@ const routes: Routes = [
     children: [
       {
         path: 'decks',
-        loadChildren: './modules/decks/decks.module#DecksModule'
+        loadChildren: () =>
+          import('./modules/decks/decks.module').then(m => m.DecksModule)
       },
       {
         path: 'groups',
-        loadChildren: './modules/groups/groups.module#GroupsModule'
+        loadChildren: () =>
+          import('./modules/groups/groups.module').then(m => m.GroupsModule)
       },
       {
         path: 'study',
-        loadChildren: './modules/study/study.module#StudyModule'
+        loadChildren: () =>
+          import('./modules/study/study.module').then(m => m.StudyModule)
       },
       {
         path: 'dashboard',
-        loadChildren: './modules/dashboard/dashboard.module#DashboardModule'
+        loadChildren: () =>
+          import('./modules/dashboard/dashboard.module').then(
+            m => m.DashboardModule
+          )
       },
       {
         // TODO: remove later
@@ -36,11 +42,13 @@ const routes: Routes = [
   {
     path: 'login',
     canActivate: [LoginGuard],
-    loadChildren: './modules/login/login.module#LoginModule'
+    loadChildren: () =>
+      import('./modules/login/login.module').then(m => m.LoginModule)
   },
   {
     path: 'info',
-    loadChildren: './modules/info/info.module#InfoModule'
+    loadChildren: () =>
+      import('./modules/info/info.module').then(m => m.InfoModule)
   },
   {
     path: '**',

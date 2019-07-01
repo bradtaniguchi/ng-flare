@@ -50,7 +50,7 @@ import { Card } from '../../../models/card';
             [(ngModel)]="deck.description"
           >
           </textarea>
-          <mat-error *ngIf="name.errors?.maxlength">
+          <mat-error *ngIf="description.errors?.maxlength">
             Description is too long
           </mat-error>
         </mat-form-field>
@@ -127,7 +127,7 @@ export class DecksCreateComponent implements OnInit {
   public deck: Partial<Deck> = {};
   public cards: Array<Partial<Card>> = [{}];
 
-  @ViewChild('form') form: NgForm;
+  @ViewChild('form', { static: true }) form: NgForm;
   constructor(
     private deckFacade: DeckFacadeService,
     private location: Location

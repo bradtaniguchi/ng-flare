@@ -6,7 +6,8 @@ import {
 } from '@angular/core/testing';
 
 import { LoginComponent } from './login.component';
-import { MatCardModule, MatButtonModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AuthFacadeService } from '../../app-store/auth/auth-facade.service';
 import { By } from '@angular/platform-browser';
@@ -100,7 +101,7 @@ describe('LoginComponent', () => {
     async (environmentService: EnvironmentService) => {
       spyOn(environmentService, 'get').and.returnValue({
         allowEmailLogin: false
-      });
+      } as any);
       await fixture.whenStable();
       const loginWithEmail = getLoginWithEmail();
       expect(loginWithEmail).toBeFalsy();
@@ -111,7 +112,7 @@ describe('LoginComponent', () => {
     async (environmentService: EnvironmentService) => {
       spyOn(environmentService, 'get').and.returnValue({
         allowEmailLogin: true
-      });
+      } as any);
       fixture.detectChanges();
       await fixture.whenStable();
       const loginWithEmail = getLoginWithEmail();
@@ -124,7 +125,7 @@ describe('LoginComponent', () => {
     async (environmentService: EnvironmentService) => {
       spyOn(environmentService, 'get').and.returnValue({
         allowEmailLogin: true
-      });
+      } as any);
       fixture.detectChanges();
       await fixture.whenStable();
       const emailInput = getEmailInput();
@@ -137,7 +138,7 @@ describe('LoginComponent', () => {
     async (environmentService: EnvironmentService) => {
       spyOn(environmentService, 'get').and.returnValue({
         allowEmailLogin: true
-      });
+      } as any);
       fixture.detectChanges();
       await fixture.whenStable();
       const passwordInput = getPasswordInput();
@@ -150,7 +151,7 @@ describe('LoginComponent', () => {
     async (environmentService: EnvironmentService) => {
       spyOn(environmentService, 'get').and.returnValue({
         allowEmailLogin: false
-      });
+      } as any);
       fixture.detectChanges();
       await fixture.whenStable();
       const emailInput = getEmailInput();
@@ -163,7 +164,7 @@ describe('LoginComponent', () => {
     async (environmentService: EnvironmentService) => {
       spyOn(environmentService, 'get').and.returnValue({
         allowEmailLogin: false
-      });
+      } as any);
       fixture.detectChanges();
       await fixture.whenStable();
       const passwordInput = getPasswordInput();

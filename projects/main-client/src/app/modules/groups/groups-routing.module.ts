@@ -4,11 +4,15 @@ import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [
   {
     path: 'create',
-    loadChildren: './groups-create/groups-create.module#GroupsCreateModule'
+    loadChildren: () =>
+      import('./groups-create/groups-create.module').then(
+        m => m.GroupsCreateModule
+      )
   },
   {
     path: '',
-    loadChildren: './groups-list/groups-list.module#GroupsListModule'
+    loadChildren: () =>
+      import('./groups-list/groups-list.module').then(m => m.GroupsListModule)
   }
 ];
 

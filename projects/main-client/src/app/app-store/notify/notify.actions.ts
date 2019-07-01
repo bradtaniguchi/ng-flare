@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { MatSnackBarConfig } from '@angular/material';
+import { MatSnackBarConfig } from '@angular/material/snack-bar';
 
 export enum NotifyActionTypes {
   Notify = '[Notify] notify'

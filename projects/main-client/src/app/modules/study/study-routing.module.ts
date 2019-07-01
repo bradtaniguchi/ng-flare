@@ -7,15 +7,22 @@ const routes: Routes = [
     children: [
       {
         path: ':deckId/preview',
-        loadChildren: './study-preview/study-preview.module#StudyPreviewModule'
+        loadChildren: () =>
+          import('./study-preview/study-preview.module').then(
+            m => m.StudyPreviewModule
+          )
       },
       {
         path: ':deckId/review',
-        loadChildren: './study-review/study-review.module#StudyReviewModule'
+        loadChildren: () =>
+          import('./study-review/study-review.module').then(
+            m => m.StudyReviewModule
+          )
       },
       {
         path: ':deckId/card/:cardId',
-        loadChildren: './study-card/study-card.module#StudyCardModule'
+        loadChildren: () =>
+          import('./study-card/study-card.module').then(m => m.StudyCardModule)
       }
       // TODO: add!
       // {

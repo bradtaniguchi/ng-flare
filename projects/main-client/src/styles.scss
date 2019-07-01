@@ -68,3 +68,11 @@ mat-card.flat {
   width: 32px;
   font-size: 32px;
 }
+
+// class for buttons in the upper right of cards
+button.upper-right {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  z-index: 2;
+}

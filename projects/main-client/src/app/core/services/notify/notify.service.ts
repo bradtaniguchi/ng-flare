@@ -2,7 +2,7 @@ import {
   MatSnackBar,
   MatSnackBarDismiss,
   MatSnackBarConfig
-} from '@angular/material';
+} from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 

@@ -10,12 +10,12 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: npm-deps-{{ checksum "package.json" }}-${CACHE_VERSION}
+          keys: node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
       - run:
           name: install-deps
           command: npm ci
       - save_cache:
-          key: npm-deps-{{ checksum "package.json" }}-${CACHE_VERSION}
+          key: node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
           paths:
             - ./node_modules
       - run:
@@ -36,12 +36,12 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: npm-deps-{{ checksum "package.json" }}-${CACHE_VERSION}
+          keys: node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
       - run:
           name: install-deps
           command: npm ci
       - save_cache:
-          key: npm-deps-{{ checksum "package.json" }}-${CACHE_VERSION}
+          key: node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
           paths:
             - ./node_modules
       - run:
@@ -56,13 +56,13 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: function-npm-deps-{{ checksum "package.json" }}-${CACHE_VERSION}
+          keys: function-node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
       - run:
           working_directory: ./functions
           name: install-deps
           command: npm ci
       - save_cache:
-          key: function-npm-deps-{{ checksum "package.json" }}-${CACHE_VERSION}
+          key: function-node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
           paths:
             - ./node_modules
       - run:
@@ -76,12 +76,12 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: npm-deps-{{ checksum "package.json" }}-${CACHE_VERSION}
+          keys: node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
       - run:
           name: install-deps
           command: npm ci
       - save_cache:
-          key: npm-deps-{{ checksum "package.json" }}-${CACHE_VERSION}
+          key: node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
           paths:
             - ./node_modules
       - run:

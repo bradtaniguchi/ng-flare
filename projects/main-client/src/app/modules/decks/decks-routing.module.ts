@@ -4,11 +4,15 @@ import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [
   {
     path: 'create',
-    loadChildren: './decks-create/decks-create.module#DecksCreateModule'
+    loadChildren: () =>
+      import('./decks-create/decks-create.module').then(
+        m => m.DecksCreateModule
+      )
   },
   {
     path: '',
-    loadChildren: './decks-list/decks-list.module#DecksListModule'
+    loadChildren: () =>
+      import('./decks-list/decks-list.module').then(m => m.DecksListModule)
   }
 ];
 
