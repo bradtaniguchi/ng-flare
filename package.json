@@ -17,7 +17,7 @@
     "smoke": "npx ts-node tools/smoke-server",
     "config:e2e": "npx ts-node --project=tools/tsconfig.tools.json tools/set-e2e-env.ts",
     "config": "npx ts-node --project=tools/tsconfig.tools.json tools/set-env.ts",
-    "clean": "npx rimraf dist"
+    "clean": "npx rimraf dist out-tsc coverage"
   },
   "husky": {
     "hooks": {
