@@ -42,8 +42,8 @@ export class GroupFacadeService {
     );
   }
 
-  public listUserGroups(params: Partial<SearchParams<Group>>) {
-    this.store.dispatch(groupActions.searchUserGroups(params));
+  public listUserGroups() {
+    this.store.dispatch(groupActions.searchUserGroups({ callNum: 0 })); // TODO!
   }
 
   public createGroupWithUsers(params: {

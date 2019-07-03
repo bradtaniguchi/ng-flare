@@ -43,7 +43,7 @@ export class GroupEffects {
             groupActions.select({
               groupId: action.payload.user.uid
             }),
-            groupActions.searchUserGroups({})
+            groupActions.searchUserGroups({ callNum: 0 }) // TODO!
           ]
         : [
             groupActions.select({
@@ -54,11 +54,10 @@ export class GroupEffects {
   );
 
   @Effect()
-  listUserGroups$ = this.actions$.pipe(
-    // ofType(GroupActionTypes.LIST_USER_GROUPS),
+  searchUserGroups$ = this.actions$.pipe(
     ofType(groupActions.searchUserGroups),
     withLatestFrom(this.user$),
-    switchMap(([_, user]) =>
+    switchMap(([action, user]) =>
       this.groupService.getPermissions({ user }).pipe(
         switchMap(permissions =>
           this.groupService.listUserGroups({
@@ -69,7 +68,7 @@ export class GroupEffects {
         map(groups => groupActions.searchUserGroupsUpdate({ groups })),
         catchError(err => {
           logger.error(err);
-          return of(groupActions.searchUserGroupsFailed());
+          return of(groupActions.searchUserGroupsFailed(action));
         })
         // TODO: re-add take-until later!
         // takeUntil(this.listStop$)
