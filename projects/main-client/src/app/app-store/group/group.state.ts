@@ -22,8 +22,8 @@ export const GroupReducer = createReducer(
     ...state,
     loading: true
   })),
-  on(groupActions.searchUpdate, (state, { groups }) =>
-    groupAdapter.upsertMany(groups, {
+  on(groupActions.searchUpdate, (state, { entities }) =>
+    groupAdapter.upsertMany(entities, {
       ...state,
       loading: false
     })
@@ -32,7 +32,7 @@ export const GroupReducer = createReducer(
     ...state,
     selected: groupId
   })),
-  on(groupActions.createSuccess, (state, { group }) =>
-    groupAdapter.upsertOne(group, state)
+  on(groupActions.createSuccess, (state, { entity }) =>
+    groupAdapter.upsertOne(entity, state)
   )
 );

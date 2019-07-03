@@ -43,14 +43,13 @@ export class GroupsListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.groups$ = this.observeGroups({
-      limit: 2,
-      orderBy: 'name'
-    });
+    this.groups$ = this.observeGroups();
   }
 
-  private observeGroups(params: Partial<SearchParams<Group>>) {
-    this.groupFacade.listUserGroups(params);
-    return this.store.pipe(select(this.groupFacade.searchGroups(), params));
+  private observeGroups() {
+    this.groupFacade.listUserGroups();
+    return this.store.pipe(
+      select(this.groupFacade.searchGroups(), { limit: 2, orderBy: 'name' })
+    );
   }
 }
