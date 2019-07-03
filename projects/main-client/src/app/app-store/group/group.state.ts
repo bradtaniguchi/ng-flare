@@ -32,9 +32,15 @@ const reducer = createReducer(
     ...state,
     selected: groupId
   })),
+  on(groupActions.create, state => ({ ...state, loading: true })),
   on(groupActions.createSuccess, (state, { entity }) =>
-    groupAdapter.upsertOne(entity, state)
-  )
+    groupAdapter.upsertOne(entity, { ...state, loading: false })
+  ),
+  on(groupActions.searchUserGroups, state => ({ ...state, loading: true })),
+  on(groupActions.searchUserGroupsUpdate, (state, { groups }) =>
+    groupAdapter.upsertMany(groups, { ...state, loading: false })
+  ),
+  on(groupActions.searchUserGroups, state => ({ ...state, loading: false }))
 );
 export function GroupReducer(state: GroupState, action: Action) {
   return reducer(state, action);
