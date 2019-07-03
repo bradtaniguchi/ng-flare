@@ -1,5 +1,5 @@
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
-import { createReducer, on } from '@ngrx/store';
+import { createReducer, on, Action } from '@ngrx/store';
 import { Card } from '../../models/card';
 import { cardActions } from './card.actions';
 
@@ -13,7 +13,7 @@ export const cardAdapter = createEntityAdapter<Card>({
 
 const initialState: CardState = { loading: false, ids: [], entities: {} };
 
-export const CardReducer = createReducer(
+const reducer = createReducer(
   initialState,
   on(cardActions.create, state => ({
     ...state
@@ -31,3 +31,6 @@ export const CardReducer = createReducer(
     cardAdapter.upsertMany(entities, state)
   )
 );
+export function CardReducer(state: CardState, action: Action) {
+  return reducer(state, action);
+}

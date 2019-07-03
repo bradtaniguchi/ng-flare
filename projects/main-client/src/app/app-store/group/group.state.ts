@@ -1,6 +1,6 @@
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { Group } from '../../models/group';
-import { createReducer, on } from '@ngrx/store';
+import { createReducer, on, Action } from '@ngrx/store';
 import { groupActions } from './group.actions';
 
 export interface GroupState extends EntityState<Group> {
@@ -16,7 +16,7 @@ export const groupAdapter = createEntityAdapter<Group>({
 });
 
 const initialState: GroupState = { loading: false, ids: [], entities: {} };
-export const GroupReducer = createReducer(
+const reducer = createReducer(
   initialState,
   on(groupActions.searchUserGroups, state => ({
     ...state,
@@ -36,3 +36,6 @@ export const GroupReducer = createReducer(
     groupAdapter.upsertOne(entity, state)
   )
 );
+export function GroupReducer(state: GroupState, action: Action) {
+  return reducer(state, action);
+}

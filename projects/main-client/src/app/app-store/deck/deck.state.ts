@@ -1,5 +1,5 @@
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
-import { createReducer, on } from '@ngrx/store';
+import { createReducer, on, Action } from '@ngrx/store';
 import { Deck } from '../../models/deck';
 import { deckActions } from './deck.actions';
 
@@ -16,7 +16,7 @@ const initialState: DeckState = {
   ids: [],
   entities: {}
 };
-export const DeckReducer = createReducer(
+const reducer = createReducer(
   initialState,
   on(deckActions.createSuccess, (state, { entity }) =>
     deckAdapter.upsertOne(entity, state)
@@ -31,3 +31,6 @@ export const DeckReducer = createReducer(
     deckAdapter.upsertMany(entities, state)
   )
 );
+export function DeckReducer(state: DeckState, action: Action) {
+  return reducer(state, action);
+}
