@@ -50,7 +50,7 @@ import { Location } from '@angular/common';
             name="description"
             maxlength="256"
             #description="ngModel"
-            [(ngModel)]="deck.description"
+            [(ngModel)]="group.description"
           >
           </textarea>
           <mat-error *ngIf="name.errors?.maxlength">
