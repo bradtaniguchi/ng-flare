@@ -9,13 +9,18 @@ import { Observable, from } from 'rxjs';
 import { Group } from '../../../models/group';
 import { mapTo, take } from 'rxjs/operators';
 import { User } from '../../../models/user';
+import { SearchParams } from '../../../models/search-params';
+import { SearchFilterService } from '../search-filter/search-filter.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DeckService {
   private deckCollection: AngularFirestoreCollection<Deck>;
-  constructor(private db: AngularFirestore) {
+  constructor(
+    private db: AngularFirestore,
+    private searchFilterService: SearchFilterService
+  ) {
     this.deckCollection = this.db.collection(Collections.Decks);
   }
 
@@ -45,6 +50,21 @@ export class DeckService {
     return from(this.deckCollection.doc(uid).set(createdDeck)).pipe(
       mapTo(createdDeck)
     );
+  }
+
+  public search(params: SearchParams<Deck>): Observable<Deck[]> {
+    const { filters, limit, orderBy } = params;
+    return this.db
+      .collection<Deck>(Collections.Cards, ref =>
+        this.searchFilterService
+          .applyFilters<Deck>({
+            filters,
+            ref
+          })
+          .orderBy(orderBy)
+          .limit(limit)
+      )
+      .valueChanges();
   }
 
   /**

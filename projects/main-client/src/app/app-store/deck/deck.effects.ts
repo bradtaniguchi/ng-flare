@@ -17,17 +17,9 @@ import { User } from '../../models/user';
 import { AppState } from '../app-state';
 import { AuthFacadeService } from '../auth/auth-facade.service';
 import { GroupFacadeService } from '../group/group.facade';
-import {
-  CreateDeck,
-  CreateDeckFailed,
-  CreateDeckSuccess,
-  DeckActionTypes,
-  ListGroupDecksFailed,
-  ListGroupDecksUpdate,
-  CreateDeckWithCards,
-  ListGroupDecks
-} from './deck.actions';
 import { cardActions } from '../cards/card.actions';
+import { deckActions } from './deck.actions';
+import { ReportError } from '../error/error.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -43,78 +35,94 @@ export class DeckEffects {
 
   private group$ = this.store.pipe(select(this.groupFacadeService.getSelected));
 
-  private listStop$ = this.actions$.pipe(
-    ofType(DeckActionTypes.LIST_GROUP_DECKS_STOP)
-  );
+  // private listStop$ = this.actions$.pipe(
+  //   ofType(DeckActionTypes.LIST_GROUP_DECKS_STOP)
+  // );
   private user$ = this.store.pipe(select(this.authFacadeService.getUserState));
 
   @Effect()
   createDeck$ = this.actions$.pipe(
-    ofType(DeckActionTypes.CREATE),
+    ofType(deckActions.create),
     withLatestFrom(this.group$, this.user$),
-    mergeMap(([action, group, user]: [CreateDeck, Group, User]) =>
+    mergeMap(([action, group, user]) =>
       this.deckService
         .create({
-          deck: action.payload.deck,
+          deck: action.entity,
           group,
           user
         })
         .pipe(
-          map(deck => new CreateDeckSuccess({ deck })),
-          catchError(err => {
-            logger.error(err);
-            return of(new CreateDeckFailed());
-          })
+          map(entity => deckActions.createSuccess({ entity })),
+          catchError(err => [deckActions.createFailed(action)])
         )
     )
   );
 
   @Effect()
   createDeckAndCards$ = this.actions$.pipe(
-    ofType(DeckActionTypes.CREATE_WITH_CARDS),
+    ofType(deckActions.createWithCards),
     withLatestFrom(this.group$, this.user$),
-    mergeMap(([action, group, user]: [CreateDeckWithCards, Group, User]) =>
+    mergeMap(([action, group, user]) =>
       this.deckService
         .create({
-          deck: action.payload.deck,
+          deck: action.deck,
           group,
           user
         })
         .pipe(
-          mergeMap(deck => [
-            new CreateDeckSuccess({ deck }),
+          mergeMap(entity => [
+            deckActions.createSuccess({ entity }),
             cardActions.createWithDeck({
-              cards: action.payload.cards,
-              deck
+              cards: action.cards,
+              deck: entity
             })
           ]),
-          catchError(err => {
-            logger.error(err);
-            return of(new CreateDeckFailed());
-          })
+          catchError(err => [
+            deckActions.createFailed({ entity: action.deck }),
+            new ReportError({
+              err,
+              message: 'There was an error creating deck'
+            })
+          ])
         )
     )
   );
 
   @Effect()
-  listGroupDecks$ = this.actions$.pipe(
-    ofType(DeckActionTypes.LIST_GROUP_DECKS),
-    withLatestFrom(this.group$),
-    switchMap(([action, group]: [ListGroupDecks, Group]) =>
-      this.deckService
-        .list({
-          group,
-          orderBy: action.payload.orderBy,
-          limit: action.payload.limit
-        })
-        .pipe(
-          map(decks => new ListGroupDecksUpdate({ decks })),
-          catchError(err => {
-            logger.error(err);
-            return of(new ListGroupDecksFailed());
-          }),
-          takeUntil(this.listStop$)
-        )
+  searchDecks$ = this.actions$.pipe(
+    ofType(deckActions.search),
+    mergeMap(action =>
+      this.deckService.search(action).pipe(
+        map(entities => deckActions.searchUpdate({ entities })),
+        catchError(err => [
+          deckActions.searchFailed({ callNum: action.callNum }),
+          new ReportError({
+            err,
+            message: 'There was an error searching decks'
+          })
+        ])
+      )
     )
   );
+  // @Effect()
+  // listGroupDecks$ = this.actions$.pipe(
+  //   ofType(deckActions.search),
+  //   withLatestFrom(this.group$),
+  //   switchMap(([action, group]: [ListGroupDecks, Group]) =>
+  //     this.deckService
+  //       .list({
+  //         group,
+  //         orderBy: action.payload.orderBy,
+  //         limit: action.payload.limit
+  //       })
+  //       .pipe(
+  //         map(decks => new ListGroupDecksUpdate({ decks })),
+  //         catchError(err => {
+  //           logger.error(err);
+  //           return of(new ListGroupDecksFailed());
+  //         }),
+  //         takeUntil(this.listStop$)
+  //       )
+  //   )
+  // );
 }

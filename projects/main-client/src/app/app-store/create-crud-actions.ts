@@ -31,7 +31,10 @@ export const createCrudActions = <T>({ type }: { type: string }) => ({
       entity: T;
     }>()
   ),
-  createFailed: createAction(getPrefix({ type, action: 'CREATE_FAILED' })),
+  createFailed: createAction(
+    getPrefix({ type, action: 'CREATE_FAILED' }),
+    props<{ entity: Partial<T> }>()
+  ),
 
   // bulk create
   bulkCreate: createAction(
