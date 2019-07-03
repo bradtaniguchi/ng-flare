@@ -73,15 +73,14 @@ export class AuthEffects {
     ofType(AuthActionTypes.REGISTER),
     mergeMap((action: AuthRegister) =>
       this.user.exists(action.payload.user).pipe(
-        mergeMap<boolean, AuthRegisterOnlyUpdateSuccess | AuthRegisterSuccess>(
-          exists =>
-            exists
-              ? this.user
-                  .updateLogin(action.payload.user)
-                  .pipe(map(() => new AuthRegisterOnlyUpdateSuccess()))
-              : this.user
-                  .create(action.payload.user)
-                  .pipe(map(() => new AuthRegisterSuccess()))
+        mergeMap(exists =>
+          exists
+            ? this.user
+                .updateLogin(action.payload.user)
+                .pipe(map(() => new AuthRegisterOnlyUpdateSuccess()))
+            : this.user
+                .create(action.payload.user)
+                .pipe(map(() => new AuthRegisterSuccess()))
         ),
         catchError(err => {
           logger.error(err);

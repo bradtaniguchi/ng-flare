@@ -1,7 +1,7 @@
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
+import { createReducer, on } from '@ngrx/store';
 import { Card } from '../../models/card';
-import { getDefaultState } from '../get-default-state';
-import { CardActions, CardActionTypes } from './card.actions';
+import { cardActions } from './card.actions';
 
 export interface CardState extends EntityState<Card> {
   loading: boolean;
@@ -11,23 +11,23 @@ export const cardAdapter = createEntityAdapter<Card>({
   selectId: card => card.uid
 });
 
-export function CardReducer(
-  state: CardState = getDefaultState({ loading: false }),
-  action: CardActions
-) {
-  switch (action.type) {
-    case CardActionTypes.CREATE_SUCCESS:
-      return cardAdapter.addMany(action.payload.cards, state);
-    case CardActionTypes.LIST_DECK_CARDS:
-      return { ...state, loading: true, ...action.payload };
-    case CardActionTypes.LIST_DECK_CARDS_FAILED:
-      return { ...state, loading: false };
-    case CardActionTypes.LIST_DECK_CARDS_UPDATE:
-      return cardAdapter.upsertMany(action.payload.cards, {
-        ...state,
-        loading: false
-      });
-    default:
-      return state;
-  }
-}
+const initialState: CardState = { loading: false, ids: [], entities: {} };
+
+export const CardReducer = createReducer(
+  initialState,
+  on(cardActions.create, state => ({
+    ...state
+  })),
+  on(cardActions.createSuccess, (state, { entity }) =>
+    cardAdapter.upsertOne(entity, state)
+  ),
+  on(cardActions.bulkCreateSuccess, (state, { entities }) =>
+    cardAdapter.upsertMany(entities, state)
+  ),
+  on(cardActions.searchDeckCardsSuccess, (state, { entities }) =>
+    cardAdapter.upsertMany(entities, state)
+  ),
+  on(cardActions.bulkUpdateSuccess, (state, { entities }) =>
+    cardAdapter.upsertMany(entities, state)
+  )
+);

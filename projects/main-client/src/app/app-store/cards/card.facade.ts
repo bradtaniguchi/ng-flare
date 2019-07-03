@@ -1,16 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Store, createSelector } from '@ngrx/store';
+import { createSelector, Store } from '@ngrx/store';
 import { SearchParamsService } from '../../core/services/search-params/search-params.service';
 import { Card } from '../../models/card';
-import { SearchParams } from '../../models/search-params';
-import { AppState } from '../app-state';
-import {
-  CreateCards,
-  ListDeckCards,
-  ListDeckCardsStop,
-  ListDeckCardsParams
-} from './card.actions';
 import { Deck } from '../../models/deck';
+import { AppState } from '../app-state';
+import { cardActions } from './card.actions';
+import { SearchParams } from '../../models/search-params';
 
 @Injectable({
   providedIn: 'root'
@@ -43,15 +38,15 @@ export class CardFacadeService {
     );
   }
 
-  public listCards(params?: ListDeckCardsParams) {
-    this.store.dispatch(new ListDeckCards(params));
+  public listCards(params?: SearchParams<Card>) {
+    this.store.dispatch(cardActions.search(params));
   }
 
   public createCard(params: { cards: Array<Partial<Card>>; deck: Deck }) {
-    this.store.dispatch(new CreateCards(params));
+    this.store.dispatch(cardActions.createWithDeck(params));
   }
 
-  public stopList() {
-    this.store.dispatch(new ListDeckCardsStop());
+  public stopList(params: { callNum: number }) {
+    this.store.dispatch(cardActions.searchStop(params));
   }
 }

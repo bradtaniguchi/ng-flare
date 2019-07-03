@@ -16,11 +16,11 @@ import { GroupEffects } from './group/group.effects';
 import { GroupReducer } from './group/group.state';
 import { LoadingReducer } from './loading/loading.state';
 import { NotifyEffects } from './notify/notify.effects';
-import { CardReducer } from './cards/card.state';
 import { CardEffects } from './cards/card.effects';
 import { RouteEffects } from './route/route.effects';
 import { RouteReducer } from './route/route.state';
 import { ErrorEffects } from './error/error.effects';
+import { CardReducer } from './cards/card.state';
 
 @NgModule({
   declarations: [],

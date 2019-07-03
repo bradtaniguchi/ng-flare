@@ -10,13 +10,18 @@ import { User } from '../../../models/user';
 import { Collections } from '../../collections';
 import { Deck } from '../../../models/deck';
 import { logger } from '../../logger';
+import { SearchParams } from '../../../models/search-params';
+import { SearchFilterService } from '../search-filter/search-filter.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CardService {
   private cardCollection: AngularFirestoreCollection<Card>;
-  constructor(private db: AngularFirestore) {
+  constructor(
+    private db: AngularFirestore,
+    private searchFilterService: SearchFilterService
+  ) {
     this.cardCollection = this.db.collection(Collections.Cards);
   }
 
@@ -92,6 +97,21 @@ export class CardService {
       .collection<Card>(Collections.Cards, ref =>
         ref
           .where('group', '==', deck.uid)
+          .orderBy(orderBy)
+          .limit(limit)
+      )
+      .valueChanges();
+  }
+
+  public search(params: SearchParams<Card>): Observable<Card[]> {
+    const { filters, limit, orderBy } = params;
+    return this.db
+      .collection<Card>(Collections.Cards, ref =>
+        this.searchFilterService
+          .applyFilters<Card>({
+            filters,
+            ref
+          })
           .orderBy(orderBy)
           .limit(limit)
       )

@@ -27,7 +27,7 @@ import {
   CreateDeckWithCards,
   ListGroupDecks
 } from './deck.actions';
-import { CreateCards } from '../cards/card.actions';
+import { cardActions } from '../cards/card.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -83,7 +83,10 @@ export class DeckEffects {
         .pipe(
           mergeMap(deck => [
             new CreateDeckSuccess({ deck }),
-            new CreateCards({ cards: action.payload.cards, deck })
+            cardActions.createWithDeck({
+              cards: action.payload.cards,
+              deck
+            })
           ]),
           catchError(err => {
             logger.error(err);
