@@ -144,9 +144,9 @@ workflows:
             - test_main_client
       - deploy_main_client:
           filters:
+            # do not deploy for any branch at any time
             branches:
-              only:
-                - master
+              ignore: /.*/
             tags:
               # match only RELEASE tags
               only: /^RELEASE-[0-9].[0-9].[0-9]$/
