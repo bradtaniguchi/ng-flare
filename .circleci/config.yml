@@ -165,14 +165,17 @@ workflows:
       - build_main_client:
           requires:
             - test_main_client
+        # deploys to dev environment
       - deploy_main_client:
           filters:
             # do not deploy for any branch at any time
             branches:
+              only:
+                - master
               ignore: /.*/
             tags:
-              # match only RELEASE tags
-              only: /^RELEASE-[0-9].[0-9].[0-9]$/
+              # match only DEV tags
+              only: /^DEV-[0-9].[0-9].[0-9]$/
           requires:
             - build_main_client
             - e2e_main_client
