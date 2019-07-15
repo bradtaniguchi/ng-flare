@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Group } from '../../models/group';
-import { User } from '../../models/user';
+import { User, UserFormItem } from '../../models/user';
 import { createCrudActions } from '../create-crud-actions';
 
 export const groupActions = {
@@ -26,7 +26,7 @@ export const groupActions = {
   ),
   createGroupWithUsers: createAction(
     '[Group] CREATE_GROUP_WITH_USERS',
-    props<{ group: Partial<Group>; users: Array<Partial<User>> }>()
+    props<{ group: Partial<Group>; users: Array<Partial<UserFormItem>> }>()
   )
 
   // createGroupWithUsersSuccess: createAction(

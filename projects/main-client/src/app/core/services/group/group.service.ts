@@ -10,6 +10,7 @@ import { Observable, from, combineLatest } from 'rxjs';
 import { User } from '../../../models/user';
 import { Permission } from '../../../models/permission';
 import { RoleType } from '../../../models/role';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -25,14 +26,15 @@ export class GroupService {
   /**
    * Creates a new group
    */
-  public create(group: Partial<Group>): Observable<void> {
+  public create(group: Partial<Group>): Observable<Group> {
     const uid = this.db.createId();
-    return from(
-      this.groupCollection.doc(uid).set({
-        uid,
-        ...group,
-        createdOn: new Date()
-      } as Group)
+    const createdGroup = {
+      uid,
+      ...group,
+      createdOn: new Date()
+    } as Group;
+    return from(this.groupCollection.doc(uid).set(createdGroup)).pipe(
+      map(() => createdGroup)
     );
   }
 

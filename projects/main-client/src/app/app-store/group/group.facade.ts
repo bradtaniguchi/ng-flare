@@ -3,7 +3,7 @@ import { createSelector, Store } from '@ngrx/store';
 import { SearchParamsService } from '../../core/services/search-params/search-params.service';
 import { Group } from '../../models/group';
 import { SearchParams } from '../../models/search-params';
-import { User } from '../../models/user';
+import { User, UserFormItem } from '../../models/user';
 import { AppState } from '../app-state';
 import { groupActions } from './group.actions';
 
@@ -48,7 +48,7 @@ export class GroupFacadeService {
 
   public createGroupWithUsers(params: {
     group: Partial<Group>;
-    users: Array<Partial<User>>;
+    users: Array<Partial<UserFormItem>>;
   }) {
     this.store.dispatch(groupActions.createGroupWithUsers(params));
   }

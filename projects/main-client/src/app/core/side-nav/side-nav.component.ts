@@ -45,6 +45,23 @@ import {
               </div>
             </a>
           </li>
+          <li>
+            <a
+              class="nav-element"
+              matRipple
+              fxLayoutAlign="start center"
+              fxLayout="row"
+              routerLink="groups"
+              routerLinkActive="active-link"
+            >
+              <mat-icon class="large">
+                group
+              </mat-icon>
+              <div class="subheading-2 margin">
+                Groups
+              </div>
+            </a>
+          </li>
         </ul>
         <mat-divider> </mat-divider>
         <ul>

@@ -25,6 +25,10 @@ ul {
   margin-block-end: 0;
 }
 
+.full-width {
+  width: 100%;
+}
+
 .margin {
   margin: 16px;
 }
@@ -75,4 +79,10 @@ button.upper-right {
   right: 4px;
   top: 4px;
   z-index: 2;
+}
+
+.user-avatar {
+  height: 40px;
+  width: 40px;
+  border-radius: 20px;
 }

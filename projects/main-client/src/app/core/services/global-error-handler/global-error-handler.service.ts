@@ -1,4 +1,4 @@
-import { Injectable, ErrorHandler } from '@angular/core';
+import { Injectable, ErrorHandler, Injector } from '@angular/core';
 import { logger } from '../../logger';
 import { ErrorFacadeService } from '../../../app-store/error/error.facade';
 
@@ -6,11 +6,12 @@ import { ErrorFacadeService } from '../../../app-store/error/error.facade';
   providedIn: 'root'
 })
 export class GlobalErrorHandlerService implements ErrorHandler {
-  constructor(private errorFacadeService: ErrorFacadeService) {}
+  constructor(private injector: Injector) {}
 
   public handleError(err: Error | any) {
+    const errorFacadeService = this.injector.get(ErrorFacadeService);
     logger.error(err);
-    this.errorFacadeService.report({
+    errorFacadeService.report({
       err,
       message: 'Oops, There was an unexpected error'
     });

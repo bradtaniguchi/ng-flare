@@ -21,6 +21,8 @@ import { RouteEffects } from './route/route.effects';
 import { RouteReducer } from './route/route.state';
 import { ErrorEffects } from './error/error.effects';
 import { CardReducer } from './cards/card.state';
+import { UserReducer } from './user/user.state';
+import { UserEffects } from './user/user.effects';
 
 @NgModule({
   declarations: [],
@@ -34,7 +36,8 @@ import { CardReducer } from './cards/card.state';
       drawer: DrawerReducer,
       group: GroupReducer,
       deck: DeckReducer,
-      card: CardReducer
+      card: CardReducer,
+      user: UserReducer
     }),
     EffectsModule.forRoot([
       AuthEffects,
@@ -43,6 +46,7 @@ import { CardReducer } from './cards/card.state';
       GroupEffects,
       DeckEffects,
       CardEffects,
+      UserEffects,
       ErrorEffects
     ]),
     StoreDevtoolsModule.instrument({

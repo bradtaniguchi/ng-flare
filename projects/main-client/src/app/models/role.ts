@@ -3,6 +3,10 @@ export enum RoleType {
   Editor = 'Editor',
   Viewer = 'Viewer'
 }
+export interface Role {
+  type: RoleType;
+  description: string;
+}
 
 export const ADMIN_ROLE = {
   type: RoleType.Admin,
@@ -20,3 +24,8 @@ export const VIEWER_ROLE = {
   type: RoleType.Viewer,
   description: 'Can view all decks within the group'
 };
+
+/**
+ * List of all the roles available in the application
+ */
+export const ROLES: Role[] = [ADMIN_ROLE, EDITOR_ROLE, VIEWER_ROLE];

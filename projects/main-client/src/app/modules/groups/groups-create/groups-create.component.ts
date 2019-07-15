@@ -5,11 +5,19 @@ import {
   ViewChild
 } from '@angular/core';
 import { Group } from '../../../models/group';
-import { User } from '../../../models/user';
+import { User, UserFormItem } from '../../../models/user';
 import { NgForm } from '@angular/forms';
 import { logger } from '../../../core/logger';
 import { GroupFacadeService } from '../../../app-store/group/group.facade';
 import { Location } from '@angular/common';
+import { Observable } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+import { AppState } from '../../../app-store/app-state';
+import { AuthFacadeService } from '../../../app-store/auth/auth-facade.service';
+import { Permission } from '../../../models/permission';
+import { map, take, tap } from 'rxjs/operators';
+import { RoleType, ROLES } from '../../../models/role';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-groups-create',
@@ -66,11 +74,13 @@ import { Location } from '@angular/common';
             <li fxFlex>
               <mat-card class="flat hover-hide">
                 <button
+                  *ngIf="index !== 0"
                   class="upper-right hover-hide-el"
                   mat-icon-button
                   type="button"
                   aria-label="Remove User"
                   title="Remove User"
+                  (click)="removeUser(user)"
                 >
                   <mat-icon>close</mat-icon>
                 </button>
@@ -80,6 +90,63 @@ import { Location } from '@angular/common';
                   fxLayoutGap="4px"
                 >
                   <!-- TODO: add user search here -->
+                  <mat-form-field fxFlex>
+                    <mat-label>User Code</mat-label>
+                    <img
+                      matPrefix
+                      *ngIf="validUserId.user$ | async as user"
+                      [src]="user.photoURL"
+                      [title]="user.displayName"
+                      class="user-avatar"
+                      style="margin-right: 8px"
+                    />
+                    <input
+                      type="text"
+                      autocomplete="off"
+                      matInput
+                      name="uid"
+                      #uid="ngModel"
+                      appValidUserId
+                      #validUserId="appValidUserId"
+                      [disabled]="
+                        (currentUser$ | async)?.uid === users[index].uid
+                      "
+                      [readonly]="
+                        (currentUser$ | async)?.uid === users[index].uid
+                      "
+                      [(ngModel)]="users[index].uid"
+                      [title]="validUserId.user$ | async | json"
+                    />
+                    <!-- todo: add userId async validator directive -->
+                    <mat-hint>
+                      The user code is available from the user profile
+                    </mat-hint>
+                    <mat-error *ngIf="uid.errors?.uid">
+                      User not found
+                    </mat-error>
+                  </mat-form-field>
+                  <mat-form-field fxFlex>
+                    <mat-icon matPrefix>lock</mat-icon>
+                    <mat-label>Role Permission</mat-label>
+                    <mat-select
+                      matInput
+                      name="roleType"
+                      #roleType="ngModel"
+                      required
+                      [(ngModel)]="users[index].roleType"
+                    >
+                      <mat-option
+                        *ngFor="let role of roles"
+                        [value]="role.type"
+                      >
+                        {{ role.type }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-hint>
+                      Click <a>here</a> to more information on each permission
+                      level
+                    </mat-hint>
+                  </mat-form-field>
                 </mat-card-content>
               </mat-card>
             </li>
@@ -108,30 +175,61 @@ import { Location } from '@angular/common';
 })
 export class GroupsCreateComponent implements OnInit {
   public group: Partial<Group> = {};
-  public users: Array<Partial<User>> = [];
+  public users: Array<Partial<UserFormItem>>;
+  public roleTypes: RoleType[] = Object.values(RoleType);
+  public currentUser$: Observable<User>;
+  public roles = ROLES;
   @ViewChild('form', { static: true }) form: NgForm;
   constructor(
+    private store: Store<AppState>,
+    private authFacade: AuthFacadeService,
     private groupFacade: GroupFacadeService,
     private location: Location
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.currentUser$ = this.observeCurrentUser();
+    this.populateUsers(this.currentUser$)
+      .pipe(take(1))
+      .subscribe(users => (this.users = users));
+  }
 
+  private observeCurrentUser() {
+    return this.store.pipe(select(this.authFacade.getUserState));
+  }
+  private populateUsers(
+    currentUser: Observable<User>
+  ): Observable<Array<Partial<UserFormItem>>> {
+    return currentUser.pipe(
+      map(
+        user =>
+          [{ uid: user.uid, roleType: RoleType.Admin }] as Array<
+            Partial<UserFormItem>
+          >
+      )
+    );
+  }
   public trackUserBy(index: number) {
     return index;
   }
   public addUser() {
-    this.users = [...this.users, {}];
+    this.users = [
+      ...this.users,
+      {
+        uid: undefined,
+        roleType: RoleType.Admin
+      }
+    ];
   }
-  public removeUser(user: Partial<User>) {
-    this.users = this.users.filter(existingUser => user !== user);
+  public removeUser(user: Partial<UserFormItem>) {
+    this.users = this.users.filter(existingUser => existingUser !== user);
   }
   public back() {
     this.location.back();
   }
   public onSubmit(form: NgForm) {
+    logger.log('form valid', { form });
     if (form.valid) {
-      logger.log('form valid', { form });
       this.groupFacade.createGroupWithUsers({
         group: this.group,
         users: this.users

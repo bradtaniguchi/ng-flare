@@ -17,6 +17,13 @@ export class UserService {
   }
 
   /**
+   * Returns the observable of the user
+   */
+  public get(id: string): Observable<User> {
+    return this.userCollection.doc<User>(id).valueChanges();
+  }
+
+  /**
    * Returns if the given user exists already within the database
    */
   public exists(user: firebase.User): Observable<boolean> {

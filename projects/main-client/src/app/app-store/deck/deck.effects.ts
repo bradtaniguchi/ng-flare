@@ -1,25 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
-import { of } from 'rxjs';
-import {
-  catchError,
-  map,
-  mergeMap,
-  switchMap,
-  takeUntil,
-  withLatestFrom
-} from 'rxjs/operators';
-import { logger } from '../../core/logger';
+import { catchError, map, mergeMap, withLatestFrom } from 'rxjs/operators';
 import { DeckService } from '../../core/services/deck/deck.service';
-import { Group } from '../../models/group';
-import { User } from '../../models/user';
 import { AppState } from '../app-state';
 import { AuthFacadeService } from '../auth/auth-facade.service';
-import { GroupFacadeService } from '../group/group.facade';
 import { cardActions } from '../cards/card.actions';
-import { deckActions } from './deck.actions';
 import { ReportError } from '../error/error.actions';
+import { GroupFacadeService } from '../group/group.facade';
+import { deckActions } from './deck.actions';
 
 @Injectable({
   providedIn: 'root'

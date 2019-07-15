@@ -10,20 +10,23 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-
+import { MatSelectModule } from '@angular/material/select';
+import { ValidUserIdModule } from '../../../shared/valid-user-id/valid-user-id.module';
 @NgModule({
   declarations: [GroupsCreateComponent],
   imports: [
     CommonModule,
     GroupsCreateRoutingModule,
     FormsModule,
+    ValidUserIdModule,
     // angular material
     FlexLayoutModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    MatCardModule
+    MatCardModule,
+    MatSelectModule
   ]
 })
 export class GroupsCreateModule {}

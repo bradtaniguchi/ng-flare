@@ -13,7 +13,7 @@ import {
     <a
       mat-fab
       type="button"
-      aria-label="Create"
+      [title]="title || 'Create'"
       [routerLink]="route"
       color="primary"
     >
@@ -35,6 +35,7 @@ import {
 })
 export class CreateFabComponent implements OnInit {
   @Input() route: string[] | string;
+  @Input() title: string;
   constructor() {}
 
   ngOnInit() {}

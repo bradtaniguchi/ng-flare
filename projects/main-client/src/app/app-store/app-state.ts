@@ -6,6 +6,7 @@ import { CardState } from './cards/card.state';
 import { LoadingState } from './loading/loading.state';
 import { RouteState } from './route/route.state';
 import { StudyState } from '../modules/study/store/study.state';
+import { UserState } from './user/user.state';
 
 export interface AppState {
   auth: AuthState;
@@ -15,6 +16,7 @@ export interface AppState {
   group: GroupState;
   deck: DeckState;
   card: CardState;
+  user: UserState;
   // lazy loaded state
   study?: StudyState;
 }
