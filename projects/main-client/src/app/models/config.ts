@@ -6,6 +6,19 @@ export interface Config {
    */
   revision: string;
   /**
+   * The latest git tag, if there is one
+   */
+  tag: string;
+  /**
+   * The version, parsed from the tag
+   */
+  tagVersion: string;
+  /**
+   * The build environment, parsed from the tag, should be
+   * provided for context. Use the environment properties instead.
+   */
+  tagBuildEnvironment: string;
+  /**
    * The date the build was generated
    */
   date: Date | string;

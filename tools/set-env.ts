@@ -11,6 +11,15 @@ const getRevision = (): Promise<string> => {
   );
 };
 
+const getTag = (): Promise<string> => {
+  console.log('getting tag...');
+  return new Promise((resolve, reject) =>
+    child_process.exec('git describe --tags', (err, stdout, stderr) =>
+      err || stderr ? reject(err || stderr) : resolve(stdout.toString().trim())
+    )
+  );
+};
+
 const getAngularVersion = (pack: any) => pack.dependencies['@angular/core'];
 
 const getFile = (path: string) =>
@@ -36,14 +45,25 @@ const getMissingVariables = () => {
   ].filter(key => !envKeys.includes(key) || !process.env[key]);
 };
 
+const getTagVersion = (tag: string) => /([0-9].[0-9].[0-9])$/.exec(tag)[0];
+
+const getTagBuildEnvironment = (tag: string) => /^([a-zA-Z]*)/.exec(tag)[0];
+
 const targetPath = `./projects/main-client/src/app/config.env.ts`;
-const getConfig = (params: { revision: string; version: string }) => `
+const getConfig = (params: {
+  revision: string;
+  version: string;
+  tag: string;
+}) => `
 import { Config } from './models/config';
 
 export const CONFIG: Config = {
   revision: '${params.revision}',
   date: '${new Date()}',
   version: '${params.version}',
+  tag: '${params.tag}',
+  tagVersion: '${getTagVersion(params.tag)}',
+  tagBuildEnvironment: '${getTagBuildEnvironment(params.tag)}',
   firebase: {
     apiKey: '${process.env.FIREBASE_API_KEY || ''}',
     authDomain: '${process.env.FIREBASE_AUTH_DOMAIN || ''}',
@@ -56,22 +76,27 @@ export const CONFIG: Config = {
 `;
 (async () => {
   try {
-    const revision = await getRevision();
+    const [revision, tag, pack] = await Promise.all([
+      getRevision(),
+      getTag(),
+      getFile('package.json')
+    ]);
     console.log('got hash', revision);
 
-    const pack = await getFile('package.json');
     const version = getAngularVersion(pack);
     const falsyConfigValues = getMissingVariables();
     falsyConfigValues.forEach(key =>
       console.warn(`  environment key missing for key ${key}`)
     );
     if (falsyConfigValues.length) {
-      console.warn('  See README.MD');
+      console.warn('  See README.md');
     }
-    const config = getConfig({ revision, version });
+    const config = getConfig({ revision, version, tag });
     await writeFilePromise(targetPath, config);
     console.log(`Output generated at ${targetPath}`);
   } catch (err) {
     console.error(err);
+    // re-throw the error so we can crash the build process
+    throw err;
   }
 })();

@@ -17,7 +17,10 @@ import { CONFIG } from '../../config.env';
 export class InfoComponent implements OnInit {
   public config = {
     revision: CONFIG.revision,
-    date: CONFIG.date
+    date: CONFIG.date,
+    tag: CONFIG.tag,
+    tagVersion: CONFIG.tagVersion,
+    tagBuildEnvironment: CONFIG.tagBuildEnvironment
   };
   constructor() {}
 
