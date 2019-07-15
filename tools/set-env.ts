@@ -45,9 +45,15 @@ const getMissingVariables = () => {
   ].filter(key => !envKeys.includes(key) || !process.env[key]);
 };
 
-const getTagVersion = (tag: string) => /([0-9].[0-9].[0-9])$/.exec(tag)[0];
+const getTagVersion = (tag: string) => {
+  const res = /([0-9].[0-9].[0-9])$/.exec(tag);
+  return res ? res[0] : '';
+};
 
-const getTagBuildEnvironment = (tag: string) => /^([a-zA-Z]*)/.exec(tag)[0];
+const getTagBuildEnvironment = (tag: string): string => {
+  const res = /^([a-zA-Z]*)/.exec(tag);
+  return res ? res[0] : '';
+};
 
 const targetPath = `./projects/main-client/src/app/config.env.ts`;
 const getConfig = (params: {
