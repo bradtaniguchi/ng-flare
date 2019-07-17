@@ -17,7 +17,7 @@ import {
               class="nav-element"
               fxLayout="row"
               fxLayoutAlign="start center"
-              routerLink="/"
+              routerLink="/dashboard"
               matRipple
               routerLinkActive="active-link"
               [routerLinkActiveOptions]="{ exact: true }"

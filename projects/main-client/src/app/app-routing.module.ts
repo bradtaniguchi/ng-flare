@@ -35,7 +35,7 @@ const routes: Routes = [
         // TODO: remove later
         path: '',
         pathMatch: 'full',
-        redirectTo: '/groups'
+        redirectTo: 'dashboard'
       }
     ]
   },
@@ -52,7 +52,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: '/'
+    redirectTo: 'dashboard'
   }
 ];
 

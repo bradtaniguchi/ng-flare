@@ -6,35 +6,31 @@ const routes: Routes = [
     path: '',
     children: [
       {
-        path: ':deckId/preview',
+        path: 'deck/card/:deckId/preview',
         loadChildren: () =>
           import('./study-preview/study-preview.module').then(
             m => m.StudyPreviewModule
           )
       },
       {
-        path: ':deckId/review',
+        path: 'deck/:deckId/review',
         loadChildren: () =>
           import('./study-review/study-review.module').then(
             m => m.StudyReviewModule
           )
       },
       {
-        path: ':deckId/card/:cardId',
+        path: 'deck/:deckId/card/:cardId',
         loadChildren: () =>
           import('./study-card/study-card.module').then(m => m.StudyCardModule)
       }
-      // TODO: add!
-      // {
-      //   path: '',
-      //   pathMatch: 'full',
-      //   loadChildren: './study-card/study-card-list.module#StudyCardListModule'
-      // }
+      // TODO: add the following routes:
+      // 1. decks - list of decks in the current group we can go study, and change group
     ]
   },
   {
     path: '**',
-    redirectTo: ''
+    redirectTo: '/'
   }
 ];
 
