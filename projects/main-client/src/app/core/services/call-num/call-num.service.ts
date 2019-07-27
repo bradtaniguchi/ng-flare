@@ -26,7 +26,8 @@ export class CallNumService {
   }
 
   /**
-   * Returns the current callNumber, and updates it for the next call
+   * Returns the current callNumber, and updates it for the next call,
+   * is global to all CallNums, and calls.
    */
   public getCallNumber(): number {
     this.callNum++;

@@ -20,4 +20,10 @@ describe('CallNumService', () => {
     const service: CallNumService = TestBed.get(CallNumService);
     expect(service).toBeTruthy();
   });
+
+  it('getCallNumber updates');
+  it('takeUntil emits when disconnect with expected call number is called');
+  it(
+    'takeUntil does not emit when disconnect is emitted with unexpected call numbers'
+  );
 });

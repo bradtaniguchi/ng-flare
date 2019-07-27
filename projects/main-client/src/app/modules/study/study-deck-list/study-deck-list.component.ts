@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  OnDestroy
+} from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
 import { select, Store } from '@ngrx/store';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -9,6 +14,8 @@ import { GroupFacadeService } from '../../../app-store/group/group.facade';
 import { logger } from '../../../core/logger';
 import { Deck } from '../../../models/deck';
 import { Group } from '../../../models/group';
+import { CallNumService } from '../../../core/services/call-num/call-num.service';
+import { CallNum } from '../../../core/services/call-num/call-num';
 
 @Component({
   selector: 'app-study-deck-list',
@@ -84,7 +91,7 @@ import { Group } from '../../../models/group';
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StudyDeckListComponent implements OnInit {
+export class StudyDeckListComponent implements OnInit, OnDestroy {
   // all groups the user has access to
   public groups$: Observable<Group[]>;
   public decks$: Observable<Deck[]>;
@@ -92,10 +99,13 @@ export class StudyDeckListComponent implements OnInit {
   // its a behavior subject only if we are to hook into its changes
   public showGroupSelector$ = new BehaviorSubject<boolean>(false);
   public group$: Observable<Group>;
+
+  private callNum: CallNum;
   constructor(
     private store: Store<AppState>,
     private groupFacade: GroupFacadeService,
-    private deckFacade: DeckFacadeService
+    private deckFacade: DeckFacadeService,
+    private callNumService: CallNumService
   ) {}
 
   ngOnInit() {
@@ -103,6 +113,11 @@ export class StudyDeckListComponent implements OnInit {
     this.group$ = this.observeGroup();
     this.groups$ = this.observeGroups();
     this.decks$ = this.observeDecks(this.group$);
+    this.callNum = this.callNumService.createCallNum();
+  }
+
+  ngOnDestroy() {
+    this.callNum.clear();
   }
 
   public onGroupChange(event: MatSelectChange) {
@@ -118,13 +133,6 @@ export class StudyDeckListComponent implements OnInit {
 
   public compareGroupWith(a: Group, b: Group) {
     return a && b && a.uid === b.uid;
-  }
-
-  /**
-   * Gets all groups the user has, shouldn't needed to be called at the start
-   */
-  private listUserGroups() {
-    this.groupFacade.listUserGroups();
   }
 
   private observeGroup() {
@@ -150,7 +158,7 @@ export class StudyDeckListComponent implements OnInit {
           ],
           limit: 20,
           orderBy: 'name',
-          callNum: 0
+          callNum: this.callNum.get()
         })
       ),
       switchMap(groupId =>

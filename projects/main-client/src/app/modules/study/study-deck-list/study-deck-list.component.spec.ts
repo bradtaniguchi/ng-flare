@@ -16,6 +16,7 @@ import { DeckOverviewComponent } from '../../../shared/deck-overview/deck-overvi
 import { DeckOverviewModule } from '../../../shared/deck-overview/deck-overview.module';
 import { LoadingSpinnerModule } from '../../../shared/loading-spinner/loading-spinner.module';
 import { StudyDeckListComponent } from './study-deck-list.component';
+import { CallNumService } from '../../../core/services/call-num/call-num.service';
 
 describe('StudyDeckListComponent', () => {
   let component: StudyDeckListComponent;
@@ -82,7 +83,8 @@ describe('StudyDeckListComponent', () => {
           initialState
         }),
         GroupFacadeService,
-        DeckFacadeService
+        DeckFacadeService,
+        CallNumService
       ]
     }).compileComponents();
   }));
