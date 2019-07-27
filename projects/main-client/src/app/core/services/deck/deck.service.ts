@@ -55,7 +55,7 @@ export class DeckService {
   public search(params: SearchParams<Deck>): Observable<Deck[]> {
     const { filters, limit, orderBy } = params;
     return this.db
-      .collection<Deck>(Collections.Cards, ref =>
+      .collection<Deck>(Collections.Decks, ref =>
         this.searchFilterService
           .applyFilters<Deck>({
             filters,

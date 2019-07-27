@@ -6,26 +6,35 @@ const routes: Routes = [
     path: '',
     children: [
       {
-        path: 'deck/card/:deckId/preview',
+        path: 'decks/:deckId/preview',
         loadChildren: () =>
           import('./study-preview/study-preview.module').then(
             m => m.StudyPreviewModule
           )
       },
       {
-        path: 'deck/:deckId/review',
+        path: 'decks/:deckId/review',
         loadChildren: () =>
           import('./study-review/study-review.module').then(
             m => m.StudyReviewModule
           )
       },
       {
-        path: 'deck/:deckId/card/:cardId',
+        path: 'decks/:deckId/cards/:cardId',
         loadChildren: () =>
           import('./study-card/study-card.module').then(m => m.StudyCardModule)
+      },
+      {
+        path: 'decks',
+        loadChildren: () =>
+          import('./study-deck-list/study-deck-list.module').then(
+            m => m.StudyDeckListModule
+          )
+      },
+      {
+        path: '',
+        redirectTo: 'decks'
       }
-      // TODO: add the following routes:
-      // 1. decks - list of decks in the current group we can go study, and change group
     ]
   },
   {

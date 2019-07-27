@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { createSelector, Store } from '@ngrx/store';
 import { SearchParamsService } from '../../core/services/search-params/search-params.service';
 import { Group } from '../../models/group';
-import { SearchParams } from '../../models/search-params';
-import { User, UserFormItem } from '../../models/user';
+import { UserFormItem } from '../../models/user';
 import { AppState } from '../app-state';
 import { groupActions } from './group.actions';
 
@@ -44,6 +43,10 @@ export class GroupFacadeService {
 
   public listUserGroups() {
     this.store.dispatch(groupActions.searchUserGroups({ callNum: 0 })); // TODO!
+  }
+
+  public selectGroup(groupId: string) {
+    this.store.dispatch(groupActions.select({ groupId }));
   }
 
   public createGroupWithUsers(params: {

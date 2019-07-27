@@ -37,6 +37,14 @@ ul {
   margin: 0;
 }
 
+.vert-margin {
+  margin: 16px 0;
+}
+
+.horz-margin {
+  margin: 0 16px;
+}
+
 .hover-hide {
   .hover-hide-el {
     visibility: hidden;

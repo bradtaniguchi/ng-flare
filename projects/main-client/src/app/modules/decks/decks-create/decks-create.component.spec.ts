@@ -23,7 +23,9 @@ import { DecksCreateComponent } from './decks-create.component';
 describe('DecksCreateComponent', () => {
   let component: DecksCreateComponent;
   let fixture: ComponentFixture<DecksCreateComponent>;
-  const initialState: Partial<AppState> = {};
+  const initialState: Partial<AppState> = {
+    group: {} as any
+  };
 
   const getNameInput = () =>
     fixture.debugElement.query(By.css('input[name="name"]'));

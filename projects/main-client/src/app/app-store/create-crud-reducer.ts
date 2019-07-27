@@ -73,10 +73,12 @@ export const createCrudReducerHandlers = <
 
   // search
   on(actions.search, (state: U) => ({ ...state, loading: true })),
-  on(actions.searchUpdate, (state: U, { entities }) => ({
-    ...state,
-    loading: false
-  })),
+  on(actions.searchUpdate, (state: U, { entities }) =>
+    adapter.upsertMany(entities, {
+      ...state,
+      loading: false
+    })
+  ),
   on(actions.searchFailed, (state: U) => ({ ...state, loading: false })),
   on(actions.searchStop, (state: U) => ({ ...state, loading: false }))
 ];

@@ -1,7 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
-import { catchError, map, mergeMap, withLatestFrom } from 'rxjs/operators';
+import {
+  catchError,
+  map,
+  mergeMap,
+  withLatestFrom,
+  takeUntil
+} from 'rxjs/operators';
 import { DeckService } from '../../core/services/deck/deck.service';
 import { AppState } from '../app-state';
 import { AuthFacadeService } from '../auth/auth-facade.service';

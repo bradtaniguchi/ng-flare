@@ -3,6 +3,8 @@
  */
 export interface Filter<T> {
   prop: keyof T;
-  op: '<' | '<=' | '==' | '>=' | '>' | 'array-contains';
+  op: FilterOp;
   value: any;
 }
+
+export type FilterOp = '<' | '<=' | '==' | '>=' | '>' | 'array-contains';

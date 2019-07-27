@@ -28,7 +28,7 @@ import { Deck } from '../../models/deck';
           mat-button
           color="primary"
           class="hover-hide-el"
-          [routerLink]="['deck', deck?.uid]"
+          [routerLink]="['/', 'decks', deck?.uid]"
         >
           Edit
         </a>
@@ -37,7 +37,7 @@ import { Deck } from '../../models/deck';
           mat-button
           color="primary"
           class="hover-hide-el"
-          [routerLink]="['study', deck?.uid, 'preview']"
+          [routerLink]="['/', 'study', 'decks', deck?.uid, 'preview']"
         >
           Study
         </a>
