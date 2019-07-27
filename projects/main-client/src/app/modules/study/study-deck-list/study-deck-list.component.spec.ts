@@ -17,6 +17,8 @@ import { DeckOverviewModule } from '../../../shared/deck-overview/deck-overview.
 import { LoadingSpinnerModule } from '../../../shared/loading-spinner/loading-spinner.module';
 import { StudyDeckListComponent } from './study-deck-list.component';
 import { CallNumService } from '../../../core/services/call-num/call-num.service';
+import { provideMockActions } from '@ngrx/effects/testing';
+import { Subject } from 'rxjs';
 
 describe('StudyDeckListComponent', () => {
   let component: StudyDeckListComponent;
@@ -63,7 +65,7 @@ describe('StudyDeckListComponent', () => {
   const getDecks = () =>
     fixture.debugElement.queryAll(By.directive(DeckOverviewComponent));
   const getDeck = (index: number) => getDecks()[index];
-
+  const actions$ = new Subject<any>();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [StudyDeckListComponent],
@@ -82,6 +84,7 @@ describe('StudyDeckListComponent', () => {
         provideMockStore({
           initialState
         }),
+        provideMockActions(actions$),
         GroupFacadeService,
         DeckFacadeService,
         CallNumService
