@@ -23,6 +23,8 @@ import { ErrorEffects } from './error/error.effects';
 import { CardReducer } from './cards/card.state';
 import { UserReducer } from './user/user.state';
 import { UserEffects } from './user/user.effects';
+import { DashboardReducer } from './dashboard/dashboard.state';
+import { DashboardEffects } from './dashboard/dashboard.effects';
 
 @NgModule({
   declarations: [],
@@ -37,6 +39,7 @@ import { UserEffects } from './user/user.effects';
       group: GroupReducer,
       deck: DeckReducer,
       card: CardReducer,
+      dashboard: DashboardReducer,
       user: UserReducer
     }),
     EffectsModule.forRoot([
@@ -47,7 +50,8 @@ import { UserEffects } from './user/user.effects';
       DeckEffects,
       CardEffects,
       UserEffects,
-      ErrorEffects
+      ErrorEffects,
+      DashboardEffects
     ]),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
