@@ -7,6 +7,7 @@ import { LoadingState } from './loading/loading.state';
 import { RouteState } from './route/route.state';
 import { StudyState } from '../modules/study/store/study.state';
 import { UserState } from './user/user.state';
+import { DashboardState } from './dashboard/dashboard.state';
 
 export interface AppState {
   auth: AuthState;
@@ -17,6 +18,7 @@ export interface AppState {
   deck: DeckState;
   card: CardState;
   user: UserState;
+  dashboard: DashboardState;
   // lazy loaded state
   study?: StudyState;
 }

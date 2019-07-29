@@ -3,5 +3,8 @@ export enum Collections {
   Groups = 'groups',
   Decks = 'decks',
   Cards = 'cards',
-  Permissions = 'permissions'
+  Permissions = 'permissions',
+
+  // nested under user
+  UsersDashboard = 'dashboard'
 }

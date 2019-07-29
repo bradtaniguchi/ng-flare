@@ -14,8 +14,10 @@ import { GroupFacadeService } from '../../../app-store/group/group.facade';
 import { logger } from '../../../core/logger';
 import { Deck } from '../../../models/deck';
 import { Group } from '../../../models/group';
-import { CallNumService } from '../../../core/services/call-num/call-num.service';
-import { CallNum } from '../../../core/services/call-num/call-num';
+import {
+  CallNumService,
+  CallNum
+} from '../../../core/services/call-num/call-num.service';
 
 @Component({
   selector: 'app-study-deck-list',
