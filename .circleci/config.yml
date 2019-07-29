@@ -176,6 +176,7 @@ workflows:
             tags:
               # match only DEV tags
               only: /^DEV-[0-9].[0-9].[0-9]$/
+              ignore: /.*/
           requires:
             - build_main_client
             - e2e_main_client
