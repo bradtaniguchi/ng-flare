@@ -1,6 +1,7 @@
 require('dotenv').config();
 import * as child_process from 'child_process';
-import { writeFile, readFile } from 'fs';
+import { writeFile, readFile, exists, access, constants } from 'fs';
+import { ENV_PATH } from './env-path';
 
 const getRevision = (): Promise<string> => {
   console.log('getting hash...');
@@ -22,7 +23,12 @@ const getTag = (): Promise<string> => {
 
 const getAngularVersion = (pack: any) => pack.dependencies['@angular/core'];
 
-const getFile = (path: string) =>
+const getFileExists = (path: string) =>
+  new Promise((resolve, reject) =>
+    access(path, constants.F_OK, err => (err ? resolve(false) : resolve(true)))
+  );
+
+const getPackageJson = (path: string) =>
   new Promise((resolve, reject) =>
     readFile(path, (err, data) =>
       err ? reject(err) : resolve(JSON.parse(Buffer.from(data).toString()))
@@ -55,7 +61,6 @@ const getTagBuildEnvironment = (tag: string): string => {
   return res ? res[0] : '';
 };
 
-const targetPath = `./projects/main-client/src/app/config.env.ts`;
 const getConfig = (params: {
   revision: string;
   version: string;
@@ -82,10 +87,15 @@ export const CONFIG: Config = {
 `;
 (async () => {
   try {
+    const fileExists = await getFileExists(ENV_PATH);
+    if (fileExists) {
+      console.log('env file already exists, skipping...');
+      return;
+    }
     const [revision, tag, pack] = await Promise.all([
       getRevision(),
       getTag(),
-      getFile('package.json')
+      getPackageJson('package.json')
     ]);
     console.log('got hash', revision);
 
@@ -98,8 +108,8 @@ export const CONFIG: Config = {
       console.warn('  See README.md');
     }
     const config = getConfig({ revision, version, tag });
-    await writeFilePromise(targetPath, config);
-    console.log(`Output generated at ${targetPath}`);
+    await writeFilePromise(ENV_PATH, config);
+    console.log(`Output generated at ${ENV_PATH}`);
   } catch (err) {
     console.error(err);
     // re-throw the error so we can crash the build process
