@@ -1,6 +1,6 @@
 {
   "name": "ng-flare",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "scripts": {
     "ng": "ng",
     "prestart": "npm run config",
