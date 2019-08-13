@@ -180,23 +180,35 @@ workflows:
           requires:
             - test_main_client
   ################################################################################
-
   test_and_deploy:
     jobs:
-      - test_main_client
-      - e2e_main_client
+      - test_main_client:
+          filters:
+            tags:
+              only: /^DEV-\d+\.\d+\.\d+$/
+      - e2e_main_client:
+          filters:
+            tags:
+              only: /^DEV-\d+\.\d+\.\d+$/
       - build_main_client:
+          filters:
+            tags:
+              only: /^DEV-\d+\.\d+\.\d+$/
           requires:
             - test_main_client
       - deploy_main_client:
+          # ignore all branches
+          # docs: https://circleci.com/docs/2.0/workflows/#executing-workflows-for-a-git-tag
+          # other docs: https://circleci.com/docs/2.0/deployment-integrations/#npm
           filters:
-            # match only DEV tags
             tags:
               only: /^DEV-\d+\.\d+\.\d+$/
-            # ignore all branches
-            # docs: https://circleci.com/docs/2.0/workflows/#executing-workflows-for-a-git-tag
-            # other docs: https://circleci.com/docs/2.0/deployment-integrations/#npm
+            branches:
+              ignore: /.*/
           requires:
             - build_main_client
             - e2e_main_client
-      - test_functions
+      - test_functions:
+          filters:
+            tags:
+              only: /^DEV-\d+\.\d+\.\d+$/
