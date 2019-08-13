@@ -190,9 +190,6 @@ workflows:
         # deploys to dev environment
       - deploy_main_client:
           filters:
-            # ignore changes on any branch by default
-            # branches:
-            #   ignore: /.*/
             tags:
               # match only DEV tags
               only: /^DEV-[0-9]+.[0-9]+.[0-9]+$/
