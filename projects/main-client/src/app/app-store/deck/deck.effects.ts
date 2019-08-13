@@ -15,6 +15,7 @@ import { cardActions } from '../cards/card.actions';
 import { ReportError } from '../error/error.actions';
 import { GroupFacadeService } from '../group/group.facade';
 import { deckActions } from './deck.actions';
+import { CallNumService } from '../../core/services/call-num/call-num.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +25,7 @@ export class DeckEffects {
     private actions$: Actions,
     private store: Store<AppState>,
     private deckService: DeckService,
+    private callNumService: CallNumService,
     private groupFacadeService: GroupFacadeService,
     private authFacadeService: AuthFacadeService
   ) {}
@@ -49,6 +51,28 @@ export class DeckEffects {
         .pipe(
           map(entity => deckActions.createSuccess({ entity })),
           catchError(err => [deckActions.createFailed(action)])
+        )
+    )
+  );
+
+  @Effect()
+  getDeck$ = this.actions$.pipe(
+    ofType(deckActions.get),
+    mergeMap(action =>
+      this.deckService
+        .get({
+          deckId: action.key
+        })
+        .pipe(
+          map(entity => deckActions.getUpdate({ entity })),
+          catchError(err => [
+            deckActions.getFailed(action),
+            new ReportError({
+              err,
+              message: 'There was an error getting deck'
+            })
+          ]),
+          takeUntil(this.callNumService.takeUntil(action))
         )
     )
   );

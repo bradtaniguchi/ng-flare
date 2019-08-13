@@ -16,6 +16,9 @@
     "smoke": "npx ts-node tools/smoke-server",
     "config:e2e": "npx ts-node --project=tools/tsconfig.tools.json tools/set-e2e-env.ts",
     "config": "npx ts-node --project=tools/tsconfig.tools.json tools/set-env.ts",
+    "indexes:get": "npx firebase firestore:indexes > firestore.indexes.json",
+    "indexes:deploy": "npx firebase deploy --only firestore:indexes",
+    "rules:deploy": "npx firebase deploy --only firestore:rules",
     "config:clean": "npx ts-node --project=tools/tsconfig.tools.json tools/clear-env.ts",
     "clean": "npx rimraf dist out-tsc coverage"
   },
@@ -64,6 +67,7 @@
     "codelyzer": "^5.0.1",
     "cypress": "^3.3.2",
     "dotenv": "^8.0.0",
+    "firebase-tools": "^7.2.1",
     "husky": "^2.2.0",
     "jasmine-core": "~3.4.0",
     "jasmine-marbles": "^0.6.0",

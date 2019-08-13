@@ -24,7 +24,7 @@ export class CardFacadeService {
     private searchParamsService: SearchParamsService
   ) {}
 
-  public getCardsByDeck(deckId: string) {
+  public getCardsByDeckSelector(deckId: string) {
     return createSelector(
       this.getCards,
       (cards: Card[]) => cards.filter(card => card.deck === deckId)

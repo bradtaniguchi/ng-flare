@@ -70,7 +70,7 @@ export class DeckService {
   /**
    * Returns the deck with the given id
    */
-  public get(params: { deckId: string; takeOne: boolean }): Observable<Deck> {
+  public get(params: { deckId: string; takeOne?: boolean }): Observable<Deck> {
     const { deckId, takeOne } = params;
     return takeOne
       ? this.deckCollection

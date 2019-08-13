@@ -1,6 +1,5 @@
-import { Deck } from '../../../models/deck';
-import { Card } from '../../../models/card';
-import { StudyActions, StudyActionTypes } from './study.actions';
+import { createReducer, Action, on } from '@ngrx/store';
+import { studyActions } from './study.actions';
 
 export interface StudyState {
   /**
@@ -29,12 +28,13 @@ export interface StudyState {
   stoppedOn?: Date;
   /**
    * The cardIds the user is studying
+   * @deprecated
    */
   cards?: string[];
   /**
    * List of cards marked as skipped
    */
-  missed?: string[];
+  wrong?: string[];
   /**
    * List of cards marked as correct
    */
@@ -44,18 +44,40 @@ export interface StudyState {
    */
   skipped?: string[];
 }
-export function StudyReducer(
-  state: StudyState = {},
-  action: StudyActions
-): StudyState {
-  switch (action.type) {
-    case StudyActionTypes.START:
-    case StudyActionTypes.STOP:
-    case StudyActionTypes.SET_DECK:
-      return { ...state, ...action.payload };
-    case StudyActionTypes.CLEAR:
-      return {};
-    default:
-      return state;
-  }
+
+const reducer = createReducer(
+  {
+    cards: [],
+    wrong: [],
+    correct: [],
+    skipped: []
+  } as StudyState,
+  on(studyActions.start, (state, { startedOn }) => ({ ...state, startedOn })),
+  on(studyActions.stop, (state, { stopped }) => ({ ...state, stopped })),
+  on(studyActions.clear, () => ({
+    cards: [],
+    wrong: [],
+    correct: [],
+    skipped: []
+  })),
+  on(studyActions.setDeck, (state, { deckId: deck }) => ({ ...state, deck })),
+  on(studyActions.selectCard, (state, { card }) => ({ ...state, card })),
+
+  // card action
+  on(studyActions.markCardCorrect, (state, { card }) => ({
+    ...state,
+    correct: [...state.correct, card]
+  })),
+  on(studyActions.markCardWrong, (state, { card }) => ({
+    ...state,
+    wrong: [...state.wrong, card]
+  })),
+  on(studyActions.skipCard, (state, { card }) => ({
+    ...state,
+    skipped: [...state.skipped, card]
+  }))
+);
+
+export function StudyReducer(state: StudyState, action: Action) {
+  return reducer(state, action);
 }

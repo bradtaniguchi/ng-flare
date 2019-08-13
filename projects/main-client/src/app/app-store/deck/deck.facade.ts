@@ -37,17 +37,15 @@ export class DeckFacadeService {
     );
   }
 
-  // public searchDecks(params: SearchParams<Deck>) {
-  //   return createSelector((state: AppState) => state.deck.entities, decks => Object.values(decks).sort((a, b) => a))
-  // }
+  public getDeck(params: { key: string; callNum: number }) {
+    this.store.dispatch(deckActions.get(params));
+  }
 
   public listGroupDecks(params: Partial<SearchParams<Deck>>) {
-    // this.store.dispatch(new ListGroupDecks(params));
     this.store.dispatch(deckActions.search(params));
   }
 
   public createDeck(deck: Partial<Deck>) {
-    // this.store.dispatch(new CreateDeck({ deck }));
     this.store.dispatch(deckActions.create({ entity: deck }));
   }
 
@@ -55,12 +53,10 @@ export class DeckFacadeService {
     deck: Partial<Deck>;
     cards: Array<Partial<Card>>;
   }) {
-    // this.store.dispatch(new CreateDeckWithCards(params));
     this.store.dispatch(deckActions.createWithCards(params));
   }
 
   public stopList(params: { callNum: number }) {
-    // this.store.dispatch(new ListGroupDecksStop());
     this.store.dispatch(deckActions.searchStop(params));
   }
 }

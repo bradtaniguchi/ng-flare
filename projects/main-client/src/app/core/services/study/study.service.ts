@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Card } from '../../../models/card';
 import { StudyState } from '../../../modules/study/store/study.state';
 
 @Injectable({
@@ -11,20 +10,41 @@ export class StudyService {
   /**
    * Returns all previously studied cards
    */
-  public getPrevious(params: {
-    missed?: string[];
-    correct?: string[];
-    skipped?: string[];
-  }): string[] {
-    const { missed, correct, skipped } = params;
-    return [...(missed || []), ...(correct || []), ...(skipped || [])];
+  public getPrevious<T>(params: {
+    wrong?: T[];
+    correct?: T[];
+    skipped?: T[];
+  }): T[] {
+    const { wrong, correct, skipped } = params;
+    return [...(wrong || []), ...(correct || []), ...(skipped || [])];
   }
+
+  /**
+   * Returns the percentage of completed cards out of the deck
+   */
+  public getCompletedPercentage<T>(params: {
+    cards: T[];
+    wrong: T[];
+    correct: T[];
+    skipped: T[];
+  }): number {
+    const { cards } = params;
+    const previous = this.getPrevious(params).length;
+    const total = (cards || []).length;
+    return Math.floor((previous / total) * 100);
+  }
+
   /**
    * Utility function that returns the next card to show from the state.
    * It will randomly select
    * @param state the state we are to calculate the next card from
    */
-  public getNextCard(state: StudyState): string | undefined {
+  public getNextCard<T>(state: {
+    cards?: T[];
+    wrong?: T[];
+    correct?: T[];
+    skipped?: T[];
+  }): T | undefined {
     const { cards } = state;
     if (cards.length === 0) {
       return undefined;

@@ -9,11 +9,75 @@ describe('StudyService', () => {
     expect(service).toBeTruthy();
   });
 
+  describe('getCompletedPercentage', () => {
+    const card1 = 'card1';
+    const card2 = 'card2';
+    const card3 = 'card3';
+    const card4 = 'card4';
+    const cards: string[] = [card1, card2, card3, card4];
+    const testGetCompletedPercentage = (testCase: {
+      cards: string[];
+      wrong?: string[];
+      correct?: string[];
+      skipped?: string[];
+      expected: number;
+    }) =>
+      expect(
+        service.getCompletedPercentage({
+          ...{ cards, wrong: [], correct: [], skipped: [] },
+          ...testCase
+        })
+      ).toEqual(testCase.expected);
+    it('returns 0', () =>
+      testGetCompletedPercentage({
+        cards,
+        expected: 0
+      }));
+    it('returns 100, all correct', () =>
+      testGetCompletedPercentage({
+        cards,
+        correct: [card1, card2, card3, card4],
+        expected: 100
+      }));
+    it('returns 50, all wrong', () =>
+      testGetCompletedPercentage({
+        cards,
+        wrong: [card1, card2],
+        expected: 50
+      }));
+    it('returns 50, wrong and skipped', () =>
+      testGetCompletedPercentage({
+        cards,
+        wrong: [card1],
+        skipped: [card2],
+        expected: 50
+      }));
+    it('returns 75, wrong, skipped, and correct', () =>
+      testGetCompletedPercentage({
+        cards,
+        wrong: [card1],
+        skipped: [card2],
+        correct: [card3],
+        expected: 75
+      }));
+    it('returns 66, correct', () =>
+      testGetCompletedPercentage({
+        cards: [card1, card2, card3],
+        correct: [card1, card2],
+        expected: 66
+      }));
+    it('returns 0/3', () =>
+      testGetCompletedPercentage({
+        cards: [card1, card2, card3],
+        expected: 0
+      }));
+  });
+
   describe('getPrevious', () => {
     it('returns empty array', () =>
       expect(
         service.getPrevious({
-          missed: [],
+          wrong: [],
           correct: [],
           skipped: []
         })
@@ -23,7 +87,7 @@ describe('StudyService', () => {
     it('returns array, of missed, correct and skipped', () =>
       expect(
         service.getPrevious({
-          missed: ['missedCard'],
+          wrong: ['missedCard'],
           correct: ['correctCard', 'correctCard2'],
           skipped: ['skippedCard']
         })
@@ -47,7 +111,7 @@ describe('StudyService', () => {
       flipped: false,
       cards: [],
       correct: [],
-      missed: [],
+      wrong: [],
       skipped: []
     };
     it('returns undefined if cards is empty array', () => {
@@ -63,7 +127,7 @@ describe('StudyService', () => {
         {
           ...defaultState,
           cards: ['cardOne'],
-          missed: ['cardsOne']
+          wrong: ['cardsOne']
         },
         undefined
       );
@@ -73,7 +137,7 @@ describe('StudyService', () => {
         {
           ...defaultState,
           cards: ['cardOne', 'cardTwo'] as any,
-          missed: ['cardOne']
+          wrong: ['cardOne']
         },
         'cardTwo'
       );

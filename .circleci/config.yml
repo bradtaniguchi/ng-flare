@@ -127,6 +127,28 @@ jobs:
           name: deploying firebase rules
           command: npx firebase firestore:delete --token=$FIREBASE_TOKEN --all-collections
   ################################################################################
+  upload_firestore_indexes:
+    docker:
+      - image: circleci/node:10-browsers
+    steps:
+      - run:
+          name: install firebase cli
+          command: npm install firebase-tools
+      - run:
+          name: deploying firebase indexes
+          command: npx firebase deploy --token=$FIREBASE_TOKEN --only firestore:indexes
+  ################################################################################
+  upload_firestore_rules:
+    docker:
+      - image: circleci/node:10-browsers
+    steps:
+      - run:
+          name: install firebase cli
+          command: npm install firebase-tools
+      - run:
+          name: deploying firebase indexes
+          command: npx firebase deploy --token=$FIREBASE_TOKEN --only firestore:rules
+  ################################################################################
   deploy_db_rules:
     docker:
       - image: circleci/node:10-browsers
