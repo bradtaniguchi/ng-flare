@@ -197,7 +197,8 @@ workflows:
             # ignore all branches
             # docs: https://circleci.com/docs/2.0/workflows/#executing-workflows-for-a-git-tag
             branches:
-              ignore: /.*/
+              only: /^master$/
+              # ignore: /.*/
           requires:
             - build_main_client
             - e2e_main_client
