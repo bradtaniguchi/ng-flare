@@ -195,8 +195,7 @@ workflows:
               only: /^DEV-\d+\.\d+\.\d+$/
             # ignore all branches
             # docs: https://circleci.com/docs/2.0/workflows/#executing-workflows-for-a-git-tag
-            # branches:
-            #   ignore: /.*/
+            # other docs: https://circleci.com/docs/2.0/deployment-integrations/#npm
           requires:
             - build_main_client
             - e2e_main_client
